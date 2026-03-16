@@ -255,6 +255,16 @@
 			    	}
 		    },
 
+			selectPurok(bar) {
+		    		this.barangay = bar;
+		    		if(bar == "Lubogan") {
+			    		this.barangays = barangayList;
+			    	}
+			    	if(bar == "Baliok") {
+			    		this.barangays = barangayList;
+			    	}
+		    },
+
 		    validate() {
 		      this.errors = {}
 		      if (!this.firstname) this.errors.firstname = "(Required)"
