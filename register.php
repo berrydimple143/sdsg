@@ -30,8 +30,7 @@
 				      <label for="lastname" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name <span class="text-red-500 text-md font-bold">*</span></label>
 				      <input type="text" placeholder="Type your last name here ..." x-model="lastname" class="mt-1 block w-full h-2/3 outline-1 outline-gray-700 p-2 rounded-none border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
 				      <span x-show="errors.lastname" class="text-red-500" x-text="errors.lastname"></span>
-				    </div>
-				    <!-- Add more field pairs here within the grid container -->
+				    </div>				    
 				    <div>
 				        <label for="middlename" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Middle Name <span class="text-gray-500 text-sm italic">(Optional)</span></label>
 				        <input type="text" placeholder="Type your middle name here ..." x-model="middlename" class="mt-1 block w-full h-2/3 outline-1 outline-gray-700 p-2 rounded-none border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
@@ -97,20 +96,26 @@
 					        </template>
 				      </select>
 				      <span x-show="errors.barangay" class="text-red-500" x-text="errors.barangay"></span>
-				    </div>				    
-				  </div>
-
-				  <div>
+				    </div>		
+					
+					<div>
 				      <label for="purok" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Purok/Sitio <span class="text-red-500 text-md font-bold">*</span></label>
-				      <select x-model="purok" @change="selectPurok($event.target.value)" class="mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
+				      <select x-model="purok" class="mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
 				      		<option value="">Select purok/sitio here ...</option>
-				      		<template x-for="bar in puroks" :key="bar.id">
-					            <option :value="bar.value" x-text="bar.name"></option>
+				      		<template x-for="pur in puroks" :key="pur.id">
+					            <option :value="pur.value" x-text="pur.name"></option>
 					        </template>
 				      </select>
 				      <span x-show="errors.purok" class="text-red-500" x-text="errors.purok"></span>
-				    </div>				    
-				  </div>
+				    </div>	
+
+					<div>
+				        <label for="zipcode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Zip Code</label>
+				        <input type="text" placeholder="Type your zip code here ..." x-model="zipcode" class="mt-1 block w-full h-2/3 outline-1 outline-gray-700 p-2 rounded-none border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
+						<span x-show="errors.zipcode" class="text-red-500" x-text="errors.zipcode"></span>
+				    </div>
+
+				  </div>			  
 
 				  <div class="grid sm:grid-cols-5 gap-6 mb-6">
 				  	<div>
@@ -128,8 +133,9 @@
 			</div>
 	</div>
 
-	<script>
-		function formApp() {
+	<script>		
+		
+		function formApp() {					
 			const regionsData = [
 				{ id: 1, name: 'Region IX', value: 'Region IX' },
 		        { id: 2, name: 'Region X', value: 'Region X' },
@@ -174,13 +180,34 @@
 				{ id: 2, name: "Second", value: "Second" },
 				{ id: 3, name: 'Third', value: 'Third' },
 				{ id: 4, name: 'Fourth', value: 'Fourth' }
+			];		
+			
+			const thirdDistrictBarangays = [
+				{ id: 1, name: 'Lubogan', value: 'Lubogan' }				
 			];
 
-			const  barangayList = [
-				{ id: 1, name: 'First', value: 'First' },
-				{ id: 2, name: "Second", value: "Second" },
-				{ id: 3, name: 'Third', value: 'Third' },
-				{ id: 4, name: 'Fourth', value: 'Fourth' }
+			const firstDistrictBarangays = [				
+				{ id: 1, name: "Baliok", value: "Baliok" },
+				{ id: 2, name: 'Bucana', value: 'Bucana' },
+				{ id: 3, name: 'Matina Pangi', value: 'Matina Pangi' }
+			];
+
+			const barangayLubogan = [
+				{ id: 1, name: 'Purok 1-A', value: 'Purok 1-A' },
+				{ id: 2, name: "Purok 1-B", value: "Purok 1-B" },
+				{ id: 3, name: 'Purok 2-A', value: 'Purok 2-A' },
+				{ id: 4, name: 'Purok 2-B', value: 'Purok 2-B' }
+			];
+
+			const  barangayBaliok = [
+				{ id: 1, name: 'Purok 1-A', value: 'Purok 1-A' },
+				{ id: 2, name: "Purok 1-B", value: "Purok 1-B" },
+				{ id: 3, name: 'Purok 2-A', value: 'Purok 2-A' },
+				{ id: 4, name: 'Purok 2-B', value: 'Purok 2-B' },
+				{ id: 5, name: 'Purok 3-A', value: 'Purok 3-A' },
+				{ id: 6, name: "Purok 3-B", value: "Purok 3-B" },
+				{ id: 7, name: 'Purok 4-A', value: 'Purok 4-A' },
+				{ id: 8, name: 'Purok 4-B', value: 'Purok 4-B' }
 			];
 
 		  return {
@@ -205,6 +232,14 @@
 		    loading: false,
 		    errors: {},
 
+			async getZipcode() {
+				return await fetch('./data/zipcodes.json')
+				.then(response => response.json())
+				.then(json => {
+					console.log(json); 
+				}).catch(error => console.error('Error fetching JSON:', error));
+			},
+
 		    selectRegion(reg) {
 		    	this.region = reg;
 		    	if(reg == "Region XI") {
@@ -225,43 +260,50 @@
 			    	}
 		    },
 
+			findZip(zipcodes, zip) {
+        		return zipcodes[zip] || null;
+			},
+
+			findReverseZip(location) {
+				return Object.keys(zipcodes).find((zipcode) => {
+					const value = zipcodes[zipcode];
+					if (typeof value === 'string') {
+						return value === location;
+					}
+					return value.includes(location);
+				}) || null;
+			},
+
 		    selectCity(ct) {
+					const zipcodes = this.getZipcode();			
+					console.log(this.findZip(zipcodes, 6000));
+					//alert(zc.reverse(ct + ' City'));
 		    		this.city = ct;
 		    		if(ct == "Davao") {
-			    		this.cities = delSurcities;
+			    		this.districts = davaoDistricts;
 			    	}
 			    	if(ct == "Digos") {
-			    		this.cities = delNorteCities;
+			    		this.districts = digosDistricts;
 			    	}
 		    },
 
 			selectDistrict(ds) {
 		    		this.district = ds;
-		    		if(ds == "Davao") {
-			    		this.districts = davaoDistricts;
+		    		if(ds == "Third") {
+			    		this.barangays = thirdDistrictBarangays;
 			    	}
-			    	if(ds == "Digos") {
-			    		this.districts = digosDistricts;
+			    	if(ds == "First") {
+			    		this.barangays = firstDistrictBarangays;
 			    	}
 		    },
 
 			selectBarangay(bar) {
 		    		this.barangay = bar;
 		    		if(bar == "Lubogan") {
-			    		this.barangays = barangayList;
+			    		this.puroks = barangayLubogan;
 			    	}
 			    	if(bar == "Baliok") {
-			    		this.barangays = barangayList;
-			    	}
-		    },
-
-			selectPurok(bar) {
-		    		this.barangay = bar;
-		    		if(bar == "Lubogan") {
-			    		this.barangays = barangayList;
-			    	}
-			    	if(bar == "Baliok") {
-			    		this.barangays = barangayList;
+			    		this.puroks = barangayBaliok;
 			    	}
 		    },
 
