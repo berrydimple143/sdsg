@@ -53,13 +53,13 @@
 		function checkAuth() {
 			  //sessionStorage.clear();
 			  //sessionStorage.removeItem("logged");
-        let logged = sessionStorage.getItem("logged");
-        setTimeout(() => {
-           if(logged) {
-           		window.location = "./admin/index.php";
-           }
-        }, 50);
-    }
+			let logged = sessionStorage.getItem("logged");
+			setTimeout(() => {
+			if(logged) {
+					window.location = "./admin/index.php";
+			}
+			}, 50);
+		}
 
 		function authForm() {
 		  return {

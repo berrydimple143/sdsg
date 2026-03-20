@@ -98,7 +98,7 @@
 									  modal.classList.add('hidden');
 									  sessionStorage.setItem("user", resp.user);
 									  sessionStorage.setItem("logged", true);
-									  window.location = "./admin/index.php";
+									  window.location = "./index.php";
 									}, 2000);
 					      }
 		      } catch (error) {		      	  

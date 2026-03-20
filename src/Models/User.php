@@ -18,6 +18,12 @@
 			return $user->fetch(PDO::FETCH_ASSOC);
 		}
 
+		public static function findUserByFields($firstname, $lastname, $middlename, $suffix, $barangay) {
+			$pdo = Database::connect();
+			$user = $pdo->query("SELECT * FROM users AS usr INNER JOIN personal_information AS per ON usr.id = per.user_id WHERE usr.firstname='$firstname' AND usr.lastname='$lastname' AND usr.middlename='$middlename' AND per.suffix='$suffix' AND per.barangay='$barangay'");
+			return $user->fetch(PDO::FETCH_ASSOC);
+		}
+
 		public static function getUser($id) {
 			$pdo = Database::connect();
 			$user = $pdo->query("SELECT * FROM users WHERE id=$id");
@@ -168,12 +174,13 @@
 					":courseToAvail" =>$courseToAvail
 				]);
 
-				$utypes = $pdo->prepare("INSERT INTO user_types(user_id, mtype, position, designation) VALUES(:user_id, :mtype, :position, :designation)");	
-				$inserted8 = $utypes->execute([
+				$utypes = $pdo->prepare("INSERT INTO user_types(user_id, mtype, position, designation, classification) VALUES(:user_id, :mtype, :position, :designation, :classification)");	
+				$inserted11 = $utypes->execute([
 					":user_id" =>$uid,
 					":mtype" => 'member',
 					":position" => '',
-					":designation" => ''
+					":designation" => '',
+					":classification" => 'regular'
 				]);
 
 				return $inserted;

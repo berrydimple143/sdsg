@@ -90,18 +90,27 @@
 		$data['burial'] = $user->burial;
         $data['courseToAvail'] = $user->courseToAvail;
 
-		if($newUser->storeMember($data)) {
+		$returnData = $newUser->storeMember($data);
+		if($returnData == "ok") {
 			http_response_code(200);
 			echo json_encode([
 				'status' => true,
-				'message' => 'Authentication successful.'
-			]);
+				'message' => 'Registration successful.'
+			]);		
 		} else {
-			http_response_code(401);
-			echo json_encode([
-				'status' => false,
-				'message' => 'Authentication failed.'
-			]);
+			if($returnData == "exist") {
+				http_response_code(409);
+				echo json_encode([
+					'status' => false,
+					'message' => 'This user already exists.'
+				]);
+			} else {
+				http_response_code(401);
+				echo json_encode([
+					'status' => false,
+					'message' => 'Registration failed.'
+				]);
+			}			
 		}
 
 	} else {

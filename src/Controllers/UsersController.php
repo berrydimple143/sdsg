@@ -30,80 +30,92 @@
 		public function storeMember($data) {
 			$firstname = trim(htmlspecialchars($data['firstname']));
 			$lastname = trim(htmlspecialchars($data['lastname']));
-			$region = trim(htmlspecialchars($data['region']));
-			$province = trim(htmlspecialchars($data['province']));
-			$city = trim(htmlspecialchars($data['city']));
-			$district = trim(htmlspecialchars($data['district']));
-			$barangay = trim(htmlspecialchars($data['barangay']));
-			$purok = trim(htmlspecialchars($data['purok']));
-			$civilstatus = trim(htmlspecialchars($data['civilstatus']));
-			$gender = trim(htmlspecialchars($data['gender']));
-			$religion = trim(htmlspecialchars($data['religion']));
-			$bloodtype = trim(htmlspecialchars($data['bloodtype']));
 			$middlename = trim(htmlspecialchars($data['middlename']));
-			$email = trim(htmlspecialchars($data['email']));
-			$nickname = trim(htmlspecialchars($data['nickname']));
 			$suffix = trim(htmlspecialchars($data['suffix']));
-			$zipcode = trim(htmlspecialchars($data['zipcode']));
-			$birthdate = date('Y-m-d', strtotime(trim(htmlspecialchars($data['birthdate']))));
-			$birthplace = trim(htmlspecialchars($data['birthplace']));
-			$age = trim(htmlspecialchars($data['age']));
-			$nationality = trim(htmlspecialchars($data['nationality']));
-			$country = trim(htmlspecialchars($data['country']));
-			$height = trim(htmlspecialchars($data['height']));
-			$weight = trim(htmlspecialchars($data['weight']));
-			$father = trim(htmlspecialchars($data['father']));
-			$mother = trim(htmlspecialchars($data['mother']));
-			$spouse = trim(htmlspecialchars($data['spouse']));
-			$education = trim(htmlspecialchars($data['education']));
-			$position = trim(htmlspecialchars($data['position']));
-			$skill = trim(htmlspecialchars($data['skill']));
-			$organization = trim(htmlspecialchars($data['organization']));
-			$contact = trim(htmlspecialchars($data['contact']));
-			$fb = trim(htmlspecialchars($data['fb']));
-			$sss = trim(htmlspecialchars($data['sss']));
-			$philhealth = trim(htmlspecialchars($data['philhealth']));
-			$voter = trim(htmlspecialchars($data['voter']));
-			$passport = trim(htmlspecialchars($data['passport']));
-			$profid = trim(htmlspecialchars($data['profid']));
-			$pagibig = trim(htmlspecialchars($data['pagibig']));
-			$license = trim(htmlspecialchars($data['license']));
-			$senior = trim(htmlspecialchars($data['senior']));
-			$chairman = trim(htmlspecialchars($data['chairman']));
-			$area = trim(htmlspecialchars($data['area']));
-			$mcnumber = trim(htmlspecialchars($data['mcnumber']));
-			$classification = trim(htmlspecialchars($data['classification']));
-			$tribe = trim(htmlspecialchars($data['tribe']));
-			$contactname = trim(htmlspecialchars($data['contactname']));
-			$contactnumber = trim(htmlspecialchars($data['contactnumber']));
-			$contactaddress = trim(htmlspecialchars($data['contactaddress']));
-			$benbirthdate1 = date('Y-m-d', strtotime(trim(htmlspecialchars($data['benbirthdate1']))));
-			$benname1 = trim(htmlspecialchars($data['benname1']));
-			$benage1 = trim(htmlspecialchars($data['benage1']));
-			$benrelationship1 = trim(htmlspecialchars($data['benrelationship1']));
-			$benname2 = trim(htmlspecialchars($data['benname2']));
-			$benage2 = trim(htmlspecialchars($data['benage2']));
-			$benrelationship2 = trim(htmlspecialchars($data['benrelationship2']));
-			$benbirthdate2 = date('Y-m-d', strtotime(trim(htmlspecialchars($data['benbirthdate2']))));
-			$benname3 = trim(htmlspecialchars($data['benname3']));
-			$benage3 = trim(htmlspecialchars($data['benage3']));
-			$benrelationship3 = trim(htmlspecialchars($data['benrelationship3']));
-			$benbirthdate3 = date('Y-m-d', strtotime(trim(htmlspecialchars($data['benbirthdate3']))));
-			$benname4 = trim(htmlspecialchars($data['benname4']));
-			$benage4 = trim(htmlspecialchars($data['benage4']));
-			$benrelationship4 = trim(htmlspecialchars($data['benrelationship4']));
-			$benbirthdate4 = date('Y-m-d', strtotime(trim(htmlspecialchars($data['benbirthdate4']))));
-			$insurance = trim(htmlspecialchars($data['insurance']));
-			$burial = trim(htmlspecialchars($data['burial']));
-			$courseToAvail = trim(htmlspecialchars($data['courseToAvail']));
+			$barangay = trim(htmlspecialchars($data['barangay']));
+			if(!$this->isExisting($firstname, $lastname, $middlename, $suffix, $barangay)) {		
+				$region = trim(htmlspecialchars($data['region']));
+				$province = trim(htmlspecialchars($data['province']));
+				$city = trim(htmlspecialchars($data['city']));
+				$district = trim(htmlspecialchars($data['district']));			
+				$purok = trim(htmlspecialchars($data['purok']));
+				$civilstatus = trim(htmlspecialchars($data['civilstatus']));
+				$gender = trim(htmlspecialchars($data['gender']));
+				$religion = trim(htmlspecialchars($data['religion']));
+				$bloodtype = trim(htmlspecialchars($data['bloodtype']));			
+				$email = trim(htmlspecialchars($data['email']));
+				$nickname = trim(htmlspecialchars($data['nickname']));				
+				$zipcode = trim(htmlspecialchars($data['zipcode']));
+				$birthdate = date('Y-m-d', strtotime(trim(htmlspecialchars($data['birthdate']))));
+				$birthplace = trim(htmlspecialchars($data['birthplace']));
+				$age = trim(htmlspecialchars($data['age']));
+				$nationality = trim(htmlspecialchars($data['nationality']));
+				$country = trim(htmlspecialchars($data['country']));
+				$height = trim(htmlspecialchars($data['height']));
+				$weight = trim(htmlspecialchars($data['weight']));
+				$father = trim(htmlspecialchars($data['father']));
+				$mother = trim(htmlspecialchars($data['mother']));
+				$spouse = trim(htmlspecialchars($data['spouse']));
+				$education = trim(htmlspecialchars($data['education']));
+				$position = trim(htmlspecialchars($data['position']));
+				$skill = trim(htmlspecialchars($data['skill']));
+				$organization = trim(htmlspecialchars($data['organization']));
+				$contact = trim(htmlspecialchars($data['contact']));
+				$fb = trim(htmlspecialchars($data['fb']));
+				$sss = trim(htmlspecialchars($data['sss']));
+				$philhealth = trim(htmlspecialchars($data['philhealth']));
+				$voter = trim(htmlspecialchars($data['voter']));
+				$passport = trim(htmlspecialchars($data['passport']));
+				$profid = trim(htmlspecialchars($data['profid']));
+				$pagibig = trim(htmlspecialchars($data['pagibig']));
+				$license = trim(htmlspecialchars($data['license']));
+				$senior = trim(htmlspecialchars($data['senior']));
+				$chairman = trim(htmlspecialchars($data['chairman']));
+				$area = trim(htmlspecialchars($data['area']));
+				$mcnumber = trim(htmlspecialchars($data['mcnumber']));
+				$classification = trim(htmlspecialchars($data['classification']));
+				$tribe = trim(htmlspecialchars($data['tribe']));
+				$contactname = trim(htmlspecialchars($data['contactname']));
+				$contactnumber = trim(htmlspecialchars($data['contactnumber']));
+				$contactaddress = trim(htmlspecialchars($data['contactaddress']));
+				$benbirthdate1 = date('Y-m-d', strtotime(trim(htmlspecialchars($data['benbirthdate1']))));
+				$benname1 = trim(htmlspecialchars($data['benname1']));
+				$benage1 = trim(htmlspecialchars($data['benage1']));
+				$benrelationship1 = trim(htmlspecialchars($data['benrelationship1']));
+				$benname2 = trim(htmlspecialchars($data['benname2']));
+				$benage2 = trim(htmlspecialchars($data['benage2']));
+				$benrelationship2 = trim(htmlspecialchars($data['benrelationship2']));
+				$benbirthdate2 = date('Y-m-d', strtotime(trim(htmlspecialchars($data['benbirthdate2']))));
+				$benname3 = trim(htmlspecialchars($data['benname3']));
+				$benage3 = trim(htmlspecialchars($data['benage3']));
+				$benrelationship3 = trim(htmlspecialchars($data['benrelationship3']));
+				$benbirthdate3 = date('Y-m-d', strtotime(trim(htmlspecialchars($data['benbirthdate3']))));
+				$benname4 = trim(htmlspecialchars($data['benname4']));
+				$benage4 = trim(htmlspecialchars($data['benage4']));
+				$benrelationship4 = trim(htmlspecialchars($data['benrelationship4']));
+				$benbirthdate4 = date('Y-m-d', strtotime(trim(htmlspecialchars($data['benbirthdate4']))));
+				$insurance = trim(htmlspecialchars($data['insurance']));
+				$burial = trim(htmlspecialchars($data['burial']));
+				$courseToAvail = trim(htmlspecialchars($data['courseToAvail']));
 
-			if($firstname AND $lastname AND $region AND $province AND $city AND $district AND $barangay AND $purok AND $civilstatus AND $gender) {
-				$inserted = User::createMember($firstname, $middlename, $lastname, $email, $region, $province, $city, $district, $barangay, $purok, $civilstatus, $gender, $religion, $bloodtype,  $nickname, $suffix, $zipcode, $birthdate, $birthplace, $age, $nationality, $country, $height, $weight, $father, $mother, $spouse, $education, $position, $skill, $organization, $contact, $fb, $sss, $philhealth, $voter, $passport, $profid, $pagibig, $license, $senior, $chairman, $area, $mcnumber, $classification, $tribe, $contactname, $contactnumber, $contactaddress, $benname1, $benage1, $benrelationship1, $benbirthdate1, $benname2, $benage2, $benrelationship2, $benbirthdate2, $benname3, $benage3, $benrelationship3, $benbirthdate3, $benname4, $benage4, $benrelationship4, $benbirthdate4, $insurance, $burial, $courseToAvail);
-				if($inserted) {
-					return true;
-				} else {
-					return false;
+				if($firstname AND $lastname AND $region AND $province AND $city AND $district AND $barangay AND $purok AND $civilstatus AND $gender) {
+					$inserted = User::createMember($firstname, $middlename, $lastname, $email, $region, $province, $city, $district, $barangay, $purok, $civilstatus, $gender, $religion, $bloodtype,  $nickname, $suffix, $zipcode, $birthdate, $birthplace, $age, $nationality, $country, $height, $weight, $father, $mother, $spouse, $education, $position, $skill, $organization, $contact, $fb, $sss, $philhealth, $voter, $passport, $profid, $pagibig, $license, $senior, $chairman, $area, $mcnumber, $classification, $tribe, $contactname, $contactnumber, $contactaddress, $benname1, $benage1, $benrelationship1, $benbirthdate1, $benname2, $benage2, $benrelationship2, $benbirthdate2, $benname3, $benage3, $benrelationship3, $benbirthdate3, $benname4, $benage4, $benrelationship4, $benbirthdate4, $insurance, $burial, $courseToAvail);
+					if($inserted) {
+						return 'ok';
+					} else {
+						return 'dberror';
+					}
 				}
+			} else {
+				return 'exist';
+			}
+		}
+
+		private function isExisting($firstname, $lastname, $middlename, $suffix, $barangay) {
+			if(User::findUserByFields($firstname, $lastname, $middlename, $suffix, $barangay)) {
+				return true;
+			} else {
+				return false;
 			}
 		}
 
