@@ -117,7 +117,7 @@
 
 		    	try {
 
-			       const response = await fetch("http://localhost/vjstore/api/register.php", {
+			       const response = await fetch("http://localhost/sdsg/api/register.php", {
 			        method: "POST",
 			        headers: {"Content-Type": "application/json"},
 			        body: JSON.stringify({ 

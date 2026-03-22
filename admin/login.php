@@ -79,7 +79,7 @@
 		      if (!this.validate()) return
 		      this.loading = true
 		    	try {
-					     const response = await fetch("http://localhost/vjstore/api/login.php", {
+					     const response = await fetch("http://localhost/sdsg/api/login.php", {
 					        method: "POST",
 					        headers: {"Content-Type": "application/json"},
 					        body: JSON.stringify({ 
@@ -94,12 +94,14 @@
 					      	alert("Invalid email/password.");
 					      } else {
 					      	modal.classList.remove('hidden');  	
-					      	setTimeout(() => {
-									  modal.classList.add('hidden');
-									  sessionStorage.setItem("user", resp.user);
-									  sessionStorage.setItem("logged", true);
-									  window.location = "./index.php";
-									}, 2000);
+					      	setTimeout(() => {									  
+								modal.classList.add('hidden');
+								sessionStorage.setItem("user_id", resp.user.id);
+								sessionStorage.setItem("username", resp.user.username);	
+								sessionStorage.setItem("email", resp.user.email);	
+								sessionStorage.setItem("logged", true);
+								window.location = "./index.php";
+							}, 2000);
 					      }
 		      } catch (error) {		      	  
 		      		console.error('Error fetching data:', error);

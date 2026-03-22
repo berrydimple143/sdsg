@@ -12,6 +12,18 @@
 			return $user->fetchAll(PDO::FETCH_ASSOC);
 		}
 
+		// public static function getAllUserWithDetails2() {
+		// 	$pdo = Database::connect();
+		// 	$user = $pdo->query("SELECT id, firstname, lastname, middlename FROM users ORDER BY created_at DESC");
+		// 	return $user->fetchAll(PDO::FETCH_ASSOC);
+		// }
+
+		public static function getAllUserWithDetails() {
+			$pdo = Database::connect();
+			$user = $pdo->query("SELECT usr.id AS id, usr.firstname AS firstname, usr.lastname AS lastname, usr.middlename AS middlename, utype.classification AS classification FROM users AS usr INNER JOIN user_types AS utype ON usr.id = utype.user_id ORDER BY usr.created_at DESC");
+			return $user->fetchAll(PDO::FETCH_ASSOC);
+		}
+
 		public static function findUserByEmail($email) {
 			$pdo = Database::connect();
 			$user = $pdo->query("SELECT * FROM users WHERE email='$email'");

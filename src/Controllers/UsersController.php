@@ -7,6 +7,10 @@
 
 	class UsersController {
 
+		public function getAllUserWithDetails() {
+			return User::getAllUserWithDetails();					
+		}
+
 		public function store($data) {
 			$firstname = trim(htmlspecialchars($data['firstname']));
 			$lastname = trim(htmlspecialchars($data['lastname']));
