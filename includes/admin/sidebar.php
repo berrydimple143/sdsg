@@ -34,6 +34,44 @@
                 </svg>						  
                 Beneficiaries
             </a>
+
+            
+            <!-- Messages with subitems -->
+            <div class="mb-2 relative group">
+                <input type="checkbox" id="messages-toggle" class="hidden peer">
+            
+                <label for="messages-toggle"
+                    class="flex items-center px-12 py-2 mt-2 text-gray-100 hover:bg-green-700 cursor-pointer w-full">
+                    Areas
+                </label>
+            
+                <svg class="absolute top-2 left-4 text-white group-hover:hidden h-6 w-6 mr-2 peer-checked:hidden" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+
+                <svg class="absolute top-2 left-4 text-white hidden group-hover:block peer-checked:block h-6 w-6 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 11L11 13L15 9M19 10.2C19 14.1764 15.5 17.4 12 21C8.5 17.4 5 14.1764 5 10.2C5 6.22355 8.13401 3 12 3C15.866 3 19 6.22355 19 10.2Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+
+                <!-- </div> -->
+            
+                <!-- Arrow Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 ml-auto transition-transform transform peer-checked:rotate-180 absolute right-4 top-3 transform #dis--translate-y-1/2 text-white"
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            
+                <div class="hidden peer-checked:flex flex-col bg-white text-gray-800 mt-1 transition-all duration-300">
+                    <a href="#" @click.prevent="region" class="block px-4 py-2 hover:bg-gray-200">Regions</a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-200">Provinces</a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-200">Cities</a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-200">Districts</a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-200">Barangays</a>
+                </div>
+            </div>
+
         </nav>
 
     </div>
@@ -47,6 +85,9 @@
             },
             beneficiary() {
                 window.location = "./beneficiary.php";
+            },
+            region() {
+                window.location = "./region.php";
             },
         }
     }

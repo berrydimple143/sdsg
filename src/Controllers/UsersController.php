@@ -4,11 +4,23 @@
 
 
 	use App\Models\User;
+	use DateTime;
 
 	class UsersController {
 
 		public function getAllUserWithDetails() {
 			return User::getAllUserWithDetails();					
+		}
+
+		public function getBeneficiaryPerMonth($month, $mtype) {
+			$yr = (string)date('Y');
+			$fd = $yr.'-'.$month.'-'.(string)date('d');
+			$sd = new DateTime($fd);			
+			$sd->modify('last day of this month');
+			$lastDay = $sd->format('d');
+			$before = $yr.'-'.$month.'-01';
+			$after = $yr.'-'.$month.'-'.$lastDay;
+			return User::getBeneficiaryPerMonth($before, $after, $mtype);
 		}
 
 		public function store($data) {

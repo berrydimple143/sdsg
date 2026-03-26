@@ -5,18 +5,18 @@
 	use PDO;
 
 	class User {
+
+		public static function getBeneficiaryPerMonth($before, $after, $mtype) {
+			$pdo = Database::connect();			
+			$ben = $pdo->query("SELECT COUNT(*) FROM users AS usr INNER JOIN user_types AS utype ON usr.id = utype.user_id WHERE usr.created_at >= '$before' AND usr.created_at <= '$after' AND utype.classification = '$mtype'");
+			return $ben->fetchColumn();
+		}
 		
 		public static function getUsers() {
 			$pdo = Database::connect();
 			$user = $pdo->query("SELECT * FROM users ORDER BY created_at DESC");
 			return $user->fetchAll(PDO::FETCH_ASSOC);
 		}
-
-		// public static function getAllUserWithDetails2() {
-		// 	$pdo = Database::connect();
-		// 	$user = $pdo->query("SELECT id, firstname, lastname, middlename FROM users ORDER BY created_at DESC");
-		// 	return $user->fetchAll(PDO::FETCH_ASSOC);
-		// }
 
 		public static function getAllUserWithDetails() {
 			$pdo = Database::connect();
@@ -192,7 +192,7 @@
 					":mtype" => 'member',
 					":position" => '',
 					":designation" => '',
-					":classification" => 'regular'
+					":classification" => 'nonpaying'
 				]);
 
 				return $inserted;

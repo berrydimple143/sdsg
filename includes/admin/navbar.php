@@ -19,4 +19,16 @@
 		</svg>						  
 		Beneficiaries
 	</a>
+
+	<div class="mb-2 relative group">
+		<input type="checkbox" id="messages-toggle" class="hidden peer">
+		<label for="messages-toggle"
+			class="flex items-center px-12 py-2 mt-2 text-gray-100 hover:bg-green-700 cursor-pointer w-full">
+			Messages
+		</label>
+		<div class="hidden peer-checked:flex flex-col bg-white text-gray-800 mt-1 transition-all duration-300">
+			<a href="#" class="block px-4 py-2 hover:bg-gray-200">Subitem 1</a>
+			<a href="#" class="block px-4 py-2 hover:bg-gray-200">Subitem 2</a>
+		</div>
+	</div>
 </nav>
