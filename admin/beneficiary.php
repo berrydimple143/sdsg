@@ -153,6 +153,7 @@
             showRow: false,
             userId: null,
             amount: '',
+            errors: [],
             beneficiaries: [],
             payNow(id) {
                 this.userId = id;
