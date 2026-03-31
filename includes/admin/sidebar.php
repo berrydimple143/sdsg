@@ -65,8 +65,8 @@
             
                 <div class="hidden peer-checked:flex flex-col bg-white text-gray-800 mt-1 transition-all duration-300">
                     <a href="#" @click.prevent="region" class="block px-4 py-2 hover:bg-gray-200">Regions</a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-200">Provinces</a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-200">Cities</a>
+                    <a href="#" @click.prevent="province" class="block px-4 py-2 hover:bg-gray-200">Provinces</a>
+                    <a href="#" @click.prevent="city" class="block px-4 py-2 hover:bg-gray-200">Cities</a>
                     <a href="#" class="block px-4 py-2 hover:bg-gray-200">Districts</a>
                     <a href="#" class="block px-4 py-2 hover:bg-gray-200">Barangays</a>
                 </div>
@@ -89,6 +89,12 @@
             region() {
                 window.location = "./region.php";
             },
+            province() {
+                window.location = "./province.php";
+            },
+            city() {
+                window.location = "./city.php";
+            }
         }
     }
 </script>

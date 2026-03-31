@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SDSD Initiative Inc. - Administration Panel - Regions</title>
+  <title>SDSD Initiative Inc. - Administration Panel - Provinces</title>
   <link href="../src/output.css" rel="stylesheet">
   <script defer src="../js/alpinejs.cdn.min.js"></script>
 </head>
@@ -13,18 +13,15 @@
         <?php include('../includes/admin/modals/add-successful.php'); ?>
         <?php include('../includes/admin/modals/change-successful.php'); ?>
 
-        <!-- Backdrop -->
         <div id="deleteModal" class="hidden fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center p-4 z-50">
-            <!-- Modal Card -->
-                
                 <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
 				          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
 				              <h1 class="text-md font-bold leading-tight tracking-tight text-gray-900 md:text-md dark:text-white">
-				                  Are you sure you want to delete this region?
+				                  Are you sure you want to delete this province?
 				              </h1>
 				             			                  
-                                  <div class="flex items-center justify-left">
-                                        <button @click.prevent="deleteRegion" type="button" class="inline-flex text-white bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-400 dark:focus:ring-green-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer mr-2">                                        
+                                  <div class="flex items-center justify-around">
+                                        <button @click.prevent="deleteProvince" type="button" class="inline-flex text-white bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-400 dark:focus:ring-green-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer mr-2">                                        
                                         <?php include('../includes/admin/icons/region-delete.php'); ?>     
                                         Yes
                                         </button>
@@ -34,22 +31,18 @@
                                         No</button>
                                   </div>
 				          </div>
-				      </div>    
-
-            
+				      </div>                
         </div>
-
-        <!-- Edit Modal -->
         <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center p-4 z-50">
                 <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
 				          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">				              
-				              <form @submit.prevent="updateRegion" class="space-y-4 md:space-y-6" action="#">
+				              <form @submit.prevent="updateProvince" class="space-y-4 md:space-y-6" action="#">
 				                  <div>
-				                      <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Region Name</label>
-				                      <input type="text" x-model="name" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Please enter region name here ..." required="">
+				                      <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Province Name</label>
+				                      <input type="text" x-model="name" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Please enter province name here ..." required="">
 				                      <span x-show="errors.name" class="text-red-500" x-text="errors.name"></span>
 				                  </div>
-                                  <div class="flex items-center justify-left">
+                                  <div class="flex items-center justify-around">
                                         <button type="submit" class="inline-flex text-white bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-400 dark:focus:ring-green-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer mr-2">
                                         <?php include('../includes/admin/icons/save.php'); ?>
                                         Save Changes
@@ -64,23 +57,29 @@
 				          </div>
 				      </div>                
         </div>
-
-        <!-- Add Modal -->
         <div id="addModal" class="hidden fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center p-4 z-50">
-            <!-- Modal Card -->
-                
-                <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+               <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
 				          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
 				              <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-				                  Region Registration Form
+				                  Province Registration
 				              </h1>
-				              <form @submit.prevent="addRegion" class="space-y-4 md:space-y-6" action="#">
+				              <form @submit.prevent="addProvince" class="space-y-4 md:space-y-6" action="#">
+                                  <div>
+				                      <label for="region_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Region</label>
+				                      <select x-model="region_id" name="region_id" id="region_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
+                                        <option value="">Select region here ...</option>
+                                        <template x-for="reg in regions" :key="reg.id">
+                                            <option :value="reg.id" x-text="reg.name"></option>
+                                        </template>
+                                      </select>
+				                      <span x-show="errors.region_id" class="text-red-500" x-text="errors.region_id"></span>
+				                  </div>
 				                  <div>
-				                      <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Region Name</label>
-				                      <input type="text" x-model="name" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Please enter region name here ..." required="">
+				                      <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Province Name</label>
+				                      <input type="text" x-model="name" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Please enter province name here ..." required="">
 				                      <span x-show="errors.name" class="text-red-500" x-text="errors.name"></span>
 				                  </div>
-                                  <div class="flex items-center justify-left">
+                                  <div class="flex items-center justify-around">
                                         <button type="submit" class="inline-flex text-white bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-400 dark:focus:ring-green-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer mr-2">
                                         <?php include('../includes/admin/icons/region-add.php'); ?>
                                         Add
@@ -108,7 +107,7 @@
 						<?php include('../includes/admin/header.php'); ?>
 						<div class="p-1">
                             <div class="w-full flex items-center justify-between bg-green-400 p-2">
-                                <h1 class="text-2xl font-bold">Regions</h1>
+                                <h1 class="text-2xl font-bold">Provinces</h1>
                                 <button @click.prevent="addNow" type="button" class="inline-flex items-center text-white bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:focus:ring-yellow-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-md p-2  cursor-pointer">
                                 <?php include('../includes/admin/icons/region-add.php'); ?>
                                 Add
@@ -121,7 +120,10 @@
                                     <thead class="text-sm text-white bg-brand border-b border-brand-light">
                                         <tr>
                                             <th scope="col" class="px-6 py-3 font-medium">
-                                                Region Name
+                                                Province
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 font-medium">
+                                                Region
                                             </th>           
                                             <th scope="col" class="px-6 py-3 font-medium text-center">
                                                 Status
@@ -136,22 +138,24 @@
                                     </thead>
                                     <tbody>
 
-                                        <tr x-show="regions.length === 0" class="bg-brand border-b border-brand-light hover:bg-green-500">
-                                            <td colspan="3" class="px-3 py-2 text-center text-md font-bold">No regions yet ...</td>
+                                        <tr x-show="provinces.length === 0" class="bg-brand border-b border-brand-light hover:bg-green-500">
+                                            <td colspan="3" class="px-3 py-2 text-center text-md font-bold">No provinces yet ...</td>
                                         </tr>
                                         
-                                        <template x-for="ben in regions" :key="ben.id">
+                                        <template x-for="ben in provinces" :key="ben.id">
 
                                             <tr class="bg-brand border-b border-brand-light hover:bg-green-500">
-                                                <th scope="row" x-text="ben.name" class="px-6 py-4 font-medium text-fg-brand-subtle whitespace-nowrap">                                
-                                                </th>                                                
+                                                <th scope="row" x-text="ben.provname" class="px-6 py-4 font-medium text-fg-brand-subtle whitespace-nowrap">                                
+                                                </th>
+                                                <th scope="row" x-text="ben.rname" class="px-6 py-4 font-medium text-fg-brand-subtle whitespace-nowrap">                                
+                                                </th>
                                                 <td class="px-6 py-4 text-center flex justify-center items-center">
                                                    <span title="Active" x-show="ben.status"><?php include('../includes/admin/icons/location.php'); ?></span>
                                                    <span title="Inactive" x-show="!ben.status"><?php include('../includes/admin/icons/unavailable.php'); ?></span> 
-                                                </td>
+                                                </td>  
                                                 <td class="px-6 py-4" x-text="formatDate(ben.created_at)"></td>                                                
                                                 <td class="px-3 py-1 text-center" x-show="showRow">                                                    
-                                                    <button @click.prevent="editRegion(ben.id)" type="button" class="inline-flex items-center  text-white bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:focus:ring-yellow-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1 focus:outline-none cursor-pointer">
+                                                    <button @click.prevent="editProvince(ben.id)" type="button" class="inline-flex items-center  text-white bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:focus:ring-yellow-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1 focus:outline-none cursor-pointer">
                                                     <?php include('../includes/admin/icons/region-edit.php'); ?>
                                                     Edit
                                                     </button>
@@ -192,7 +196,9 @@
             successModal: {},
             deleteSuccessful: {},
             addSuccessful: {},
+            region_id: null,
             regions: [],
+            provinces: [],
             errors: [],
             clearInputs() {
                 this.name = '';
@@ -222,7 +228,7 @@
                                     body: JSON.stringify({ 
                                         id: id,
                                         status: status,
-                                        page: 'region'                              
+                                        page: 'province'
                                     })
                                 });
                     let res = await response.json();
@@ -233,33 +239,35 @@
                     this.displayModal('change', 2000);
                 }
             },
-            async editRegion(id) {
+            async editProvince(id) {
                 this.editId = id;
                 this.editModal = document.getElementById('editModal');
                 this.editModal.classList.remove('hidden');
                 try {
-                    let response = await fetch('http://localhost/sdsg/api/admin/getRegion.php', {
+                    let response = await fetch('http://localhost/sdsg/api/admin/getData.php', {
                                     method: 'POST',
                                     headers: {'Content-Type': 'application/json'},
                                     body: JSON.stringify({ 
-                                        id: this.editId                                        
+                                        id: this.editId,
+                                        page: 'province'
                                     })
                                 });
-                    let res = await response.json();       
-                    this.name = res.region.name;
+                    let res = await response.json();
+                    this.name = res.data.name;
                 } catch (error) {
 		      		console.error('Error fetching data:', error);
                 } 
             },
-            async updateRegion() {
+            async updateProvince() {
                 if (!this.validate()) return;
                 try {
-                    let response = await fetch('http://localhost/sdsg/api/admin/editRegion.php', {
+                    let response = await fetch('http://localhost/sdsg/api/admin/editData.php', {
                                     method: 'POST',
                                     headers: {'Content-Type': 'application/json'},
                                     body: JSON.stringify({ 
                                         name: this.name,
-                                        id: this.editId
+                                        id: this.editId,
+                                        page: 'province'
                                     })
                                 });
                     let res = await response.json();                            
@@ -311,13 +319,14 @@
                 this.deleteModal = document.getElementById('deleteModal');
                 this.deleteModal.classList.remove('hidden');                
             },
-            async deleteRegion() {
+            async deleteProvince() {
                 try {
-                    let response = await fetch('http://localhost/sdsg/api/admin/deleteRegion.php', {
+                    let response = await fetch('http://localhost/sdsg/api/admin/deleteData.php', {
                                     method: 'POST',
                                     headers: {'Content-Type': 'application/json'},
                                     body: JSON.stringify({ 
-                                        id: this.deleteId
+                                        id: this.deleteId,
+                                        page: 'province'
                                     })
                                 });
                     let res = await response.json();                            
@@ -329,14 +338,16 @@
                     this.displayModal('delete', 2000);
                 }
             },
-            async addRegion() {
+            async addProvince() {
                 if (!this.validate()) return;
                 try {
-                    let response = await fetch('http://localhost/sdsg/api/admin/addRegion.php', {
+                    let response = await fetch('http://localhost/sdsg/api/admin/addData.php', {
                                     method: 'POST',
                                     headers: {'Content-Type': 'application/json'},
                                     body: JSON.stringify({ 
-                                        name: this.name
+                                        name: this.name,
+                                        region_id: this.region_id,
+                                        page: 'province'
                                     })
                                 });
                     let res = await response.json();                            
@@ -348,17 +359,29 @@
                     this.displayModal('add', 2000);
                 }
             },
-            async init() {               
+            async getProvinces() {
+                let response = await fetch('http://localhost/sdsg/api/admin/getProvinces.php', {
+                                method: 'POST',
+                                headers: {'Content-Type': 'application/json'}
+                            });
+                let province = await response.json();
+                this.provinces = province.provinces;               
+                this.showRow = false;                 
+                if(this.provinces.length > 0) {
+                    this.showRow = true;
+                }
+            },
+            async getRegions() {
                 let response = await fetch('http://localhost/sdsg/api/admin/getRegions.php', {
                                 method: 'POST',
                                 headers: {'Content-Type': 'application/json'}
                             });
                 let region = await response.json();
                 this.regions = region.regions;               
-                this.showRow = false;                 
-                if(this.regions.length > 0) {
-                    this.showRow = true;
-                }
+            },
+            init() {                
+                this.getRegions();
+                this.getProvinces();
             }	
 		  }
 		}        

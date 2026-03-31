@@ -11,7 +11,11 @@
 		}
 
         public function getRegion($id) {
-			return Region::getAllRegions($id);					
+			return Region::getRegion($id);
+		}
+
+        public function changeStatus($id, $status) {
+			return Region::changeStatus($id, $status);					
 		}
 
         public function deleteRegion($id) {
@@ -30,15 +34,11 @@
 				}
 			}
 		}
+
         public function update($data, $id) {
 			$name = trim(htmlspecialchars($data['name']));
-			$price = trim(htmlspecialchars($data['price']));
-			$quantity = trim(htmlspecialchars($data['quantity']));
-			$description = trim(htmlspecialchars($data['description']));
-
-			if($name AND $price AND $description) {
-				$updated = Region::update($name, $price, $quantity, $description, $id);
-
+            if($name) {
+				$updated = Region::update($name, $id);
 				if($updated) {
 					return true;
 				} else {

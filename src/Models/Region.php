@@ -17,6 +17,13 @@
 			return $region->fetch(PDO::FETCH_OBJ);
 		}
 
+        public static function changeStatus($id, $status) {
+			$pdo = Database::connect();
+			$updated_at = date('Y-m-d H:i:s');
+			$region = $pdo->prepare("UPDATE regions SET status=?, updated_at=? WHERE id=?");
+			return $region->execute([$status, $updated_at, $id]);	
+		}
+
         public static function getRegionsWithStatus($status) {
 			$pdo = Database::connect();
 			$regions = $pdo->query("SELECT * FROM regions WHERE status='$condition' ORDER BY name");
@@ -31,6 +38,13 @@
 				":created_at" => date('Y-m-d H:i:s'),
 				":updated_at" => date('Y-m-d H:i:s')
 			]);
+		}
+
+        public static function update($name, $id) {
+			$pdo = Database::connect();
+			$updated_at = date('Y-m-d H:i:s');
+			$region = $pdo->prepare("UPDATE regions SET name=?, updated_at=? WHERE id=?");
+			return $region->execute([$name, $updated_at, $id]);	
 		}
 
         public static function deleteRegion($id) {
