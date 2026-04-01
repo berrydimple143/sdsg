@@ -10,6 +10,10 @@
 			return Region::getAllRegions();					
 		}
 
+		public function getAllData() {
+			return Region::getAllRegions();					
+		}		
+
         public function getRegion($id) {
 			return Region::getRegion($id);
 		}

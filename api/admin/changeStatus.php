@@ -3,6 +3,8 @@
 	header("Content-Type: application/json");
 	use App\Controllers\RegionsController;
 	use App\Controllers\ProvincesController;
+	use App\Controllers\CitiesController;
+	use App\Controllers\DistrictsController;
 
 	if($_SERVER['REQUEST_METHOD'] === "POST") {
 		
@@ -11,6 +13,10 @@
 			$controller = new RegionsController();
 		} elseif($data->page == "province") {
 			$controller = new ProvincesController();
+		} elseif($data->page == "city") {
+			$controller = new CitiesController();
+		} elseif($data->page == "district") {
+			$controller = new DistrictsController();
 		}
         $info = $controller->changeStatus($data->id, $data->status);
 		if($info) {

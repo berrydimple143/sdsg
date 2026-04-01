@@ -10,6 +10,18 @@
 			return $provinces->fetchAll(PDO::FETCH_ASSOC);
 		}
 
+		public static function getAllProvincesById($field, $value) {
+			$pdo = Database::connect();
+			$provinces = $pdo->query("SELECT id, name, status, created_at FROM provinces WHERE $field = '$value' AND status = 1 ORDER BY name");
+			return $provinces->fetchAll(PDO::FETCH_ASSOC);
+		}
+
+		public static function getAllDataById($field, $value) {
+			$pdo = Database::connect();
+			$provinces = $pdo->query("SELECT id, name, status, created_at FROM provinces WHERE $field = '$value' ORDER BY name");
+			return $provinces->fetchAll(PDO::FETCH_ASSOC);
+		}
+
         public static function getProvince($id) {
 			$pdo = Database::connect();
 			$province = $pdo->query("SELECT * FROM provinces WHERE id='$id'");

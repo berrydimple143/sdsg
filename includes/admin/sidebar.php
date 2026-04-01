@@ -67,8 +67,9 @@
                     <a href="#" @click.prevent="region" class="block px-4 py-2 hover:bg-gray-200">Regions</a>
                     <a href="#" @click.prevent="province" class="block px-4 py-2 hover:bg-gray-200">Provinces</a>
                     <a href="#" @click.prevent="city" class="block px-4 py-2 hover:bg-gray-200">Cities</a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-200">Districts</a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-200">Barangays</a>
+                    <a href="#" @click.prevent="district" class="block px-4 py-2 hover:bg-gray-200">Districts</a>
+                    <a href="#" @click.prevent="barangay" class="block px-4 py-2 hover:bg-gray-200">Barangays</a>
+                    <a href="#" @click.prevent="purok" class="block px-4 py-2 hover:bg-gray-200">Puroks</a>
                 </div>
             </div>
 
@@ -94,6 +95,15 @@
             },
             city() {
                 window.location = "./city.php";
+            },
+            district() {
+                window.location = "./district.php";
+            },
+            barangay() {
+                window.location = "./barangay.php";
+            },
+            purok() {
+                window.location = "./purok.php";
             }
         }
     }

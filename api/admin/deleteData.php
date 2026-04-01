@@ -3,13 +3,17 @@
 	require "../../autoload.php";
 	header("Content-Type: application/json");
 	use App\Controllers\ProvincesController;
+	use App\Controllers\CitiesController;
+	use App\Controllers\DistrictsController;
 
 	if($_SERVER['REQUEST_METHOD'] === "POST") {		
 		$data = json_decode(file_get_contents("php://input"));
         if($data->page == 'province') {
-            $info = new ProvincesController();
+            $controller = new ProvincesController();
         } elseif($data->page == 'city') {
-
+			$controller = new CitiesController();
+		} elseif($data->page == 'district') {
+			$controller = new DistrictsController();
         }
         
         if(empty($data->id)) {
@@ -20,17 +24,17 @@
             exit();
         }
 
-		if($info->deleteData($data->id)) {
+		if($controller->deleteData($data->id)) {
 			http_response_code(200);
 			echo json_encode([
 				'status' => true,
-				'message' => 'Region deletion successful.'
+				'message' => 'Data deletion successful.'
 			]);
 		} else {
 			http_response_code(401);
 			echo json_encode([
 				'status' => false,
-				'message' => 'Region not found.'
+				'message' => 'Data not found.'
 			]);
 		}
 

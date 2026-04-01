@@ -3,12 +3,16 @@
 	require "../../autoload.php";
 	header("Content-Type: application/json");
 	use App\Controllers\ProvincesController;
+	use App\Controllers\CitiesController;
+	use App\Controllers\DistrictsController;
 
 	if($_SERVER['REQUEST_METHOD'] === "POST") {		
-		$province = json_decode(file_get_contents("php://input"));
+		$input = json_decode(file_get_contents("php://input"));
+
         $data = [
-			'name' => $province->name,
-			'region_id' => $province->region_id			
+			'name' => $input->name,
+			'province_id' => $input->province_id,
+			'city_id' => $input->city_id
 		];
 		foreach($data as $key => $value) {
 			if(empty($value)) {
@@ -20,13 +24,15 @@
 				exit();
 			}
 		}
-		if($province->page == "province") {
-			$info = new ProvincesController();
-		} elseif($province->page == "city") {
-
+		if($input->page == "province") {
+			$controller = new ProvincesController();
+		} elseif($input->page == "city") {
+			$controller = new CitiesController();
+		} elseif($input->page == "district") {
+			$controller = new DistrictsController();
 		}		
 
-		if($info->store($data)) {
+		if($controller->store($data)) {
 			http_response_code(200);
 			echo json_encode([
 				'status' => true,

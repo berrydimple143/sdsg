@@ -10,12 +10,24 @@
 			return Province::getAllProvinces();					
 		}
 
+		public function getAllData() {
+			return Province::getAllProvinces();					
+		}
+
+		public function getAllDataWithId($field, $value) {
+			return Province::getAllProvincesById($field, $value);					
+		}
+
+		public function getAllDataById($field, $value) {
+			return Province::getAllDataById($field, $value);					
+		}
+
         public function getProvince($id) {
 			return Province::getProvince($id);					
 		}
 
 		public function getData($id) {
-			return Province::getProvince($id);					
+			return Province::getProvince($id);
 		}
 
         public function changeStatus($id, $status) {

@@ -32,10 +32,11 @@
         </div>
         <div>
             <label for="region" class="text-white text-shadow-lg block mb-2 text-sm font-medium text-gray-900 dark:text-white">Region <span class="text-red-500 text-md font-bold">*</span></label>
+            <!-- <select x-model="region" id="region" @change="selectRegion($event.target.value, $event.target.options[$event.target.selectedIndex].text)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required=""> -->
             <select x-model="region" id="region" @change="selectRegion($event.target.value)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
                 <option value="">Select region here ...</option>
                 <template x-for="reg in regions" :key="reg.id">
-                    <option :value="reg.value" x-text="reg.name"></option>
+                    <option :value="reg.id" x-text="reg.name"></option>
                 </template>
             </select>
             <span x-show="errors.region" class="text-red-500" x-text="errors.region"></span>
@@ -46,7 +47,7 @@
             <select x-model="province" @change="selectProvince($event.target.value)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
                 <option value="">Select provinces here ...</option>
                 <template x-for="prov in provinces" :key="prov.id">
-                    <option :value="prov.value" x-text="prov.name"></option>
+                    <option :value="prov.id" x-text="prov.name"></option>
                 </template>
             </select>
             <span x-show="errors.province" class="text-red-500" x-text="errors.province"></span>
@@ -57,7 +58,7 @@
             <select x-model="city" @change="selectCity($event.target.value)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
                 <option value="">Select municipality/city here ...</option>
                 <template x-for="ct in cities" :key="ct.id">
-                    <option :value="ct.value" x-text="ct.name"></option>
+                    <option :value="ct.id" x-text="ct.name"></option>
                 </template>
             </select>
             <span x-show="errors.city" class="text-red-500" x-text="errors.city"></span>
@@ -68,7 +69,7 @@
             <select x-model="district" @change="selectDistrict($event.target.value)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
                 <option value="">Select district here ...</option>
                 <template x-for="dist in districts" :key="dist.id">
-                    <option :value="dist.value" x-text="dist.name"></option>
+                    <option :value="dist.id" x-text="dist.name"></option>
                 </template>
             </select>
             <span x-show="errors.district" class="text-red-500" x-text="errors.district"></span>

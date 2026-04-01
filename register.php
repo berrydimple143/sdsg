@@ -15,83 +15,9 @@
 		</div>
 	</div>
 	<script>				
-		function formApp() {					
-			const regionsData = [
-				{ id: 1, name: 'Region IX', value: 'Region IX' },
-		        { id: 2, name: 'Region X', value: 'Region X' },
-		        { id: 3, name: 'Region XI', value: 'Region XI' },
-		        { id: 4, name: 'Region XII', value: 'Region XII' },
-		        { id: 5, name: 'Region XIII', value: 'Region XIII' },
-		        { id: 6, name: 'BARMM', value: 'BARMM' }
-			];
-			const davaoProvince = [
-				{ id: 1, name: 'Davao del Norte', value: 'Davao del Norte' },
-		        { id: 2, name: 'Davao del Sur', value: 'Davao del Sur' },
-		        { id: 3, name: 'Davao de Oro', value: 'Davao de Oro' },
-		        { id: 4, name: 'Davao Oriental', value: 'Davao Oriental' },
-		        { id: 5, name: 'Davao Occidental', value: 'Davao Occidental' }
-			];
-			const barmm = [
-				{ id: 1, name: 'Sultan Kudarat', value: 'Sultan Kudarat' },
-		        { id: 2, name: 'Shariff Aguac', value: 'Shariff Aguac' },
-		        { id: 3, name: 'Julu Sulu', value: 'Julu Sulu' }		        
-			];
-			const delSurcities = [
-				{ id: 1, name: 'Bansalan', value: 'Bansalan' },
-				{ id: 2, name: 'Davao', value: 'Davao' },
-		        { id: 3, name: 'Digos', value: 'Digos' },
-		        { id: 4, name: 'Padada', value: 'Padada' },
-		        { id: 5, name: "Sta. Cruz", value: "Sta. Cruz" }		        
-			];
-			const delNorteCities = [
-				{ id: 1, name: 'Tagum', value: 'Tagum' },
-				{ id: 2, name: "Sto. Tomas", value: "Sto. Tomas" },
-		        { id: 3, name: 'Panabo', value: 'Panabo' },
-		        { id: 4, name: 'Carmen', value: 'Carmen' }		        
-			];
-			const davaoDistricts = [
-				{ id: 1, name: 'First', value: 'First' },
-				{ id: 2, name: "Second", value: "Second" },
-				{ id: 3, name: 'Third', value: 'Third' }
-			];
-
-			const digosDistricts = [
-				{ id: 1, name: 'First', value: 'First' },
-				{ id: 2, name: "Second", value: "Second" },
-				{ id: 3, name: 'Third', value: 'Third' },
-				{ id: 4, name: 'Fourth', value: 'Fourth' }
-			];		
-			
-			const thirdDistrictBarangays = [
-				{ id: 1, name: 'Lubogan', value: 'Lubogan' }				
-			];
-
-			const firstDistrictBarangays = [				
-				{ id: 1, name: "Baliok", value: "Baliok" },
-				{ id: 2, name: 'Bucana', value: 'Bucana' },
-				{ id: 3, name: 'Matina Pangi', value: 'Matina Pangi' }
-			];
-
-			const barangayLubogan = [
-				{ id: 1, name: 'Purok 1-A', value: 'Purok 1-A' },
-				{ id: 2, name: "Purok 1-B", value: "Purok 1-B" },
-				{ id: 3, name: 'Purok 2-A', value: 'Purok 2-A' },
-				{ id: 4, name: 'Purok 2-B', value: 'Purok 2-B' }
-			];
-
-			const  barangayBaliok = [
-				{ id: 1, name: 'Purok 1-A', value: 'Purok 1-A' },
-				{ id: 2, name: "Purok 1-B", value: "Purok 1-B" },
-				{ id: 3, name: 'Purok 2-A', value: 'Purok 2-A' },
-				{ id: 4, name: 'Purok 2-B', value: 'Purok 2-B' },
-				{ id: 5, name: 'Purok 3-A', value: 'Purok 3-A' },
-				{ id: 6, name: "Purok 3-B", value: "Purok 3-B" },
-				{ id: 7, name: 'Purok 4-A', value: 'Purok 4-A' },
-				{ id: 8, name: 'Purok 4-B', value: 'Purok 4-B' }
-			];
-
-		  return {
-		  	regions: regionsData,
+		function formApp() {
+		  return {			
+		  	regions: [],
 		    provinces: [],
 		    cities: [],
 			districts: [],
@@ -142,7 +68,7 @@
 				{ id: 4, value: 200 },
 				{ id: 5, value: 250 },
 				{ id: 6, value: 300 }
-			],
+			],			
 		    firstname: '',
 		    lastname: '',
 		    middlename: '',
@@ -214,6 +140,32 @@
 			courseToAvail: '',
 		    loading: false,
 		    errors: {},
+			async getAllData(page) {
+                let response = await fetch('http://localhost/sdsg/api/admin/getAllData.php', {
+					method: 'POST',
+					headers: {'Content-Type': 'application/json'},
+					body: JSON.stringify({                                     
+						page: page
+					})
+				});
+                let res = await response.json();
+                if(page == 'region') {
+                    this.regions = res.data;                    
+                } else if(page == 'province') {
+                    this.provinces = res.data;   
+				} else if(page == 'city') {
+                    this.cities = res.data; 
+				} else if(page == 'district') {
+                    this.districts = res.data; 
+				} else if(page == 'barangay') {
+                    this.barangays = res.data; 
+				} else if(page == 'purok') {
+                    this.puroks = res.data; 
+                }               
+            },
+			init() {
+				this.getAllData('region');
+			},
 
 			getTribe(trb) {
 				const tribeContainer = document.getElementById('tribe-container');	
@@ -249,37 +201,47 @@
 				}).catch(error => console.error('Error fetching JSON:', error));
 			},
 
-		    selectRegion(reg) {
-		    	this.region = reg;
-		    	if(reg == "Region XI") {
-		    		this.provinces = davaoProvince;
-		    	}
-		    	if(reg == "BARMM") {
-		    		this.provinces = barmm;
-		    	}
+			async getAllDataWithId(page, id) {
+                let response = await fetch('http://localhost/sdsg/api/admin/getAllDataWithId.php', {
+					method: 'POST',
+					headers: {'Content-Type': 'application/json'},
+					body: JSON.stringify({                                     
+						page: page,
+						id: id
+					})
+				});
+                let res = await response.json();
+                if(page == 'region') {
+                    this.regions = res.data;                    
+                } else if(page == 'province') {
+                    this.provinces = res.data;   
+				} else if(page == 'city') {
+                    this.cities = res.data; 
+				} else if(page == 'district') {
+                    this.districts = res.data; 
+				} else if(page == 'barangay') {
+                    this.barangays = res.data; 
+				} else if(page == 'purok') {
+                    this.puroks = res.data; 
+                }               
+            },
+
+		    selectRegion(id) {
+		    	this.region = id;
+		    	this.getAllDataWithId('province', id);
 		    },
 
-		    selectProvince(pr) {
-		    		this.province = pr;
-		    		if(pr == "Davao del Sur") {
-			    		this.cities = delSurcities;
-			    	}
-			    	if(pr == "Davao del Norte") {
-			    		this.cities = delNorteCities;
-			    	}
+		    selectProvince(id) {
+		    		this.province = id;
+		    		this.getAllDataWithId('city', id);
 		    },	
 
-		    selectCity(ct) {
+		    selectCity(id) {
 					//const zipcodes = this.getZipcode();			
 					//console.log(zipcodes);
 					//alert(zc.reverse(ct + ' City'));
-		    		this.city = ct;
-		    		if(ct == "Davao") {
-			    		this.districts = davaoDistricts;
-			    	}
-			    	if(ct == "Digos") {
-			    		this.districts = digosDistricts;
-			    	}
+		    		this.city = id;
+		    		this.getAllDataWithId('district', id);
 		    },
 
 			selectDistrict(ds) {
