@@ -21,13 +21,20 @@
     <tbody>
 
         <tr x-show="provinces.length === 0" class="bg-brand border-b border-brand-light hover:bg-green-500">
-            <td colspan="3" class="px-3 py-2 text-center text-md font-bold">No provinces yet ...</td>
+            <td colspan="5" class="px-3 py-2 text-center text-md font-bold">No provinces yet ...</td>
         </tr>
         
         <template x-for="ben in provinces" :key="ben.id">
 
-            <tr class="bg-brand border-b border-brand-light hover:bg-green-500">
-                <th scope="row" x-text="ben.provname" class="px-6 py-4 font-medium text-fg-brand-subtle whitespace-nowrap">                                
+            <tr class="bg-brand border-b border-brand-light hover:bg-green-500">                
+                <th scope="row"                     
+                    class="px-6 py-4 font-medium text-fg-brand-subtle whitespace-nowrap">
+                    <button 
+                    type="button" 
+                    id="infoButton"  
+                    x-text="ben.provname" 
+                    :class="{ 'bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 focus:ring-blue-300 dark:focus:ring-blue-800': ben.status, 'bg-gradient-to-r from-gray-400 via-gray-500 to-gray-600 focus:ring-gray-300 dark:focus:ring-gray-800': !ben.status }"
+                    class="inline-flex items-center rounded-full text-white hover:bg-gradient-to-br focus:ring-4 focus:outline-none box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1  cursor-pointer"></button>                          
                 </th>
                 <th scope="row" x-text="ben.rname" class="px-6 py-4 font-medium text-fg-brand-subtle whitespace-nowrap">                                
                 </th>
@@ -45,17 +52,14 @@
                     <?php include('../includes/admin/icons/trash.php'); ?>
                     Delete
                     </button>
-
                     <button x-show="!ben.status" @click.prevent="changeStatus(ben.id, 1)" type="button" class="inline-flex items-center text-white bg-gradient-to-r from-green-600 via-green-700 to-green-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-400 dark:focus:ring-green-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1  cursor-pointer">
                     <?php include('../includes/admin/icons/active.php'); ?>
-                    Activate
+                    Enable
                     </button>
-
-                    <button x-show="ben.status" @click.prevent="changeStatus(ben.id, 0)" type="button" class="inline-flex items-center  text-white bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1  cursor-pointer">
+                    <button x-show="ben.status" @click.prevent="changeStatus(ben.id, 0)" type="button" class="inline-flex items-center  text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1  cursor-pointer">
                     <?php include('../includes/admin/icons/inactive.php'); ?>
-                    De-Activate
+                    Disable
                     </button>
-                    
                 </td>
             </tr>
         </template>                                        

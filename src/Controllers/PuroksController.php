@@ -1,39 +1,39 @@
 <?php
     namespace App\Controllers;
-    use App\Models\District;
+    use App\Models\Purok;
 
-    class DistrictsController {
+    class PuroksController {
 
         public function getAllData() {
-			return District::getAllDistricts();					
+			return Purok::getAllPuroks();
 		}
 
         public function getData($id) {
-			return District::getDistrict($id);
+			return Purok::getPurok($id);
 		}
 
 		public function getAllDataWithId($field, $value) {
-			return District::getAllDistrictsById($field, $value);
+			return Purok::getAllPuroksById($field, $value);
 		}
 
-		public function getAllDataById($field, $value) {
-			return District::getAllDataById($field, $value);					
+        public function getAllDataById($field, $value) {
+			return Purok::getAllDataById($field, $value);					
 		}
 
         public function changeStatus($id, $status) {
-			return District::changeStatus($id, $status);					
+			return Purok::changeStatus($id, $status);					
 		}
 
         public function deleteData($id) {
-			return District::deleteDistrict($id);					
+			return Purok::deletePurok($id);					
 		}
 
         public function store($data) {
 			$name = trim(htmlspecialchars($data['name']));	
-            $city_id = trim(htmlspecialchars($data['city_id']));		
-
-			if($name AND $city_id) {
-				$inserted = District::createDistrict($name, $city_id);
+            $barangay_id = trim(htmlspecialchars($data['barangay_id']));
+            
+			if($name AND $barangay_id) {
+				$inserted = Purok::createPurok($name, $barangay_id);
 				if($inserted) {
 					return true;
 				} else {
@@ -45,7 +45,7 @@
         public function update($data, $id) {
 			$name = trim(htmlspecialchars($data['name']));
             if($name) {
-				$updated = District::update($name, $id);
+				$updated = Purok::update($name, $id);
 				if($updated) {
 					return true;
 				} else {

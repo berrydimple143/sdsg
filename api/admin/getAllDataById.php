@@ -5,6 +5,7 @@
     use App\Controllers\ProvincesController;
     use App\Controllers\CitiesController;
     use App\Controllers\DistrictsController;
+    use App\Controllers\BarangaysController;
 
 	if($_SERVER['REQUEST_METHOD'] === "POST") {
         $input = json_decode(file_get_contents("php://input"));
@@ -17,6 +18,9 @@
         } else if($input->page == 'district') {
             $field = 'city_id';
             $controller = new DistrictsController();
+        } else if($input->page == 'barangay') {
+            $field = 'district_id';
+            $controller = new BarangaysController();
         }
         $info = $controller->getAllDataById($field, $input->id);        
         if(!empty($info)) {

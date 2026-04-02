@@ -101,6 +101,9 @@
             addSuccessful: {},
             province_id: null,
             region_id: null,
+            district_id: null,
+            barangay_id: null,
+            city_id: null,
             regions: [],
             provinces: [],
             cities: [],
@@ -171,7 +174,11 @@
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({ 
                             name: this.name,
-                            province_id: this.province_id,
+                            province_id: this.province_id,                            
+                            region_id: 7,
+                            district_id: 7,   
+                            barangay_id: 7,
+                            city_id: 7,
                             page: 'city'
                         })
                     });

@@ -15,6 +15,7 @@
         <?php include('../includes/admin/modals/add-district.php'); ?>
         <?php include('../includes/admin/modals/edit-district.php'); ?>
         <?php include('../includes/admin/modals/delete-district.php'); ?>
+        <?php include('../includes/admin/popovers/district.php'); ?>
 
         <div class="flex h-screen bg-transparent">
 
@@ -55,14 +56,35 @@
             addSuccessful: {},
             city_id: null,
             region_id: null,
+            district_id: null,
+            barangay_id: null,
             province_id: null,
             regions: [],
             provinces: [],
             cities: [],
             districts: [],
             errors: [],
+            city: null,
+            province: null,
+            region: null,
             clearInputs() {
                 this.name = '';
+            },
+            showInformation(ct, prov, reg, stat) {
+                let infoModal = document.getElementById('districtPopover');  
+                const btn = document.getElementById('infoButton');                 
+                if(stat) {
+                    infoModal.classList.remove('hidden');
+                    // let top = "top-[" + btn.offsetTop + "px]";
+                    // let left = "left-[" + btn.offsetLeft + "px]";
+                    // let attrClass = "fixed inset-0 z-50 w-[20%] h-[20%] flex items-center justify-center bg-transparent shadow-lg " + top + " " + left;
+                    // infoModal.setAttribute("class", attrClass);
+                    this.city = ct;
+                    this.province = prov;
+                    this.region = reg;                    
+                } else {
+                    infoModal.classList.add('hidden');
+                }
             },
             formatDate(dt) {
                 const dat = new Date(dt);
@@ -128,7 +150,10 @@
                         body: JSON.stringify({ 
                             name: this.name,                           
                             city_id: this.city_id,
-                            province_id: this.province_id,
+                            province_id: 7,
+                            region_id: 7,
+                            district_id: 7,  
+                            barangay_id: 7,
                             page: 'district'
                         })
                     });

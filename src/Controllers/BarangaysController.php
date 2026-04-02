@@ -1,39 +1,39 @@
 <?php
     namespace App\Controllers;
-    use App\Models\District;
+    use App\Models\Barangay;
 
-    class DistrictsController {
+    class BarangaysController {
 
         public function getAllData() {
-			return District::getAllDistricts();					
+			return Barangay::getAllBarangays();					
 		}
 
         public function getData($id) {
-			return District::getDistrict($id);
+			return Barangay::getBarangay($id);
 		}
 
 		public function getAllDataWithId($field, $value) {
-			return District::getAllDistrictsById($field, $value);
+			return Barangay::getAllBarangaysById($field, $value);
 		}
 
-		public function getAllDataById($field, $value) {
-			return District::getAllDataById($field, $value);					
+        public function getAllDataById($field, $value) {
+			return Barangay::getAllDataById($field, $value);					
 		}
 
         public function changeStatus($id, $status) {
-			return District::changeStatus($id, $status);					
+			return Barangay::changeStatus($id, $status);					
 		}
 
         public function deleteData($id) {
-			return District::deleteDistrict($id);					
+			return Barangay::deleteBarangay($id);					
 		}
 
         public function store($data) {
 			$name = trim(htmlspecialchars($data['name']));	
-            $city_id = trim(htmlspecialchars($data['city_id']));		
+            $district_id = trim(htmlspecialchars($data['district_id']));		
 
-			if($name AND $city_id) {
-				$inserted = District::createDistrict($name, $city_id);
+			if($name AND $district_id) {
+				$inserted = Barangay::createBarangay($name, $district_id);
 				if($inserted) {
 					return true;
 				} else {
@@ -45,7 +45,7 @@
         public function update($data, $id) {
 			$name = trim(htmlspecialchars($data['name']));
             if($name) {
-				$updated = District::update($name, $id);
+				$updated = Barangay::update($name, $id);
 				if($updated) {
 					return true;
 				} else {

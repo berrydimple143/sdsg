@@ -5,6 +5,8 @@
 	use App\Controllers\ProvincesController;
 	use App\Controllers\CitiesController;
 	use App\Controllers\DistrictsController;
+	use App\Controllers\BarangaysController;
+	use App\Controllers\PuroksController;
 
 	if($_SERVER['REQUEST_METHOD'] === "POST") {
 		
@@ -17,6 +19,10 @@
 			$controller = new CitiesController();
 		} elseif($data->page == "district") {
 			$controller = new DistrictsController();
+		} elseif($data->page == "barangay") {
+			$controller = new BarangaysController();
+		} elseif($data->page == "purok") {
+			$controller = new PuroksController();
 		}
         $info = $controller->changeStatus($data->id, $data->status);
 		if($info) {

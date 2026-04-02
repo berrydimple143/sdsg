@@ -12,9 +12,10 @@
         <?php include('../includes/admin/modals/delete-successful.php'); ?>
         <?php include('../includes/admin/modals/add-successful.php'); ?>
         <?php include('../includes/admin/modals/change-successful.php'); ?>
-        <?php include('../includes/admin/modals/add-district.php'); ?>
-        <?php include('../includes/admin/modals/edit-district.php'); ?>
-        <?php include('../includes/admin/modals/delete-district.php'); ?>
+        <?php include('../includes/admin/modals/add-barangay.php'); ?>
+        <?php include('../includes/admin/modals/edit-barangay.php'); ?>
+        <?php include('../includes/admin/modals/delete-barangay.php'); ?>
+        <?php include('../includes/admin/popovers/barangay.php'); ?>
 
         <div class="flex h-screen bg-transparent">
 
@@ -54,15 +55,36 @@
             deleteSuccessful: {},
             addSuccessful: {},
             city_id: null,
+            barangay_id: null,
+            district_id: null,
             region_id: null,
             province_id: null,
             regions: [],
             provinces: [],
             cities: [],
             districts: [],
+            barangays: [],
             errors: [],
+            barangay: null,
+            district: null,
+            city: null,
+            province: null,
+            region: null,
             clearInputs() {
                 this.name = '';
+            },
+            showInformation(br, dis, ct, prov, reg, stat) {                
+                let infoModal = document.getElementById('barangayPopover');   
+                if(stat) {
+                    this.barangay = br;
+                    this.district = dis;
+                    this.city = ct;
+                    this.province = prov;
+                    this.region = reg;
+                    infoModal.classList.remove('hidden');
+                } else {
+                    infoModal.classList.add('hidden');
+                }
             },
             formatDate(dt) {
                 const dat = new Date(dt);
@@ -89,7 +111,7 @@
                                     body: JSON.stringify({ 
                                         id: id,
                                         status: status,
-                                        page: 'district'
+                                        page: 'barangay'
                                     })
                                 });
                     let res = await response.json();
@@ -100,14 +122,14 @@
                     this.displayModal('change', 2000);
                 }
             },
-            async deleteDistrict() {                
+            async deleteBarangay() {                
                 try {
                     let response = await fetch('http://localhost/sdsg/api/admin/deleteData.php', {
                                     method: 'POST',
                                     headers: {'Content-Type': 'application/json'},
                                     body: JSON.stringify({ 
                                         id: this.deleteId,
-                                        page: 'district'
+                                        page: 'barangay'
                                     })
                                 });
                     let res = await response.json();                            
@@ -119,17 +141,20 @@
                     this.displayModal('delete', 2000);
                 }
             },
-            async addDistrict() {                
+            async addBarangay() {                
                 if (!this.validate()) return;
                 try {
                     let response = await fetch('http://localhost/sdsg/api/admin/addData.php', {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({ 
-                            name: this.name,                           
-                            city_id: this.city_id,
-                            province_id: this.province_id,
-                            page: 'district'
+                            name: this.name,    
+                            district_id: this.district_id,     
+                            region_id: 7,                                              
+                            city_id: 7,
+                            barangay_id: 7,
+                            province_id: 7,
+                            page: 'barangay'
                         })
                     });
                     let res = await response.json();                            
@@ -141,7 +166,7 @@
                     this.displayModal('add', 2000);
                 }
             },
-            async editDistrict(id) {
+            async editBarangay(id) {
                 this.editId = id;
                 this.editModal = document.getElementById('editModal');
                 this.editModal.classList.remove('hidden');
@@ -151,7 +176,7 @@
                                     headers: {'Content-Type': 'application/json'},
                                     body: JSON.stringify({ 
                                         id: this.editId,
-                                        page: 'district'
+                                        page: 'barangay'
                                     })
                                 });
                     let res = await response.json();
@@ -160,7 +185,7 @@
 		      		console.error('Error fetching data:', error);
                 } 
             },
-            async updateDistrict() {
+            async updateBarangay() {
                 if (!this.validate()) return;
                 try {
                     let response = await fetch('http://localhost/sdsg/api/admin/editData.php', {
@@ -169,7 +194,7 @@
                                     body: JSON.stringify({ 
                                         name: this.name,
                                         id: this.editId,
-                                        page: 'district'
+                                        page: 'barangay'
                                     })
                                 });
                     let res = await response.json();                            
@@ -235,7 +260,9 @@
                     this.provinces = res.data;
                 } else if(page == 'city') {
                     this.cities = res.data;                
-                }   
+                } else if(page == 'district') {
+                    this.districts = res.data;  
+                }
             },
             async getAllData(page) {
                 let response = await fetch('http://localhost/sdsg/api/admin/getAllData.php', {
@@ -253,16 +280,18 @@
                 } else if(page == 'city') {
                     this.cities = res.data; 
                 } else if(page == 'district') {
-                    this.districts = res.data; 
+                    this.districts = res.data;
+                } else if(page == 'barangay') {
+                    this.barangays = res.data; 
                     this.showRow = false;                 
-                    if(this.districts.length > 0) {
+                    if(this.barangays.length > 0) {
                         this.showRow = true;
                     }
                 }               
             },
             init() {                
                 this.getAllData('region');
-                this.getAllData('district');
+                this.getAllData('barangay');
             }	
 		  }
 		}        

@@ -6,6 +6,8 @@
     use App\Controllers\ProvincesController;
     use App\Controllers\CitiesController;
     use App\Controllers\DistrictsController;
+    use App\Controllers\BarangaysController;
+    use App\Controllers\PuroksController;
 
 	if($_SERVER['REQUEST_METHOD'] === "POST") {
         $input = json_decode(file_get_contents("php://input"));
@@ -17,6 +19,10 @@
             $controller = new CitiesController();
         } else if($input->page == 'district') {
             $controller = new DistrictsController();
+        } else if($input->page == 'barangay') {
+            $controller = new BarangaysController();
+        } else if($input->page == 'purok') {
+            $controller = new PuroksController();
         }
         $info = $controller->getAllData();        
         if(!empty($info)) {

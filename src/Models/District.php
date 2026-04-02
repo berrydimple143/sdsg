@@ -17,6 +17,12 @@
 			return $districts->fetchAll(PDO::FETCH_ASSOC);
 		}
 
+		public static function getAllDataById($field, $value) {
+			$pdo = Database::connect();
+			$districts = $pdo->query("SELECT id, name, status, created_at FROM districts WHERE $field = '$value' ORDER BY name");
+			return $districts->fetchAll(PDO::FETCH_ASSOC);
+		}
+
         public static function getDistrict($id) {
 			$pdo = Database::connect();
 			$district = $pdo->query("SELECT * FROM districts WHERE id='$id'");

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2026 at 10:54 AM
+-- Generation Time: Apr 02, 2026 at 12:05 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -35,6 +35,15 @@ CREATE TABLE `barangays` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `barangays`
+--
+
+INSERT INTO `barangays` (`id`, `district_id`, `name`, `status`, `created_at`, `updated_at`) VALUES
+(1, 3, 'Lubogan', 1, '2026-04-02 04:02:08', '2026-04-02 04:02:08'),
+(2, 1, 'Baliok', 1, '2026-04-02 04:02:26', '2026-04-02 04:02:26'),
+(3, 3, 'Bankas Heights', 1, '2026-04-02 04:02:53', '2026-04-02 04:02:53');
 
 -- --------------------------------------------------------
 
@@ -111,12 +120,9 @@ CREATE TABLE `cities` (
 --
 
 INSERT INTO `cities` (`id`, `province_id`, `name`, `status`, `created_at`, `updated_at`) VALUES
-(2, 1, 'Davao', 1, '2026-03-31 19:22:02', '2026-03-31 23:29:31'),
-(3, 1, 'Digos', 1, '2026-03-31 23:29:48', '2026-03-31 23:29:48'),
-(4, 1, 'Sta. Cruz', 1, '2026-03-31 23:30:31', '2026-04-01 00:32:38'),
-(5, 1, 'Bansalan', 1, '2026-04-01 00:31:23', '2026-04-01 01:35:51'),
-(6, 1, 'Padada', 1, '2026-04-01 00:48:01', '2026-04-01 00:48:01'),
-(7, 3, 'Tagum', 1, '2026-04-01 00:54:02', '2026-04-01 00:54:02');
+(1, 2, 'Davao', 1, '2026-04-02 03:59:26', '2026-04-02 03:59:26'),
+(2, 2, 'Digos', 1, '2026-04-02 03:59:48', '2026-04-02 03:59:48'),
+(3, 2, 'Sta. Cruz', 1, '2026-04-02 04:00:08', '2026-04-02 04:00:08');
 
 -- --------------------------------------------------------
 
@@ -181,7 +187,9 @@ CREATE TABLE `districts` (
 --
 
 INSERT INTO `districts` (`id`, `city_id`, `name`, `status`, `created_at`, `updated_at`) VALUES
-(2, 2, 'Calinan', 1, '2026-04-01 02:41:31', '2026-04-01 02:48:17');
+(1, 1, '1st District', 1, '2026-04-02 04:00:51', '2026-04-02 04:01:16'),
+(2, 1, '2nd District', 1, '2026-04-02 04:01:03', '2026-04-02 04:01:25'),
+(3, 1, '3rd District', 1, '2026-04-02 04:01:36', '2026-04-02 04:01:36');
 
 -- --------------------------------------------------------
 
@@ -345,11 +353,11 @@ CREATE TABLE `provinces` (
 --
 
 INSERT INTO `provinces` (`id`, `region_id`, `name`, `status`, `created_at`, `updated_at`) VALUES
-(1, 3, 'Davao del Sur', 1, '2026-03-29 21:30:02', '2026-03-31 23:36:46'),
-(2, 3, 'Davao de Oro', 1, '2026-03-29 21:40:44', '2026-03-30 15:28:52'),
-(3, 3, 'Davao del Norte', 1, '2026-03-29 21:41:11', '2026-03-31 23:20:43'),
-(5, 3, 'Davao Occidental', 1, '2026-03-29 21:42:41', '2026-03-29 22:23:00'),
-(6, 3, 'Davao Oriental', 1, '2026-03-30 15:39:41', '2026-03-30 15:39:41');
+(1, 3, 'Davao del Norte', 1, '2026-04-02 03:57:25', '2026-04-02 03:57:25'),
+(2, 3, 'Davao del Sur', 1, '2026-04-02 03:57:46', '2026-04-02 03:57:46'),
+(3, 3, 'Davao Oriental', 1, '2026-04-02 03:57:55', '2026-04-02 03:57:55'),
+(4, 3, 'Davao de Oro', 1, '2026-04-02 03:58:15', '2026-04-02 03:58:15'),
+(5, 3, 'Davao Occidental', 1, '2026-04-02 03:58:31', '2026-04-02 03:58:31');
 
 -- --------------------------------------------------------
 
@@ -365,6 +373,14 @@ CREATE TABLE `puroks` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `puroks`
+--
+
+INSERT INTO `puroks` (`id`, `barangay_id`, `name`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, '1-A', 1, '2026-04-02 04:03:27', '2026-04-02 04:03:27'),
+(2, 1, '1-B', 1, '2026-04-02 04:03:41', '2026-04-02 04:03:41');
 
 -- --------------------------------------------------------
 
@@ -385,12 +401,12 @@ CREATE TABLE `regions` (
 --
 
 INSERT INTO `regions` (`id`, `name`, `created_at`, `updated_at`, `status`) VALUES
-(1, 'Region IX', '2026-03-28 02:35:46', '2026-03-31 23:33:28', 1),
-(2, 'Region X', '2026-03-28 02:36:02', '2026-03-28 02:36:02', 1),
-(3, 'Region XI', '2026-03-28 02:36:13', '2026-03-28 02:36:13', 1),
-(4, 'Region XII', '2026-03-28 02:37:11', '2026-03-28 02:37:11', 1),
-(5, 'Region XIII', '2026-03-28 02:37:25', '2026-03-28 03:07:19', 1),
-(6, 'BARMM', '2026-03-28 02:38:28', '2026-03-31 20:29:27', 1);
+(1, 'Region IX', '2026-04-02 03:56:03', '2026-04-02 03:56:03', 1),
+(2, 'Region X', '2026-04-02 03:56:15', '2026-04-02 03:56:15', 1),
+(3, 'Region XI', '2026-04-02 03:56:23', '2026-04-02 03:56:23', 1),
+(4, 'Region XII', '2026-04-02 03:56:36', '2026-04-02 03:56:36', 1),
+(5, 'Region XIII', '2026-04-02 03:56:50', '2026-04-02 03:56:50', 1),
+(6, 'BARMM', '2026-04-02 03:57:03', '2026-04-02 03:57:03', 1);
 
 -- --------------------------------------------------------
 
@@ -563,7 +579,7 @@ ALTER TABLE `user_types`
 -- AUTO_INCREMENT for table `barangays`
 --
 ALTER TABLE `barangays`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `beneficiaries`
@@ -581,7 +597,7 @@ ALTER TABLE `benefits`
 -- AUTO_INCREMENT for table `cities`
 --
 ALTER TABLE `cities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `community_information`
@@ -599,7 +615,7 @@ ALTER TABLE `contact_information`
 -- AUTO_INCREMENT for table `districts`
 --
 ALTER TABLE `districts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `education_occupation`
@@ -641,13 +657,13 @@ ALTER TABLE `personal_information`
 -- AUTO_INCREMENT for table `provinces`
 --
 ALTER TABLE `provinces`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `puroks`
 --
 ALTER TABLE `puroks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `regions`
