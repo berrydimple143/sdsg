@@ -11,6 +11,12 @@
 			return $regions->fetchAll(PDO::FETCH_ASSOC);
 		}
 
+		public static function getAllActiveRegions() {
+			$pdo = Database::connect();
+			$regions = $pdo->query("SELECT id, name, status, created_at FROM regions WHERE status = 1 ORDER BY name");
+			return $regions->fetchAll(PDO::FETCH_ASSOC);
+		}
+
         public static function getRegion($id) {
 			$pdo = Database::connect();
 			$region = $pdo->query("SELECT * FROM regions WHERE id='$id'");
