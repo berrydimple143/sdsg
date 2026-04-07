@@ -12,7 +12,7 @@
 	<?php include('./includes/front/modals/registration-successful.php'); ?>	
 	<?php include('./includes/front/modals/loadingPicture.php'); ?>			
 	<?php //include('./includes/front/modals/imageModal.php'); ?>	
-	<canvas id="formCanvas" width="1699" height="2360" class="top-0 left-0"></canvas>
+	<canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="top-0 left-0 hidden"></canvas>
 
 	<div id="photoModal" class="hidden fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center p-4 z-50">
 		<div class="w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -21,7 +21,7 @@
 					<div		
 					    id="photoHolder" 			    
 						class="flex space-x-4 p-2">
-						<video id="preview" autoplay playsinline width="400" height="340"></video>
+						<video class="" id="preview" autoplay playsinline width="400" height="340"></video>
 					</div>
 					<div class="flex items-center justify-between">
 					<button type="button" class="inline-flex items-center text-white bg-gradient-to-r from-green-600 via-green-700 to-green-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-400 dark:focus:ring-green-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-md px-4 py-3 mt-2 cursor-pointer" @click.prevent="captureNow">
@@ -185,8 +185,8 @@
 			benage4: '',
 			benrelationship3: '',
 			benrelationship4: '',
-			insurance: '',
-			burial: '',
+			insurance: '50',
+			burial: '50',
 			courseToAvail: '',
 			video: null,
 		    loading: false,
@@ -200,6 +200,32 @@
 			filename: null,
 		    errors: {},
 			loadingPictureModal: null,
+			printCanvas() {
+                // 1. Get data URL
+                const dataUrl = this.$refs.printableForm.toDataURL('image/png');
+
+                // 2. Open new window
+                const windowContent = '<!DOCTYPE html>' +
+                    '<html><head><title>Print Canvas</title></head><body>' +
+                    '<img src="' + dataUrl + '" onload="window.print();window.close();">' +
+                    '</body></html>';
+                
+                const printWin = window.open('', '', 'width=600,height=400');
+                printWin.document.open();
+                printWin.document.write(windowContent);
+                printWin.document.close();
+            },
+			downloadCanvas() {
+                const canvas = this.$refs.printableForm;
+                // Convert canvas content to a PNG data URL
+                const image = canvas.toDataURL('image/png');
+                
+                // Create a temporary link element to trigger download
+                const link = document.createElement('a');
+                link.href = image;
+                link.download = 'sdsgform.png'; // Sets the filename
+                link.click();
+            },
 			convertDate(dt, frmt) {
 				const date = new Date(dt);
 				return date.toLocaleDateString('en-US', {
@@ -355,29 +381,12 @@
 			) {
 				const canvas = document.getElementById('formCanvas');
 				const ctx = canvas.getContext('2d');
-				const img = new Image();
+				const img = new Image();				
 				img.onload = function() {
 					ctx.drawImage(img, 0, 0);
 					ctx.font = '25px Arial';
 					ctx.fillStyle = '#3e3d3d'; 
 					const fullname = `${fname}  ${mname}  ${lname}  ${sfx}`;					
-					ctx.fillText(benn1, 195, 1850);	
-					ctx.fillText(benn2, 195, 1900);
-					ctx.fillText(benn3, 195, 1955);
-					//ctx.fillText(benn4, 340, 1725);
-					ctx.fillText(benb1, 555, 1850);	
-					ctx.fillText(benb2, 555, 1900);
-					ctx.fillText(benb3, 555, 1955);
-					//ctx.fillText(benb4, 340, 1725);
-					ctx.fillText(beng1, 1040, 1850);	
-					ctx.fillText(beng2, 1040, 1900);
-					ctx.fillText(beng3, 1040, 1955);
-					//ctx.fillText(beng4, 340, 1725);
-					ctx.fillText(benr1, 1320, 1850);	
-					ctx.fillText(benr2, 1320, 1900);
-					ctx.fillText(benr3, 1320, 1955);
-					//ctx.fillText(benr4, 340, 1725);
-					
 					if(ins == '50') {
 						ctx.fillText('/', 220, 2063);
 					} else if(ins == '100') {
@@ -391,23 +400,19 @@
 					} else if(ins == '300') {
 						ctx.fillText('/', 390, 2135);
 					}
-
-					bur = '50';
-
 					if(bur == '50') {
-						ctx.fillText('/', 220, 2063);
+						ctx.fillText('/', 750, 2063);
 					} else if(bur == '100') {
-						ctx.fillText('/', 220, 2095);
+						ctx.fillText('/', 750, 2095);
 					} else if(bur == '150') {
-						ctx.fillText('/', 220, 2135);
+						ctx.fillText('/', 750, 2135);
 					} else if(bur == '200') {
-						ctx.fillText('/', 390, 2063);
+						ctx.fillText('/', 920, 2063);
 					} else if(bur == '250') {
-						ctx.fillText('/', 390, 2095);
+						ctx.fillText('/', 920, 2095);
 					} else if(bur == '300') {
-						ctx.fillText('/', 390, 2135);
+						ctx.fillText('/', 920, 2135);
 					}
-
 					if(cls == "4P's") {
 						ctx.fillText('/', 435, 1490);
 					} else if(cls == "IP's") {
@@ -483,9 +488,28 @@
 					ctx.fillText(ctcnam, 305, 1685);	
 					ctx.fillText(ctcnum, 1190, 1685);
 					ctx.fillText(ctcadr, 340, 1725);
+					ctx.fillText(benn1, 195, 1850);	
+					ctx.fillText(benn2, 195, 1900);
+					ctx.fillText(benn3, 195, 1955);
+					//ctx.fillText(benn4, 340, 1725);
+					ctx.fillText(benb1, 555, 1850);	
+					ctx.fillText(benb2, 555, 1900);
+					ctx.fillText(benb3, 555, 1955);
+					//ctx.fillText(benb4, 340, 1725);
+					ctx.fillText(beng1, 1040, 1850);	
+					ctx.fillText(beng2, 1040, 1900);
+					ctx.fillText(beng3, 1040, 1955);
+					//ctx.fillText(beng4, 340, 1725);
+					ctx.fillText(benr1, 1320, 1850);	
+					ctx.fillText(benr2, 1320, 1900);
+					ctx.fillText(benr3, 1320, 1955);
+					//ctx.fillText(benr4, 340, 1725);
+					ctarr = cta.match(/(?:\S+\s*){1,4}/g);						
+					ctx.fillText(ctarr[0], 1170, 2095);	
+					ctx.fillText(ctarr[1], 1170, 2125);	
 				};
 				img.src = './images/form.jpg';				
-			},
+			},			
 			getFilenameWithDate(p) {
 				const now = new Date();
 				const year = now.getFullYear();
@@ -921,10 +945,13 @@
 			      } else {
 			      	this.clearInputs();
 			      	modal.classList.remove('hidden');
-			      	// setTimeout(() => {
-					// 	modal.classList.add('hidden');
-					// 	window.location = "login.php";
-					// }, 3000);
+			      	setTimeout(() => {
+						modal.classList.add('hidden');
+						this.downloadCanvas();
+						setTimeout(() => {
+							window.location = "login.php";
+						}, 2000);
+					}, 2000);
 			      }
 		      } catch (error) {
 		      		console.error('Error fetching data:', error);
