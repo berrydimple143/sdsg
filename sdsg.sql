@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 02, 2026 at 12:05 PM
+-- Generation Time: Apr 07, 2026 at 05:08 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,9 +41,9 @@ CREATE TABLE `barangays` (
 --
 
 INSERT INTO `barangays` (`id`, `district_id`, `name`, `status`, `created_at`, `updated_at`) VALUES
-(1, 3, 'Lubogan', 1, '2026-04-02 04:02:08', '2026-04-02 04:02:08'),
+(1, 3, 'Lubogan', 1, '2026-04-02 04:02:08', '2026-04-07 08:40:18'),
 (2, 1, 'Baliok', 1, '2026-04-02 04:02:26', '2026-04-02 04:02:26'),
-(3, 3, 'Bankas Heights', 1, '2026-04-02 04:02:53', '2026-04-02 04:02:53');
+(3, 3, 'Bankas Heights', 1, '2026-04-02 04:02:53', '2026-04-02 06:48:41');
 
 -- --------------------------------------------------------
 
@@ -77,7 +77,11 @@ CREATE TABLE `beneficiaries` (
 --
 
 INSERT INTO `beneficiaries` (`id`, `user_id`, `benname1`, `benage1`, `benrelationship1`, `benbirthdate1`, `benname2`, `benage2`, `benrelationship2`, `benbirthdate2`, `benname3`, `benage3`, `benrelationship3`, `benbirthdate3`, `benname4`, `benage4`, `benrelationship4`, `benbirthdate4`) VALUES
-(1, 2, 'Shekinah Berry Rosalita', 11, 'Daughter', '2014-07-26', 'Shairah Sophie Rosalita', 10, 'Daughter', '2016-02-15', 'John Virgil Rosalita', 6, 'Son', '2019-05-12', '', 0, '', '2010-02-21');
+(1, 2, 'Shekinah Berry Rosalita', 11, 'Daughter', '2014-07-26', 'Shairah Sophie Rosalita', 10, 'Daughter', '2016-02-15', 'John Virgil Rosalita', 6, 'Son', '2019-05-12', '', 0, '', '2010-02-21'),
+(2, 3, 'Primitivo Alferez, Jr.', 60, 'Father', '1969-07-20', 'Peregrina E. Alferez', 58, 'Mother', '1972-05-16', '', 0, '', '2010-02-21', '', 0, '', '2010-02-21'),
+(3, 4, 'Charles Rosalita', 18, 'Son', '2010-02-21', 'Saicha Chenyll Rosalita', 16, 'Daughter', '2010-02-21', 'Prince Jasper Rosalita', 12, 'Son', '2010-02-21', '', 0, '', '2010-02-21'),
+(4, 5, 'Blake Rosalita', 2, 'Son', '2024-04-05', 'Beah Mae Rosalita', 6, 'Daughter', '2019-11-27', 'Breena S. Rosalita', 11, 'Daughter', '2014-03-03', '', 0, '', '2010-02-21'),
+(5, 6, 'Bernice Sofia M. Rosalita', 4, 'Daughter', '2010-02-21', '', 0, '', '2010-02-21', '', 0, '', '2010-02-21', '', 0, '', '2010-02-21');
 
 -- --------------------------------------------------------
 
@@ -98,7 +102,11 @@ CREATE TABLE `benefits` (
 --
 
 INSERT INTO `benefits` (`id`, `user_id`, `insurance`, `burial`, `courseToAvail`) VALUES
-(1, 2, 0, 0, '');
+(1, 2, 0, 0, ''),
+(2, 3, 50, 50, 'Bachelor of Arts in Accountancy'),
+(3, 4, 50, 50, 'Automotive'),
+(4, 5, 50, 50, 'Bachelor of Science in Criminology'),
+(5, 6, 50, 50, 'Bachelor of Science in Computer Science');
 
 -- --------------------------------------------------------
 
@@ -120,7 +128,7 @@ CREATE TABLE `cities` (
 --
 
 INSERT INTO `cities` (`id`, `province_id`, `name`, `status`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Davao', 1, '2026-04-02 03:59:26', '2026-04-02 03:59:26'),
+(1, 2, 'Davao', 1, '2026-04-02 03:59:26', '2026-04-02 06:45:55'),
 (2, 2, 'Digos', 1, '2026-04-02 03:59:48', '2026-04-02 03:59:48'),
 (3, 2, 'Sta. Cruz', 1, '2026-04-02 04:00:08', '2026-04-02 04:00:08');
 
@@ -145,7 +153,11 @@ CREATE TABLE `community_information` (
 --
 
 INSERT INTO `community_information` (`id`, `user_id`, `chairman`, `area`, `mcnumber`, `classification`, `tribe`) VALUES
-(1, 2, '', '', '', '', 'Cebuano');
+(1, 2, '', '', '', '', 'Cebuano'),
+(2, 3, 'Virgil Rosalita', '', '', 'IP&#039;s', 'Muslim'),
+(3, 4, 'Virgil Rosalita', 'Lubogan, Toril', '93923478', '4P&#039;s', 'Muslim'),
+(4, 5, 'Virgil Rosalita', 'Lubogan', '93283', '4P&#039;s', 'Cebuano'),
+(5, 6, 'Virgil Rosalita', 'Lubogan, Toril', '3920938', 'IP&#039;s', 'Muslim');
 
 -- --------------------------------------------------------
 
@@ -165,7 +177,11 @@ CREATE TABLE `contact_information` (
 --
 
 INSERT INTO `contact_information` (`id`, `user_id`, `contact`, `fb`) VALUES
-(1, 2, '09104374372', 'Prinaniel Rosalita');
+(1, 2, '09104374372', 'Prinaniel Rosalita'),
+(2, 3, '092304234884', 'Prine Alferez'),
+(3, 4, '09342384923', 'Benny Rosalita'),
+(4, 5, '0923482839', 'Benjie Rosalita'),
+(5, 6, '0934884893', 'Bernie Rosalita');
 
 -- --------------------------------------------------------
 
@@ -188,7 +204,7 @@ CREATE TABLE `districts` (
 
 INSERT INTO `districts` (`id`, `city_id`, `name`, `status`, `created_at`, `updated_at`) VALUES
 (1, 1, '1st District', 1, '2026-04-02 04:00:51', '2026-04-02 04:01:16'),
-(2, 1, '2nd District', 1, '2026-04-02 04:01:03', '2026-04-02 04:01:25'),
+(2, 1, '2nd District', 1, '2026-04-02 04:01:03', '2026-04-02 06:46:46'),
 (3, 1, '3rd District', 1, '2026-04-02 04:01:36', '2026-04-02 04:01:36');
 
 -- --------------------------------------------------------
@@ -211,7 +227,11 @@ CREATE TABLE `education_occupation` (
 --
 
 INSERT INTO `education_occupation` (`id`, `user_id`, `education`, `position`, `skill`, `organization`) VALUES
-(1, 2, 'College Graduate', 'Teacher 1', 'teaching', 'TULCI');
+(1, 2, 'College Graduate', 'Teacher 1', 'teaching', 'TULCI'),
+(2, 3, 'College Graduate', 'Senior Bank Teller', 'Bookkeeping', 'EastWest Bank, Toril Branch'),
+(3, 4, 'High School Graduate', 'Welder', 'welding, auto repair', 'Freelancer'),
+(4, 5, 'Vocational', 'Welder', 'welding, landscaping', 'BF Industries, Inc.'),
+(5, 6, 'College Graduate', 'Vet. Doctor', 'farming, injecting', 'TheBerns Animal Clinic');
 
 -- --------------------------------------------------------
 
@@ -232,7 +252,11 @@ CREATE TABLE `emergency_contact` (
 --
 
 INSERT INTO `emergency_contact` (`id`, `user_id`, `contactname`, `contactnumber`, `contactaddress`) VALUES
-(1, 2, 'Virgil Rosalita', '09096400461', 'Purok 1 Lubogan, Toril');
+(1, 2, 'Virgil Rosalita', '09096400461', 'Purok 1 Lubogan, Toril'),
+(2, 3, 'Peregrina Alferez', '09342348923', 'Bankas Heights, Toril, Davao City'),
+(3, 4, 'Michelle Rosalita', '0934238293', 'Purok 1-A Lubogan, Toril, Davao City'),
+(4, 5, 'Leah Mae S. Rosalita', '093248239', 'Lubogan, Toril'),
+(5, 6, 'Bernadine M. Rosalita', '039428302i', 'Puan, Davao City');
 
 -- --------------------------------------------------------
 
@@ -253,7 +277,11 @@ CREATE TABLE `family_background` (
 --
 
 INSERT INTO `family_background` (`id`, `user_id`, `father`, `mother`, `spouse`) VALUES
-(1, 2, 'Primitivo Alferez', 'Peregrina Alferez', 'Virgil Rosalita');
+(1, 2, 'Primitivo Alferez', 'Peregrina Alferez', 'Virgil Rosalita'),
+(2, 3, 'Primitivo L. Alferez, Jr.', 'Peregrina E. Alferez', 'N/A'),
+(3, 4, 'Benjamin Rosalita', 'Virginia T. Rosalita', 'Michelle C. Rosalita'),
+(4, 5, 'Benjamin Rosalita', 'Virginia T. Rosalita', 'Leah Mae S. Rosalita'),
+(5, 6, 'Benjamin Rosalita', 'Virginia Rosalita', 'Bernadine M. Rosalita');
 
 -- --------------------------------------------------------
 
@@ -279,7 +307,11 @@ CREATE TABLE `government_id` (
 --
 
 INSERT INTO `government_id` (`id`, `user_id`, `sss`, `philhealth`, `voter`, `passport`, `profid`, `pagibig`, `license`, `senior`) VALUES
-(1, 2, '37232dd', 'kd923', '92ldl', 'ospdk32', '1567176', '', '', '');
+(1, 2, '37232dd', 'kd923', '92ldl', 'ospdk32', '1567176', '', '', ''),
+(2, 3, '234234', '432', '343423', '4234', '5234234', '3425234', '4234234', '634545'),
+(3, 4, '3423424', '52342', '2344', '', '334234', '324', '34234', ''),
+(4, 5, '092393938', '0394238383', '3304-B', '', '', '', 'L02-132820', ''),
+(5, 6, '039484848', '03939338', '3304-B', '393293', '3729393', '03482732', 'L01-201483822', '');
 
 -- --------------------------------------------------------
 
@@ -305,12 +337,12 @@ CREATE TABLE `personal_information` (
   `id` int(11) NOT NULL,
   `nickname` varchar(100) NOT NULL,
   `suffix` varchar(10) NOT NULL,
-  `region` varchar(100) NOT NULL,
-  `province` varchar(100) NOT NULL,
-  `city` varchar(100) NOT NULL,
-  `district` varchar(100) NOT NULL,
-  `barangay` varchar(100) NOT NULL,
-  `purok` varchar(100) NOT NULL,
+  `region_id` int(11) NOT NULL,
+  `province_id` int(11) NOT NULL,
+  `city_id` int(11) NOT NULL,
+  `district_id` int(11) NOT NULL,
+  `barangay_id` int(11) NOT NULL,
+  `purok_id` int(11) NOT NULL,
   `zipcode` varchar(10) NOT NULL,
   `birthdate` date NOT NULL,
   `birthplace` varchar(254) NOT NULL,
@@ -330,8 +362,12 @@ CREATE TABLE `personal_information` (
 -- Dumping data for table `personal_information`
 --
 
-INSERT INTO `personal_information` (`id`, `nickname`, `suffix`, `region`, `province`, `city`, `district`, `barangay`, `purok`, `zipcode`, `birthdate`, `birthplace`, `age`, `civilstatus`, `gender`, `nationality`, `country`, `religion`, `bloodtype`, `height`, `weight`, `user_id`) VALUES
-(1, 'dimple', '', 'Region XI', 'Davao del Sur', 'Davao', 'Third', 'Lubogan', 'Purok 1-A', '8000', '1990-07-14', 'Bankas Heights, Toril', 35, 'Married', 'Female', 'Filipino', 'Philippines', 'Missionary Baptist', 'B+', '145', '54', 2);
+INSERT INTO `personal_information` (`id`, `nickname`, `suffix`, `region_id`, `province_id`, `city_id`, `district_id`, `barangay_id`, `purok_id`, `zipcode`, `birthdate`, `birthplace`, `age`, `civilstatus`, `gender`, `nationality`, `country`, `religion`, `bloodtype`, `height`, `weight`, `user_id`) VALUES
+(1, 'dimple', '', 3, 2, 1, 3, 1, 1, '8000', '1990-07-14', 'Bankas Heights, Toril', 35, 'Married', 'Female', 'Filipino', 'Philippines', 'Missionary Baptist', 'B+', '145', '54', 2),
+(2, 'Gang2x', '', 3, 2, 1, 3, 1, 1, '8000', '1995-05-07', 'Bankas Heights', 31, 'Single', 'Female', 'Filipino', 'Philippines', 'Missionary Baptist', 'A+', '140', '45', 3),
+(3, 'Kiboy', 'Jr.', 3, 2, 1, 3, 1, 1, '8000', '1983-04-23', 'Lubogan, Toril, Davao City', 43, 'Married', 'Male', 'Filipino', 'Philippines', 'Baptist', 'O+', '155', '58', 4),
+(4, 'Benj', 'Sr.', 3, 2, 1, 3, 1, 1, '8000', '1980-08-18', 'Lubogan, Toril', 45, 'Married', 'Male', 'Filipino', 'Philippines', 'Baptist', 'B+', '160', '64', 5),
+(5, 'Ekoy', 'Sr.', 3, 2, 1, 3, 1, 1, '8000', '1990-07-14', 'Lubogan, Toril', 35, 'Married', 'Male', 'Filipino', 'Philippines', 'Baptist', 'O+', '157', '65', 6);
 
 -- --------------------------------------------------------
 
@@ -356,7 +392,7 @@ INSERT INTO `provinces` (`id`, `region_id`, `name`, `status`, `created_at`, `upd
 (1, 3, 'Davao del Norte', 1, '2026-04-02 03:57:25', '2026-04-02 03:57:25'),
 (2, 3, 'Davao del Sur', 1, '2026-04-02 03:57:46', '2026-04-02 03:57:46'),
 (3, 3, 'Davao Oriental', 1, '2026-04-02 03:57:55', '2026-04-02 03:57:55'),
-(4, 3, 'Davao de Oro', 1, '2026-04-02 03:58:15', '2026-04-02 03:58:15'),
+(4, 3, 'Davao de Oro', 1, '2026-04-02 03:58:15', '2026-04-02 06:45:00'),
 (5, 3, 'Davao Occidental', 1, '2026-04-02 03:58:31', '2026-04-02 03:58:31');
 
 -- --------------------------------------------------------
@@ -380,7 +416,7 @@ CREATE TABLE `puroks` (
 
 INSERT INTO `puroks` (`id`, `barangay_id`, `name`, `status`, `created_at`, `updated_at`) VALUES
 (1, 1, '1-A', 1, '2026-04-02 04:03:27', '2026-04-02 04:03:27'),
-(2, 1, '1-B', 1, '2026-04-02 04:03:41', '2026-04-02 04:03:41');
+(2, 1, '1-B', 1, '2026-04-02 04:03:41', '2026-04-02 06:48:34');
 
 -- --------------------------------------------------------
 
@@ -401,11 +437,11 @@ CREATE TABLE `regions` (
 --
 
 INSERT INTO `regions` (`id`, `name`, `created_at`, `updated_at`, `status`) VALUES
-(1, 'Region IX', '2026-04-02 03:56:03', '2026-04-02 03:56:03', 1),
+(1, 'Region IX', '2026-04-02 03:56:03', '2026-04-02 06:12:37', 1),
 (2, 'Region X', '2026-04-02 03:56:15', '2026-04-02 03:56:15', 1),
 (3, 'Region XI', '2026-04-02 03:56:23', '2026-04-02 03:56:23', 1),
-(4, 'Region XII', '2026-04-02 03:56:36', '2026-04-02 03:56:36', 1),
-(5, 'Region XIII', '2026-04-02 03:56:50', '2026-04-02 03:56:50', 1),
+(4, 'Region XII', '2026-04-02 03:56:36', '2026-04-02 06:43:46', 1),
+(5, 'Region XIII', '2026-04-02 03:56:50', '2026-04-02 06:43:30', 1),
 (6, 'BARMM', '2026-04-02 03:57:03', '2026-04-02 03:57:03', 1);
 
 -- --------------------------------------------------------
@@ -435,7 +471,11 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `firstname`, `middlename`, `lastname`, `email`, `username`, `password`, `phone`, `mobile`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Virgil', 'Tecson', 'Rosalita', 'shekinahberry143@gmail.com', 'berrydimple', '$2y$10$SR4hAD/ePjWHxtuq7My7b.jadSE18LzThTh3CePNccj30a2Zxkb2q', '2253844', '09096400461', 1, '2026-03-20 01:27:17', '2026-03-20 01:27:17'),
-(2, 'Prinaniel', 'Alferez', 'Rosalita', 'prinaniel.e.a.rosalita@gmail.com', '', '', '', '', 1, '2026-03-20 17:37:49', '2026-03-20 17:37:49');
+(2, 'Prinaniel', 'Alferez', 'Rosalita', 'prinaniel.e.a.rosalita@gmail.com', '', '', '', '', 1, '2026-03-20 17:37:49', '2026-03-20 17:37:49'),
+(3, 'Prine', 'Erediano', 'Alferez', 'prine.e.alferez@gmail.com', '', '', '', '', 1, '2026-04-07 07:48:37', '2026-04-07 07:48:37'),
+(4, 'Benny', 'Tecson', 'Rosalita', 'benros@gmail.com', '', '', '', '', 1, '2026-04-07 07:58:44', '2026-04-07 07:58:44'),
+(5, 'Benjie', 'Tecson', 'Rosalita', 'benrossa@gmail.com', '', '', '', '', 1, '2026-04-07 08:16:58', '2026-04-07 08:16:58'),
+(6, 'Bernie', 'Tecson', 'Rosalita', 'bernros@gmail.com', '', '', '', '', 1, '2026-04-07 08:23:09', '2026-04-07 08:23:09');
 
 -- --------------------------------------------------------
 
@@ -457,7 +497,11 @@ CREATE TABLE `user_types` (
 --
 
 INSERT INTO `user_types` (`id`, `user_id`, `mtype`, `position`, `designation`, `classification`) VALUES
-(1, 2, 'member', '', '', 'nonpaying');
+(1, 2, 'member', '', '', 'nonpaying'),
+(2, 3, 'member', '', '', 'nonpaying'),
+(3, 4, 'member', '', '', 'nonpaying'),
+(4, 5, 'member', '', '', 'nonpaying'),
+(5, 6, 'member', '', '', 'nonpaying');
 
 --
 -- Indexes for dumped tables
@@ -585,13 +629,13 @@ ALTER TABLE `barangays`
 -- AUTO_INCREMENT for table `beneficiaries`
 --
 ALTER TABLE `beneficiaries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `benefits`
 --
 ALTER TABLE `benefits`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `cities`
@@ -603,13 +647,13 @@ ALTER TABLE `cities`
 -- AUTO_INCREMENT for table `community_information`
 --
 ALTER TABLE `community_information`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `contact_information`
 --
 ALTER TABLE `contact_information`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `districts`
@@ -621,25 +665,25 @@ ALTER TABLE `districts`
 -- AUTO_INCREMENT for table `education_occupation`
 --
 ALTER TABLE `education_occupation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `emergency_contact`
 --
 ALTER TABLE `emergency_contact`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `family_background`
 --
 ALTER TABLE `family_background`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `government_id`
 --
 ALTER TABLE `government_id`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `payments`
@@ -651,7 +695,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `personal_information`
 --
 ALTER TABLE `personal_information`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `provinces`
@@ -675,13 +719,13 @@ ALTER TABLE `regions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `user_types`
 --
 ALTER TABLE `user_types`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

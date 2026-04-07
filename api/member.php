@@ -10,12 +10,12 @@
 		$data = [
 			'firstname' => $user->firstname,
 			'lastname' => $user->lastname,
-            'region' => $user->region,
-			'province' => $user->province,
-            'city' => $user->city,
-			'district' => $user->district,
-            'barangay' => $user->barangay,
-			'purok' => $user->purok,
+            'region_id' => $user->region_id,
+			'province_id' => $user->province_id,
+            'city_id' => $user->city_id,
+			'district_id' => $user->district_id,
+            'barangay_id' => $user->barangay_id,
+			'purok_id' => $user->purok_id,
             'civilstatus' => $user->civilstatus,
 			'gender' => $user->gender
 		];	
