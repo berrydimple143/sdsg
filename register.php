@@ -131,11 +131,11 @@
 			benday3: '',
 			benday4: '',
 		    zipcode: '',
-			birthdate: '1982-02-21',
-			benbirthdate1: '2010-02-21',
-			benbirthdate2: '2010-02-21',
-			benbirthdate3: '2010-02-21',
-			benbirthdate4: '2010-02-21',
+			birthdate: '',
+			benbirthdate1: '',
+			benbirthdate2: '',
+			benbirthdate3: '',
+			benbirthdate4: '',
 			birthplace: '',
 			age: '',
 			civilstatus: '',	
@@ -227,12 +227,16 @@
                 link.click();
             },
 			convertDate(dt, frmt) {
-				const date = new Date(dt);
-				return date.toLocaleDateString('en-US', {
-					year: 'numeric',
-					month: 'long',
-					day: 'numeric',
-				});
+				if(dt == '') {
+					return dt;
+				} else {
+					const date = new Date(dt);
+					return date.toLocaleDateString('en-US', {
+						year: 'numeric',
+						month: 'long',
+						day: 'numeric',
+					});
+				}
 			},
 			getStatus(stat) {
 				this.drawText();
@@ -504,9 +508,13 @@
 					ctx.fillText(benr2, 1320, 1900);
 					ctx.fillText(benr3, 1320, 1955);
 					//ctx.fillText(benr4, 340, 1725);
-					ctarr = cta.match(/(?:\S+\s*){1,4}/g);						
-					ctx.fillText(ctarr[0], 1170, 2095);	
-					ctx.fillText(ctarr[1], 1170, 2125);	
+					if(cta != '') {
+						ctarr = cta.match(/(?:\S+\s*){1,4}/g);						
+						ctx.fillText(ctarr[0], 1170, 2095);	
+						if(ctarr[1] !== undefined) {
+							ctx.fillText(ctarr[1], 1170, 2125);	
+						}				
+					}					
 				};
 				img.src = './images/form.jpg';				
 			},			
@@ -645,8 +653,8 @@
 					})
 				});
                 let res = await response.json();
-                if(page == 'region') {
-                    this.regions = res.data;                    
+                if(page == 'region') {					
+                    this.regions = res.data;      
                 } else if(page == 'province') {
                     this.provinces = res.data;   
 				} else if(page == 'city') {
@@ -780,7 +788,7 @@
 		      this.errors = {}
 		      if (!this.firstname) this.errors.firstname = "(Required)"
 		      if (!this.lastname) this.errors.lastname = "(Required)"
-		      if (!this.email) this.errors.email = "(Required)"		      
+		      //if (!this.email) this.errors.email = "(Required)"		      
 		      return Object.keys(this.errors).length === 0
 		    },
 
@@ -855,13 +863,10 @@
 					this.courseToAvail = '';
 		    },
 
-		    async submit() {
-		      if (!this.validate()) return;
-
+		    async submit() {			  
+		      if (!this.validate()) return;		  
 		      this.loading = true;
-
 		    	try {
-
 			       const response = await fetch("http://localhost/sdsg/api/member.php", {
 			        method: "POST",
 			        headers: {"Content-Type": "application/json"},
@@ -953,7 +958,7 @@
 						}, 2000);
 					}, 2000);
 			      }
-		      } catch (error) {
+		  } catch (error) {
 		      		console.error('Error fetching data:', error);
           } finally {
               this.loading = false;

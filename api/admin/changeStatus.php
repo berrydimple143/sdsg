@@ -7,6 +7,7 @@
 	use App\Controllers\DistrictsController;
 	use App\Controllers\BarangaysController;
 	use App\Controllers\PuroksController;
+	use App\Controllers\PaymentsController;
 
 	if($_SERVER['REQUEST_METHOD'] === "POST") {
 		
@@ -23,6 +24,8 @@
 			$controller = new BarangaysController();
 		} elseif($data->page == "purok") {
 			$controller = new PuroksController();
+		} elseif($data->page == "payment") {
+			$controller = new PaymentsController();
 		}
         $info = $controller->changeStatus($data->id, $data->status);
 		if($info) {

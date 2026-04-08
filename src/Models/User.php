@@ -32,7 +32,7 @@
 
 		public static function findUserByFields($firstname, $lastname, $middlename, $suffix, $barangay) {
 			$pdo = Database::connect();
-			$user = $pdo->query("SELECT * FROM users AS usr INNER JOIN personal_information AS per ON usr.id = per.user_id WHERE usr.firstname='$firstname' AND usr.lastname='$lastname' AND usr.middlename='$middlename' AND per.suffix='$suffix' AND per.barangay='$barangay'");
+			$user = $pdo->query("SELECT * FROM users AS usr INNER JOIN personal_information AS per ON usr.id = per.user_id WHERE usr.firstname='$firstname' AND usr.lastname='$lastname' AND usr.middlename='$middlename' AND per.suffix='$suffix' AND per.barangay_id='$barangay'");
 			return $user->fetch(PDO::FETCH_ASSOC);
 		}
 
@@ -77,7 +77,7 @@
 			if($inserted) {
 				$uid = $pdo->lastInsertId();
 
-				$personal = $pdo->prepare("INSERT INTO personal_information(user_id, nickname, suffix, region_id,  province_id, city_id, district_id, barangay_id, purok_id, zipcode, birthdate, birthplace, age, civilstatus, gender, nationality, country, religion, bloodtype, height, weight) VALUES(:user_id, :nickname, :suffix, :region,  :province, :city, :district, :barangay, :purok, :zipcode, :birthdate, :birthplace, :age, :civilstatus, :gender, :nationality, :country, :religion, :bloodtype, :height, :weight)");	
+				$personal = $pdo->prepare("INSERT INTO personal_information(user_id, nickname, suffix, region_id,  province_id, city_id, district_id, barangay_id, purok_id, zipcode, birthdate, birthplace, age, civilstatus, gender, nationality, country, religion, bloodtype, height, weight) VALUES(:user_id, :nickname, :suffix, :region_id, :province_id, :city_id, :district_id, :barangay_id, :purok_id, :zipcode, :birthdate, :birthplace, :age, :civilstatus, :gender, :nationality, :country, :religion, :bloodtype, :height, :weight)");	
 				$inserted2 = $personal->execute([
 					":user_id" =>$uid,
 					":nickname" =>$nickname,
