@@ -5,8 +5,30 @@
     use App\Controllers\UsersController;
 
 	if($_SERVER['REQUEST_METHOD'] === "POST") {
+        $input = json_decode(file_get_contents("php://input"));
+        $search = $input->searchWord;
+        $data = [
+			'user_id' => $input->user_id,
+			'searchWord' => $search,
+			'page' => $input->page			
+		];
+        foreach($data as $key => $value) {
+			if(empty($value)) {
+				$keyname = ucfirst($key);
+				echo json_encode([
+					'status' => false,
+					'message' => "$keyname is required."
+				]);
+				exit();
+			}
+		}
         $authUser = new UsersController();
-        $users = $authUser->getAllUserWithDetails();        
+        if($input->page == "all") {
+            $users = $authUser->getAllUserWithDetails();    
+        } elseif($input->page == "some") {
+            $users = $authUser->getAllUserWithSearch($search);
+        }
+
         if(!empty($users)) {
             echo json_encode([
 				'status' => true,

@@ -11,10 +11,29 @@
 			return $districts->fetchAll(PDO::FETCH_ASSOC);
 		}
 
+        public static function deleteData($id) {
+			$pdo = Database::connect();
+			$payment = $pdo->prepare("DELETE FROM payments WHERE id=?");
+			return $payment->execute([$id]);
+		}
+
+        public static function getData($id) {
+			$pdo = Database::connect();
+			$payment = $pdo->query("SELECT * FROM payments WHERE id='$id'");
+			return $payment->fetch(PDO::FETCH_OBJ);
+		}
+
         public static function changeStatus($id, $status) {
 			$pdo = Database::connect();
 			$purok = $pdo->prepare("UPDATE user_types SET classification=? WHERE user_id=?");
 			return $purok->execute([$status, $id]);	
+		}
+
+        public static function update($amount, $id) {
+			$pdo = Database::connect();
+			$updated_at = date('Y-m-d H:i:s');
+			$payment = $pdo->prepare("UPDATE payments SET amount=?, updated_at=? WHERE id=?");
+			return $payment->execute([$amount, $updated_at, $id]);
 		}
 
         public static function create($user_id, $amount, $created_at) {

@@ -12,6 +12,10 @@
 			return User::getAllUserWithDetails();					
 		}
 
+		public function getAllUserWithSearch($search) {
+			return User::getAllUserWithSearch($search);				
+		}
+
 		public function getBeneficiaryPerMonth($month, $mtype) {
 			$yr = (string)date('Y');
 			$fd = $yr.'-'.$month.'-'.(string)date('d');

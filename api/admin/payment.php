@@ -6,11 +6,12 @@
 
 	if($_SERVER['REQUEST_METHOD'] === "POST") {		
 		$input = json_decode(file_get_contents("php://input"));
+		$mode = $input->mode;
         $data = [
 			'user_id' => $input->user_id,
 			'amount' => $input->amount,
 			'created_at' => $input->created_at,
-            'mode' => $input->mode
+            'mode' => $mode
 		];
 		foreach($data as $key => $value) {
 			if(empty($value)) {
@@ -23,10 +24,12 @@
 			}
 		}
 		$controller = new PaymentsController();
-        if($input->mode == 'add') {
+        if($mode == 'add') {
             $info = $controller->store($data);
-		} elseif($input->mode == 'search') {
+		} elseif($mode == 'search') {
 			$info = $controller->getAllDataByField($data);
+		} elseif($mode == 'single') {
+			$info = $controller->getOneDataByField($data);
         }
         if($info) {
 			http_response_code(200);

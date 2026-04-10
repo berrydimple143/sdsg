@@ -28,7 +28,7 @@
 						<?php include('../includes/admin/header.php'); ?>
 						<div class="p-1">
                             <div class="w-full flex items-center justify-between bg-green-400 p-2">
-                                <h1 class="text-2xl font-bold">Provinces</h1>
+                                <h1 class="text-2xl text-purple-600 font-bold p-2 text-shadow-lg">List of Provinces</h1>
                                 <button @click.prevent="addNow" type="button" class="inline-flex items-center text-white bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:focus:ring-yellow-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-md p-2  cursor-pointer">
                                 <?php include('../includes/admin/icons/region-add.php'); ?>
                                 Add

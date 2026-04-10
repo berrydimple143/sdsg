@@ -1,5 +1,5 @@
 <table class="w-full text-sm text-left rtl:text-right text-fg-brand-subtle">
-    <thead class="text-sm text-white bg-brand border-b border-brand-light">
+    <thead class="text-md text-shadow-md text-gray-700 font-bold bg-brand border-b border-brand-light">
         <tr>
             <th scope="col" class="px-6 py-3 font-medium">
                 Last Name

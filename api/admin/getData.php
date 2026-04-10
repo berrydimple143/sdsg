@@ -6,6 +6,7 @@
 	use App\Controllers\DistrictsController;
 	use App\Controllers\BarangaysController;
 	use App\Controllers\PuroksController;
+	use App\Controllers\PaymentsController;
 
 	if($_SERVER['REQUEST_METHOD'] === "POST") {		
 		$data = json_decode(file_get_contents("php://input"));     
@@ -19,6 +20,8 @@
 			$controller = new BarangaysController();
 		} else if($data->page == "purok") {
 			$controller = new PuroksController();
+		} else if($data->page == "payment") {
+			$controller = new PaymentsController();
         }        
 
         $np = $controller->getData($data->id);

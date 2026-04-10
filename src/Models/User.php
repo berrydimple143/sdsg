@@ -18,6 +18,12 @@
 			return $user->fetchAll(PDO::FETCH_ASSOC);
 		}
 
+		public static function getAllUserWithSearch($search) {
+			$pdo = Database::connect();			
+			$user = $pdo->query("SELECT usr.id AS id, usr.firstname AS firstname, usr.lastname AS lastname, usr.middlename AS middlename, utype.classification AS classification FROM users AS usr INNER JOIN user_types AS utype ON usr.id = utype.user_id WHERE usr.firstname LIKE '$search' OR usr.lastname LIKE '$search' OR usr.middlename LIKE '$search' OR utype.classification LIKE '$search' ORDER BY usr.created_at DESC");			
+			return $user->fetchAll(PDO::FETCH_ASSOC);
+		}
+
 		public static function getAllUserWithDetails() {
 			$pdo = Database::connect();
 			$user = $pdo->query("SELECT usr.id AS id, usr.firstname AS firstname, usr.lastname AS lastname, usr.middlename AS middlename, utype.classification AS classification FROM users AS usr INNER JOIN user_types AS utype ON usr.id = utype.user_id ORDER BY usr.created_at DESC");
@@ -40,6 +46,12 @@
 			$pdo = Database::connect();
 			$user = $pdo->query("SELECT * FROM users WHERE id=$id");
 			return $user->fetch(PDO::FETCH_ASSOC);
+		}
+
+		public static function getOneDataByField($field, $value) {
+			$pdo = Database::connect();
+			$payment = $pdo->query("SELECT * FROM users WHERE $field = '$value'");
+			return $payment->fetch(PDO::FETCH_OBJ);
 		}
 
 		public static function createUser($firstname, $middlename, $lastname, $email, $username, $password, $phone, $mobile, $status) {
