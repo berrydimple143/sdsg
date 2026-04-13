@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SDSD Initiative Inc. - Administration Panel</title>
   <link href="../src/output.css" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="../images/logo.ico">
   <script defer src="../js/alpinejs.cdn.min.js"></script>
 </head>
 <body x-data="pageLoad()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover bg-no-repeat">
@@ -31,7 +32,7 @@
                             x-model="searchWord" 
                             @keyup.enter="searchData"  
                             placeholder="Search beneficiary here and press enter" 
-                            class="text-md bg-white h-6 w-80 p-4 rounded-full border-green-900 shadow-lg outline-none">
+                            class="text-md bg-white h-6 w-80 p-4 rounded-sm border-green-900 shadow-md outline-none">
                     </div>
                     <button type="button" class="inline-flex items-center text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
                     <?php include('../includes/admin/icons/add.php'); ?>
@@ -203,6 +204,25 @@
                 } finally {
                     this.init();
                     this.displayModal('change', 2000);                                        
+                }
+            },
+            async changeUserStatus(id, status) {
+                try {
+                    let response = await fetch('http://localhost/sdsg/api/admin/changeStatus.php', {
+                                    method: 'POST',
+                                    headers: {'Content-Type': 'application/json'},
+                                    body: JSON.stringify({ 
+                                        id: id,
+                                        status: status,
+                                        page: 'beneficiary'
+                                    })
+                                });
+                    let res = await response.json();
+                } catch (error) {
+		      		console.error('Error fetching data:', error);
+                } finally {
+                    this.init();
+                    this.displayModal('change', 2000);
                 }
             },
             displayModal(page, msec) {

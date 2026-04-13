@@ -8,6 +8,10 @@
 
 	class UsersController {
 
+		public function changeStatus($id, $status) {
+			return User::changeStatus($id, $status);					
+		}
+
 		public function getAllUserWithDetails() {
 			return User::getAllUserWithDetails();					
 		}

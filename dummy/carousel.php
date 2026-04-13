@@ -1,19 +1,34 @@
 <div x-data="{            
-    autoplayIntervalTime: 5000,
+    autoplayIntervalTime: 4000,
     slides: [                
         {
-            imgSrc: './images/slides/5.jpg' 
+            imgSrc: './images/slides/5.jpg',
+            imgAlt: 'Vibrant abstract painting with swirling blue and light pink hues on a canvas.',  
+            title: 'Front end developers',
+            description: 'The architects of the digital world, constantly battling against their mortal enemy – browser compatibility.',       
+            ctaUrl: 'https://example.com',
+            ctaText: 'Become a Developer',        
         },                
         {                    
-            imgSrc: './images/slides/6.jpg',    
+            imgSrc: './images/slides/6.jpg',                    
+            imgAlt: 'Vibrant abstract painting with swirling red, yellow, and pink hues on a canvas.',  
+            title: 'Back end developers',
+            description: 'Because not all superheroes wear capes, some wear headphones and stare at terminal screens',        
+            ctaUrl: 'https://example.com',
+            ctaText: 'Become a Developer',        
         },                
         {                    
-            imgSrc: './images/slides/7.jpg',    
+            imgSrc: './images/slides/7.jpg',                    
+            imgAlt: 'Vibrant abstract painting with swirling blue and purple hues on a canvas.',    
+            title: 'Full stack developers',
+            description: 'Where &quot;burnout&quot; is just a fancy term for &quot;Tuesday&quot;.',     
+            ctaUrl: 'https://example.com',
+            ctaText: 'Become a Developer',      
         },            
     ],            
     currentSlideIndex: 1,
     isPaused: false,
-    autoplayInterval: 5,
+    autoplayInterval: null,
     previous() {                
         if (this.currentSlideIndex > 1) {                    
             this.currentSlideIndex = this.currentSlideIndex - 1                
@@ -44,7 +59,7 @@
         this.autoplay()
     },    
 }" x-init="autoplay" class="relative w-full overflow-hidden">
-    <div class="relative min-h-[60svh] w-full">
+    <div class="relative min-h-[88svh] w-full">
         <template x-for="(slide, index) in slides">
             <div x-cloak x-show="currentSlideIndex == index + 1" class="absolute inset-0" x-transition.opacity.duration.1000ms>
                 

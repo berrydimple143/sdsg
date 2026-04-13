@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SDSD Initiative Inc. - Administration Panel</title>
   <link href="../src/output.css" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="../images/logo.ico">
   <script defer src="../js/alpinejs.cdn.min.js"></script>  
   <script src="../js/chart.min.js"></script>
 </head>

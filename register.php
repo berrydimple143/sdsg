@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SDSD Initiative Inc.</title>
   <link href="./src/output.css" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="./images/logo.ico">
   <script defer src="./js/alpinejs.cdn.min.js"></script>
   <script defer src="./js/cropper-2.1.0.js"></script>  
 </head>
@@ -197,7 +198,7 @@
 			isSupported: false,
 			stream: null,
 			track: null,
-			filename: null,
+			filename: 'John VJ-Rosalita-2026-3-12-15-3-27.png',
 		    errors: {},
 			loadingPictureModal: null,
 			printCanvas() {
@@ -242,146 +243,29 @@
 				this.drawText();
 			},
 			drawText() {
-				this.drawForm(
-					this.firstname, 
-					this.lastname, 
-					this.middlename, 
-					this.suffix,
-					this.nickname,
-					this.region, 
-					this.province, 
-					this.city,
-					this.district,
-					this.barangay,
-					this.purok,
-					this.zipcode,
-					this.bday,
-					this.birthplace,
-					this.age,
-					this.religion,
-					this.nationality,
-					this.country,
-					this.civilstatus, 
-					this.gender,
-					this.bloodtype,
-					this.height,
-					this.weight,
-					this.father,
-					this.mother,
-					this.spouse,
-					this.education,
-					this.position,
-					this.skill,
-					this.organization,
-					this.contact,
-					this.fb,
-					this.email,
-					this.sss,
-					this.philhealth,
-					this.voter,
-					this.passport,
-					this.profid,
-					this.pagibig,
-					this.license,
-					this.senior,
-					this.classification,
-					this.chairman,
-					this.area,
-					this.mcnumber,
-					this.tribe,
-					this.contactname,
-					this.contactnumber,
-					this.contactaddress,
-					this.benname1,
-					this.benname2,
-					this.benname3,
-					this.benname4,
-					this.convertDate(this.benbirthdate1),
-					this.convertDate(this.benbirthdate2),
-					this.convertDate(this.benbirthdate3),
-					this.convertDate(this.benbirthdate4),
-					this.benage1,
-					this.benage2,
-					this.benage3,
-					this.benage4,
-					this.benrelationship1,
-					this.benrelationship2,
-					this.benrelationship3,
-					this.benrelationship4,
-					this.insurance,
-					this.burial,
-					this.courseToAvail
+				this.drawForm(this.firstname, this.lastname, this.middlename, this.suffix,
+					this.nickname, this.region, this.province, this.city, this.district,
+					this.barangay, this.purok, this.zipcode, this.bday, this.birthplace,
+					this.age, this.religion, this.nationality, this.country, this.civilstatus, 
+					this.gender, this.bloodtype, this.height, this.weight, this.father,
+					this.mother, this.spouse, this.education, this.position, this.skill,
+					this.organization, this.contact, this.fb, this.email, this.sss,
+					this.philhealth, this.voter, this.passport, this.profid, this.pagibig,
+					this.license, this.senior, this.classification, this.chairman, this.area,
+					this.mcnumber, this.tribe, this.contactname, this.contactnumber,
+					this.contactaddress, this.benname1, this.benname2, this.benname3,
+					this.benname4, this.convertDate(this.benbirthdate1), this.convertDate(this.benbirthdate2),
+					this.convertDate(this.benbirthdate3), this.convertDate(this.benbirthdate4),
+					this.benage1, this.benage2, this.benage3, this.benage4, this.benrelationship1,
+					this.benrelationship2, this.benrelationship3, this.benrelationship4,
+					this.insurance, this.burial, this.courseToAvail, this.filename
 				);
 			},
-			drawForm(
-				fname, 
-				lname, 
-				mname, 
-				sfx, 
-				nname, 
-				reg, 
-				pr, 
-				ct, 
-				ds, 
-				br, 
-				pk, 
-				zp, 
-				bdy, 
-				bp, 
-				ag, 
-				rlg,
-				nat,
-				cnty,
-				cstat,
-				gend,
-				bldt,
-				hgt,
-				wgt,
-				fth,
-				mth,
-				sps,
-				edc,
-				pos,
-				skl,
-				org,
-				cntc,
-				fcb,
-				eml,
-				ss,
-				phil,
-				vtr,
-				pspt,
-				prof,
-				pag,
-				lic,
-				sen,
-				cls,
-				chr,
-				are,
-				mcn,
-				trb,
-				ctcnam,
-				ctcnum,
-				ctcadr,
-				benn1,
-				benn2,
-				benn3,
-				benn4,
-				benb1,
-				benb2,
-				benb3,
-				benb4,
-				beng1,
-				beng2,
-				beng3,
-				beng4,
-				benr1,
-				benr2,
-				benr3,
-				benr4,
-				ins,
-				bur,
-				cta
+			drawForm(fname, lname, mname, sfx, nname, reg, pr, ct, ds, br, pk, zp, bdy, bp, ag, 
+				rlg, nat, cnty, cstat, gend, bldt, hgt, wgt, fth, mth, sps, edc, pos, skl, org,
+				cntc, fcb, eml, ss, phil, vtr, pspt, prof, pag, lic, sen, cls, chr, are, mcn,
+				trb, ctcnam, ctcnum, ctcadr, benn1, benn2, benn3, benn4, benb1, benb2, benb3,
+				benb4, beng1, beng2, beng3, beng4, benr1, benr2, benr3, benr4, ins, bur, cta, fln
 			) {
 				const canvas = document.getElementById('formCanvas');
 				const ctx = canvas.getContext('2d');
@@ -390,7 +274,12 @@
 					ctx.drawImage(img, 0, 0);
 					ctx.font = '25px Arial';
 					ctx.fillStyle = '#3e3d3d'; 
-					const fullname = `${fname}  ${mname}  ${lname}  ${sfx}`;					
+					const fullname = `${fname}  ${mname}  ${lname}  ${sfx}`;
+					if(fln !== '') {
+						const img = new Image();
+						img.src = `./images/photos/${fln}`;
+						ctx.drawImage(img, 1300, 65);
+					}					
 					if(ins == '50') {
 						ctx.fillText('/', 220, 2063);
 					} else if(ins == '100') {
@@ -511,7 +400,7 @@
 					if(cta != '') {
 						ctarr = cta.match(/(?:\S+\s*){1,4}/g);						
 						ctx.fillText(ctarr[0], 1170, 2095);	
-						if(ctarr[1] !== undefined) {
+						if(ctarr[1] !== undefined || ctarr[1] !== '') {
 							ctx.fillText(ctarr[1], 1170, 2125);	
 						}				
 					}					
@@ -576,7 +465,7 @@
 					body: formData
 				});
 				if (response.ok) {					
-					console.log("Upload successful!");
+					console.log("Picture was uploaded successfully!");
 				} else {
 					console.log(response);
 				}	
@@ -699,13 +588,13 @@
 				fourthBeneficiaryRelation.classList.remove('hidden');
 			},
 
-			async getZipcode() {
-				return await fetch('./data/zipcodes.json')
-				.then(response => response.json())
-				.then(json => {
-					console.log(json); 
-				}).catch(error => console.error('Error fetching JSON:', error));
-			},
+			// async getZipcode() {
+			// 	return await fetch('./data/zipcodes.json')
+			// 	.then(response => response.json())
+			// 	.then(json => {
+			// 		console.log(json); 
+			// 	}).catch(error => console.error('Error fetching JSON:', error));
+			// },
 
 			async getAllDataWithId(page, id) {
                 let response = await fetch('http://localhost/sdsg/api/admin/getAllDataWithId.php', {
@@ -793,73 +682,27 @@
 		    },
 
 		    clearInputs() {
-		    		this.firstname = '';
-		    		this.lastname = '';
-		    		this.middlename = '';		    		
-		    		this.email = '';
-					this.region = '';
-		    		this.province = '';
-		    		this.city = '';		    		
-		    		this.district = '';
-					this.barangay = '';
-		    		this.purok = '';
-		    		this.civilstatus = '';		    		
-		    		this.gender = '';
-					this.religion = '';
-		    		this.bloodtype = '';
-		    		this.nickname = '';		    		
-		    		this.suffix = '';
-					this.zipcode = '';
-		    		this.birthdate = '1982-02-21';
-		    		this.birthplace = '';		    		
-		    		this.age = '';
-					this.nationality = '';
-		    		this.country = '';
-		    		this.height = '';		    		
-		    		this.weight = '';
-					this.father = '';
-		    		this.mother = '';
-		    		this.spouse = '';		    		
-		    		this.education = '';
-					this.position = '';
-		    		this.skill = '';
-		    		this.organization = '';		    		
-		    		this.contact = '';
-					this.fb = '';
-		    		this.sss = '';
-		    		this.philhealth = '';		    		
-		    		this.voter = '';
-					this.passport = '';
-		    		this.profid = '';
-		    		this.pagibig = '';		    		
-		    		this.license = '';
-					this.senior = '';
-		    		this.chairman = '';
-		    		this.area = '';		    		
-		    		this.mcnumber = '';
-					this.classification = '';
-		    		this.tribe = '';
-		    		this.contactname = '';		    		
-		    		this.contactnumber = '';
-					this.contactaddress = '';
-		    		this.benname1 = '';
-		    		this.benage1 = '';
-		    		this.benrelationship1 = '';
-					this.benbirthdate1 = '2010-02-21';
-					this.benname2 = '';
-		    		this.benage2 = '';
-		    		this.benrelationship2 = '';
-					this.benbirthdate2 = '2010-02-21';
-					this.benname3 = '';
-		    		this.benage3 = '';
-		    		this.benrelationship3 = '';
-					this.benbirthdate3 = '2010-02-21';
-					this.benname4 = '';
-		    		this.benage4 = '';
-		    		this.benrelationship4 = '';
-					this.benbirthdate4 = '2010-02-21';
-					this.insurance = '';
-					this.burial = '';
+		    		this.firstname = ''; this.lastname = ''; this.middlename = '';		    		
+		    		this.email = ''; this.region = ''; this.province = '';
+		    		this.city = ''; this.district = ''; this.barangay = '';
+		    		this.purok = ''; this.civilstatus = ''; this.gender = '';
+					this.religion = ''; this.bloodtype = ''; this.nickname = '';		    		
+		    		this.suffix = ''; this.zipcode = ''; this.birthdate = ''; 
+					this.birthplace = ''; this.age = ''; this.nationality = ''; 
+					this.country = ''; this.height = ''; this.weight = ''; this.father = '';
+		    		this.mother = ''; this.spouse = ''; this.education = '';
+					this.position = ''; this.skill = ''; this.organization = '';		    		
+		    		this.contact = ''; this.fb = ''; this.sss = ''; this.philhealth = '';		    		
+		    		this.voter = ''; this.passport = ''; this.profid = ''; this.pagibig = '';		    		
+		    		this.license = ''; this.senior = ''; this.chairman = ''; this.area = '';		    		
+		    		this.mcnumber = ''; this.classification = ''; this.tribe = '';
+		    		this.contactname = ''; this.contactnumber = ''; this.contactaddress = '';
+		    		this.benname1 = '';	this.benage1 = ''; this.benrelationship1 = '';
+					this.benbirthdate1 = ''; this.benname2 = ''; this.benage2 = '';
+		    		this.benrelationship2 = ''; this.benbirthdate2 = ''; this.benname3 = '';
+		    		this.benage3 = ''; this.benrelationship3 = ''; this.benbirthdate3 = '';
+					this.benname4 = ''; this.benage4 = ''; this.benrelationship4 = '';
+					this.benbirthdate4 = ''; this.insurance = ''; this.burial = '';
 					this.courseToAvail = '';
 		    },
 
@@ -871,74 +714,39 @@
 			        method: "POST",
 			        headers: {"Content-Type": "application/json"},
 			        body: JSON.stringify({ 
-			        	firstname: this.firstname,
-			        	lastname: this.lastname,
-			        	middlename: this.middlename,
-			        	email: this.email,
-						nickname: this.nickname,
-						suffix: this.suffix,
-						region_id: this.region_id,
-						province_id: this.province_id,
-						city_id: this.city_id,
-						district_id: this.district_id,
-						barangay_id: this.barangay_id,
-						purok_id: this.purok_id,
-						zipcode: this.zipcode,
-						birthdate: this.birthdate,
-						birthplace: this.birthplace,
-						age: this.age,
-						civilstatus: this.civilstatus,
-						gender: this.gender,
-						nationality: this.nationality,
-						country: this.country,
-						religion: this.religion,
-						bloodtype: this.bloodtype,
-						height: this.height,
-						weight: this.weight,
-						father: this.father,
-						mother: this.mother,
-						spouse: this.spouse,
-						education: this.education,
-						position: this.position,
-						skill: this.skill,
-						organization: this.organization,
-						contact: this.contact,
-						fb: this.fb,
-						sss: this.sss,
-						philhealth: this.philhealth,
-						voter: this.voter,
-						passport: this.passport,
-						profid: this.profid,
-						pagibig: this.pagibig,
-						license: this.license,
-						senior: this.senior,
-						chairman: this.chairman,
-						area: this.area,
-						mcnumber: this.mcnumber,
-						classification: this.classification,
-						tribe: this.tribe,
-						contactname: this.contactname,
-						contactnumber: this.contactnumber,
-						contactaddress: this.contactaddress,
-						benname1: this.benname1,
-						benage1: this.benage1,
-						benrelationship1: this.benrelationship1,
-						benbirthdate1: this.benbirthdate1,
-						benname2: this.benname2,
-						benage2: this.benage2,
-						benrelationship2: this.benrelationship2,
-						benbirthdate2: this.benbirthdate2,
-						benname3: this.benname3,
-						benage3: this.benage3,
-						benrelationship3: this.benrelationship3,
-						benbirthdate3: this.benbirthdate3,
-						benname4: this.benname4,
-						benage4: this.benage4,
-						benrelationship4: this.benrelationship4,
-						benbirthdate4: this.benbirthdate4,
-						insurance: this.insurance,
-						burial: this.burial,
-						courseToAvail: this.courseToAvail
+			        	firstname: this.firstname, lastname: this.lastname,
+			        	middlename: this.middlename, email: this.email,
+						nickname: this.nickname, suffix: this.suffix,
+						region_id: this.region_id, province_id: this.province_id,
+						city_id: this.city_id, district_id: this.district_id,
+						barangay_id: this.barangay_id, purok_id: this.purok_id,
+						zipcode: this.zipcode, birthdate: this.birthdate,
+						birthplace: this.birthplace, age: this.age,
+						civilstatus: this.civilstatus, gender: this.gender,
+						nationality: this.nationality, country: this.country,
+						religion: this.religion, bloodtype: this.bloodtype,
+						height: this.height, weight: this.weight,
+						father: this.father, mother: this.mother,
+						spouse: this.spouse, education: this.education,
+						position: this.position, skill: this.skill,
+						organization: this.organization, contact: this.contact,
+						fb: this.fb, sss: this.sss, philhealth: this.philhealth,
+						voter: this.voter, passport: this.passport,
+						profid: this.profid, pagibig: this.pagibig,
+						license: this.license, senior: this.senior,
+						chairman: this.chairman, area: this.area,
+						mcnumber: this.mcnumber, classification: this.classification,
+						tribe: this.tribe, contactname: this.contactname,
+						contactnumber: this.contactnumber, contactaddress: this.contactaddress,
+						benname1: this.benname1, benage1: this.benage1,
+						benrelationship1: this.benrelationship1, benbirthdate1: this.benbirthdate1,
+						benname2: this.benname2, benage2: this.benage2,
+						benrelationship2: this.benrelationship2, benbirthdate2: this.benbirthdate2,
+						benname3: this.benname3, benage3: this.benage3,
+						benrelationship3: this.benrelationship3, benbirthdate3: this.benbirthdate3,
+						benname4: this.benname4, benage4: this.benage4,
+						benrelationship4: this.benrelationship4, benbirthdate4: this.benbirthdate4,
+						insurance: this.insurance, burial: this.burial, courseToAvail: this.courseToAvail
 			        })
 			      });
 
@@ -958,16 +766,15 @@
 						}, 2000);
 					}, 2000);
 			      }
-		  } catch (error) {
-		      		console.error('Error fetching data:', error);
-          } finally {
-              this.loading = false;
-          }
+			} catch (error) {
+						console.error('Error fetching data:', error);
+			} finally {
+				this.loading = false;
+			}
 
 		    }
 		  }
 		}
 	</script>
-
 </body>
 </html>

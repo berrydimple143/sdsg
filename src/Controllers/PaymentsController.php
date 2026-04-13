@@ -50,6 +50,10 @@
 			return Payment::changeStatus($id, $status);
 		}
 
+        public function changeUserStatus($id, $status) {
+			return User::changeStatus($id, $status);
+		}
+
         public function getAllDataByField($data) {
             $user_id = trim(htmlspecialchars($data['user_id']));
             return Payment::getAllDataByField('user_id', $user_id, 'created_at DESC');

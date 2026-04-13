@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SDSD Initiative Inc. - Administration Panel - Barangays</title>
   <link href="../src/output.css" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="../images/logo.ico">
   <script defer src="../js/alpinejs.cdn.min.js"></script>
 </head>
 <body x-data="pageLoad()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover bg-no-repeat">      
@@ -103,7 +104,7 @@
                 this.addModal = document.getElementById('addModal');
                 this.addModal.classList.remove('hidden');                                
             },
-            async changeStatus(id, status) {                
+            async changeStatus(id, status) {              
                 try {
                     let response = await fetch('http://localhost/sdsg/api/admin/changeStatus.php', {
                                     method: 'POST',

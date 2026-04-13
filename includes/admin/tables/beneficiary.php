@@ -20,8 +20,9 @@
     </thead>
     <tbody>
         <template x-for="ben in beneficiaries" :key="ben.id">
-
-            <tr class="bg-brand border-b border-brand-light hover:bg-green-500">
+            <tr 
+                :class="{ 'bg-brand hover:bg-green-500': ben.status, 'bg-gray-300 hover:bg-yellow-500': !ben.status }" 
+                class="border-b border-brand-light">
                 <th scope="row" x-text="ben.lastname" class="px-6 py-4 font-medium text-fg-brand-subtle whitespace-nowrap">                                
                 </th>
                 <td class="px-6 py-4" x-text="ben.firstname"></td>
@@ -43,8 +44,12 @@
                     <button type="button" class="inline-flex items-center  text-white bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:focus:ring-yellow-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1 focus:outline-none cursor-pointer">
                     <?php include('../includes/admin/icons/region-edit.php'); ?>
                     Edit
+                    </button>                    
+                    <button x-show="!ben.status" @click.prevent="changeUserStatus(ben.id, 1)" type="button" class="inline-flex items-center text-white bg-gradient-to-r from-green-600 via-green-700 to-green-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-400 dark:focus:ring-green-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1  cursor-pointer">
+                    <?php include('../includes/admin/icons/active.php'); ?>
+                    Enable
                     </button>
-                    <button type="button" class="inline-flex items-center  text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1  cursor-pointer">
+                    <button x-show="ben.status" @click.prevent="changeUserStatus(ben.id, 0)" type="button" class="inline-flex items-center  text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1  cursor-pointer">
                     <?php include('../includes/admin/icons/inactive.php'); ?>
                     Disable
                     </button>

@@ -27,7 +27,12 @@
 		} elseif($data->page == "payment") {
 			$controller = new PaymentsController();
 		}
-        $info = $controller->changeStatus($data->id, $data->status);
+		if($data->page == "beneficiary") {
+			$controller = new PaymentsController();
+			$info = $controller->changeUserStatus($data->id, $data->status);
+		} else {
+			$info = $controller->changeStatus($data->id, $data->status);
+		}
 		if($info) {
 			http_response_code(200);
 			echo json_encode([
