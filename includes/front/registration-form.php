@@ -6,8 +6,7 @@
         <div>&nbsp;</div>   
         <button type="button" id="photoButton" @click.prevent="captureImage" title="Click to take a photo" class="text-white text-shadow-lg bg-blue-700 border-1 border-blue-200 hover:bg-blue-900 font-medium rounded-none text-lg w-full sm:w-auto px-5 py-8 text-center cursor-pointer shadow-lg"><span>Take a picture here</span>
         </button>    
-        <!-- <img x-ref="uploadedImage" id="uploadedImage" class="bg-blue-700 border-1 border-blue-200 p-2 hidden"> -->
-         <canvas id="pictureCanvas" x-ref="printablePicture" width="160" height="200" class="hidden"></canvas>
+        <img x-ref="uploadedImage" id="uploadedImage" class="bg-blue-700 border-1 border-blue-200 p-2 hidden">
         <div>&nbsp;</div>
     </div>
     <div class="pb-3">

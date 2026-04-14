@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SDSD Initiative Inc.</title>
   <link href="./src/output.css" rel="stylesheet">
-  <link rel="icon" type="image/x-icon" href="./images/logo.ico">  
-  <script defer src="./js/alpinejs.cdn.min.js"></script> 
+  <link rel="icon" type="image/x-icon" href="./images/logo.ico">
+  <script defer src="./js/alpinejs.cdn.min.js"></script>
 </head>
 <body x-data="formApp()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover overflow-x-hidden">
 	<?php include('./includes/front/modals/registration-successful.php'); ?>	
@@ -22,7 +22,7 @@
 					    id="photoHolder" 			    
 						class="flex space-x-1 p-1">
 						<video class="" id="preview" autoplay playsinline width="400" height="340"></video>
-						<img x-ref="imageForCrop" id="imageForCrop" class="bg-blue-700 border-1 border-blue-200 p-2 hidden">
+						<!-- <img x-ref="uploadedImage" id="uploadedImage" class="bg-blue-700 border-1 border-blue-200 p-2 hidden"> -->
 					</div>
 					<div class="flex items-center space-x-2">
 					<button type="button" class="inline-flex items-center text-white bg-gradient-to-r from-green-600 via-green-700 to-green-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-400 dark:focus:ring-green-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-md px-4 py-3 mt-2 cursor-pointer" @click.prevent="captureNow">
@@ -53,7 +53,8 @@
 	  		<?php include('./includes/front/registration-form.php'); ?>
 		</div>
 	</div>
-	<script>	
+	<script>				    
+
 		function formApp() {
 		  return {
 		  	regions: [],
@@ -201,9 +202,7 @@
 		    errors: {},
 			loadingPictureModal: null,
 			photoButton: null,
-			pictureCanvas: null,
-			imageForCrop: null,			
-			croppedDataUrl: null,
+			uploadedImage: null,
 			printCanvas() {
                 // 1. Get data URL
                 const dataUrl = this.$refs.printableForm.toDataURL('image/png');
@@ -472,34 +471,9 @@
 				setTimeout(() => {					
 					this.loadingPictureModal.classList.add('hidden');
 					this.photoButton.classList.add('hidden');	
-					this.video.classList.add('hidden');	
-					this.pictureCanvas.classList.remove('hidden');
-					this.cropImage(`./images/photos/${this.filename}`);
-					//this.$refs.imageForCrop.src = `./images/photos/${this.filename}`;
-					console.log(this.$ref.printablePicture.src);
+					this.uploadedImage.classList.remove('hidden');
+					this.$refs.uploadedImage.src = `./images/photos/${this.filename}`;
 				}, 3000);
-			},
-			cropImage(imgUrl) {
-				const canvas = document.getElementById('pictureCanvas');
-				const ctx = canvas.getContext('2d');
-				const img = new Image();
-
-				img.onload = function() {
-					// Define crop coordinates and dimensions
-					const sx = 50, sy = 50, sWidth = 160, sHeight = 200; // Source
-					const dx = 0, dy = 0, dWidth = 160, dHeight = 200; // Destination
-
-					// Set canvas to the size of the crop
-					canvas.width = dWidth;
-					canvas.height = dHeight;
-
-					// Draw only the specified part of the image
-					ctx.drawImage(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
-					
-					// Convert to a base64 string or Blob for display/upload
-					const croppedDataUrl = canvas.toDataURL('image/jpeg');					
-				};
-				img.src = imgUrl;
 			},
 			downloadSameOrigin(imgUrl, fileName) {
 				const link = document.createElement('a');
@@ -592,8 +566,7 @@
 				this.drawText();
 				this.getAllData('region');
 				this.photoButton = document.getElementById("photoButton");
-				this.pictureCanvas = document.getElementById("pictureCanvas");
-				this.imageForCrop = document.getElementById("imageForCrop");				
+				this.uploadedImage = document.getElementById("uploadedImage");
 			},
 
 			getTribe(trb) {
