@@ -85,7 +85,7 @@
 			]);
 		}
 
-		public static function createMember($firstname, $middlename, $lastname, $email, $region_id, $province_id, $city_id, $district_id, $barangay_id, $purok_id, $civilstatus, $gender, $religion, $bloodtype, $nickname, $suffix, $zipcode, $birthdate, $birthplace, $age, $nationality, $country, $height, $weight, $father, $mother, $spouse, $education, $position, $skill, $organization, $contact, $fb, $sss, $philhealth, $voter, $passport, $profid, $pagibig, $license, $senior, $chairman, $area, $mcnumber, $classification, $tribe, $contactname, $contactnumber, $contactaddress, $benname1, $benage1, $benrelationship1, $benbirthdate1, $benname2, $benage2, $benrelationship2, $benbirthdate2, $benname3, $benage3, $benrelationship3, $benbirthdate3, $benname4, $benage4, $benrelationship4, $benbirthdate4, $insurance, $burial, $courseToAvail) {
+		public static function createMember($firstname, $middlename, $lastname, $email, $region_id, $province_id, $city_id, $district_id, $barangay_id, $purok_id, $civilstatus, $gender, $religion, $bloodtype, $nickname, $suffix, $zipcode, $birthdate, $birthplace, $age, $nationality, $country, $height, $weight, $father, $mother, $spouse, $education, $position, $skill, $organization, $contact, $fb, $sss, $philhealth, $voter, $passport, $profid, $pagibig, $license, $senior, $chairman, $area, $mcnumber, $classification, $tribe, $contactname, $contactnumber, $contactaddress, $benname1, $benage1, $benrelationship1, $benbirthdate1, $benname2, $benage2, $benrelationship2, $benbirthdate2, $benname3, $benage3, $benrelationship3, $benbirthdate3, $benname4, $benage4, $benrelationship4, $benbirthdate4, $insurance, $burial, $courseToAvail, $filename) {
 			$pdo = Database::connect();
 			$user = $pdo->prepare("INSERT INTO users(firstname, middlename, lastname, email,  status, created_at, updated_at) VALUES(:firstname, :middlename, :lastname, :email,  :status, :created_at, :updated_at)");			
 
@@ -144,11 +144,12 @@
 					":organization" => $organization
 				]);
 
-				$cont = $pdo->prepare("INSERT INTO contact_information(user_id, contact, fb) VALUES(:user_id, :contact, :fb)");	
+				$cont = $pdo->prepare("INSERT INTO contact_information(user_id, contact, fb, photo) VALUES(:user_id, :contact, :fb, :photo)");	
 				$inserted5 = $cont->execute([
-					":user_id" =>$uid,
-					":contact" =>$contact,
-					":fb" =>$fb
+					":user_id" => $uid,
+					":contact" => $contact,
+					":fb" => $fb,
+					":photo" => $filename
 				]);
 
 				$gov = $pdo->prepare("INSERT INTO government_id(user_id, sss, philhealth, voter, passport, profid, pagibig, license, senior) VALUES(:user_id, :sss, :philhealth, :voter, :passport, :profid, :pagibig, :license, :senior)");	

@@ -1,6 +1,18 @@
 <div x-data="{            
     autoplayIntervalTime: 5000,
-    slides: [                
+    slides: [        
+        {
+            imgSrc: './images/slides/1.jpg' 
+        }, 
+        {
+            imgSrc: './images/slides/2.jpg' 
+        }, 
+        {
+            imgSrc: './images/slides/3.jpg' 
+        }, 
+        {
+            imgSrc: './images/slides/4.jpg' 
+        },         
         {
             imgSrc: './images/slides/5.jpg' 
         },                
@@ -9,7 +21,10 @@
         },                
         {                    
             imgSrc: './images/slides/7.jpg',    
-        },            
+        },      
+        {                    
+            imgSrc: './images/slides/8.jpg',    
+        },         
     ],            
     currentSlideIndex: 1,
     isPaused: false,

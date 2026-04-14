@@ -89,6 +89,7 @@
 		$data['insurance'] = $user->insurance;
 		$data['burial'] = $user->burial;
         $data['courseToAvail'] = $user->courseToAvail;
+		$data['filename'] = $user->filename;
 
 		$returnData = $newUser->storeMember($data);
 		if($returnData == "ok") {

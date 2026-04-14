@@ -1,6 +1,14 @@
 <form @submit.prevent="submit" class="max-w-7xl mx-auto bg-green-600 px-4 py-3 shadow-2xl">
-    <div class="mb-6">
-            <p class="text-center text-white text-2xl uppercase text-shadow-lg bg-gradient-to-t from-green-600 to-green-700 rounded-md py-2">* * * Member Registration Form * * *</p>
+    <div class="mb-2">
+            <p class="text-center text-white text-2xl uppercase text-shadow-lg bg-gradient-to-t from-green-600 to-green-700 rounded-md py-2">* * * Membership Registration Form * * *</p>
+    </div>
+    <div class="flex w-full justify-between items-center">         
+        <div>&nbsp;</div>   
+        <button type="button" id="photoButton" @click.prevent="captureImage" title="Click to take a photo" class="text-white text-shadow-lg bg-blue-700 border-1 border-blue-200 hover:bg-blue-900 font-medium rounded-none text-lg w-full sm:w-auto px-5 py-8 text-center cursor-pointer shadow-lg"><span>Take a picture here</span>
+        </button>    
+        <!-- <img x-ref="uploadedImage" id="uploadedImage" class="bg-blue-700 border-1 border-blue-200 p-2 hidden"> -->
+         <canvas id="pictureCanvas" x-ref="printablePicture" width="160" height="200" class="hidden"></canvas>
+        <div>&nbsp;</div>
     </div>
     <div class="pb-3">
         <p class="text-center text-gray-900 text-lg text-shadow-md uppercase bg-gradient-to-t from-green-400 to-green-200 rounded-md py-2">Personal Information</p>
@@ -9,13 +17,13 @@
         
         <div>
             <label for="firstname" class="text-white text-shadow-lg block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name <span class="text-red-500 text-md font-bold">*</span></label>
-            <input type="text" @blur.prevent="drawText" placeholder="Type your first name here ..." x-model="firstname" class="bg-white mt-1 block w-full h-2/3 outline-1 outline-gray-700 p-2 rounded-none border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required=""> 
+            <input type="text" @blur.prevent="drawText" placeholder="Type your first name here ..." x-model="firstname" id="firstname" class="bg-white mt-1 block w-full h-2/3 outline-1 outline-gray-700 p-2 rounded-none border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required=""> 
             <span x-show="errors.firstname" class="text-red-500" x-text="errors.firstname"></span>
         </div>
 
         <div>
             <label for="lastname" @blur.prevent="drawText" class="text-white text-shadow-lg block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name <span class="text-red-500 text-md font-bold">*</span></label>
-            <input type="text" placeholder="Type your last name here ..." x-model="lastname" class="bg-white mt-1 block w-full h-2/3 outline-1 outline-gray-700 p-2 rounded-none border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
+            <input type="text" placeholder="Type your last name here ..." id="lastname" x-model="lastname" class="bg-white mt-1 block w-full h-2/3 outline-1 outline-gray-700 p-2 rounded-none border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
             <span x-show="errors.lastname" class="text-red-500" x-text="errors.lastname"></span>
         </div>				    
         <div>
@@ -531,9 +539,7 @@
             <span x-show="errors.courseToAvail" class="text-red-500" x-text="errors.courseToAvail"></span>
         </div>
 
-        <div class="flex w-full justify-between items-center">            
-            <button type="button" @click.prevent="captureImage" title="Click to take a photo" class="text-white text-shadow-lg bg-blue-700 border-1 border-blue-200 hover:bg-blue-900 font-medium rounded-none text-lg w-full sm:w-auto px-5 py-2.5 text-center cursor-pointer shadow-lg"><span>Take a photo</span>
-            </button>     
+        <div class="flex w-full justify-between items-center">
             <button type="button" title="Click to make a signature" class="text-white text-shadow-lg bg-red-700 border-1 border-red-200 hover:bg-red-900 font-medium rounded-none text-lg w-full sm:w-auto px-5 py-2.5 text-center cursor-pointer shadow-lg"><span>Signature here</span>
             </button>          
         </div>

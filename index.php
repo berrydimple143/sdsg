@@ -9,7 +9,7 @@
   <script defer src="./js/alpinejs.cdn.min.js"></script>
   <script src="./js/elements@1.js" type="module"></script>
 </head>
-<body x-data="pageLoad" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover bg-no-repeat">
+<body x-data="pageLoad" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover bg-no-repeat overflow-x-hidden">
   		
     <?php include('./includes/front/site/header.php'); ?>
     <div class="flex-wrap md:flex">

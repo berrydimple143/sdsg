@@ -17,6 +17,7 @@
     <?php include('../includes/admin/modals/add-successful.php'); ?>
     <?php include('../includes/admin/modals/delete-successful.php'); ?>
     <?php include('../includes/admin/modals/edit-successful.php'); ?>
+    <canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="top-0 left-0 hidden"></canvas>
 
     <div class="flex h-screen bg-transparent">
         <input type="checkbox" id="menu-toggle" class="hidden peer">
@@ -66,6 +67,152 @@
             errors: [],
             beneficiaries: [],
             payments: [],
+            drawForm(fname, lname, mname, sfx, nname, reg, pr, ct, ds, br, pk, zp, bdy, bp, ag, 
+				rlg, nat, cnty, cstat, gend, bldt, hgt, wgt, fth, mth, sps, edc, pos, skl, org,
+				cntc, fcb, eml, ss, phil, vtr, pspt, prof, pag, lic, sen, cls, chr, are, mcn,
+				trb, ctcnam, ctcnum, ctcadr, benn1, benn2, benn3, benn4, benb1, benb2, benb3,
+				benb4, beng1, beng2, beng3, beng4, benr1, benr2, benr3, benr4, ins, bur, cta, fln
+			) {
+				const canvas = document.getElementById('formCanvas');
+				const ctx = canvas.getContext('2d');
+				const img = new Image();
+				img.onload = function() {
+					ctx.drawImage(img, 0, 0);
+					ctx.font = '25px Arial';
+					ctx.fillStyle = '#3e3d3d'; 
+					const fullname = `${fname}  ${mname}  ${lname}  ${sfx}`;
+					if(fln !== '') {
+						const img = new Image();
+						img.src = `./images/photos/${fln}`;
+						ctx.drawImage(img, 1300, 65);
+					}					
+					if(ins == '50') {
+						ctx.fillText('/', 220, 2063);
+					} else if(ins == '100') {
+						ctx.fillText('/', 220, 2095);
+					} else if(ins == '150') {
+						ctx.fillText('/', 220, 2135);
+					} else if(ins == '200') {
+						ctx.fillText('/', 390, 2063);
+					} else if(ins == '250') {
+						ctx.fillText('/', 390, 2095);
+					} else if(ins == '300') {
+						ctx.fillText('/', 390, 2135);
+					}
+					if(bur == '50') {
+						ctx.fillText('/', 750, 2063);
+					} else if(bur == '100') {
+						ctx.fillText('/', 750, 2095);
+					} else if(bur == '150') {
+						ctx.fillText('/', 750, 2135);
+					} else if(bur == '200') {
+						ctx.fillText('/', 920, 2063);
+					} else if(bur == '250') {
+						ctx.fillText('/', 920, 2095);
+					} else if(bur == '300') {
+						ctx.fillText('/', 920, 2135);
+					}
+					if(cls == "4P's") {
+						ctx.fillText('/', 435, 1490);
+					} else if(cls == "IP's") {
+						ctx.fillText('/', 545, 1490);
+					}
+					if(trb == "Muslim") {
+						ctx.fillText('/', 785, 1490);
+					} else {
+						ctx.fillText('/', 947, 1490);
+						ctx.fillText(trb, 1100, 1490);
+					} 								
+					if(edc == 'High School Graduate') {
+						ctx.fillText("/", 508, 1030);
+					} else if(edc == 'College Graduate') {
+						ctx.fillText("/", 837, 1030);
+					} else if(edc == 'Vocational') {
+						ctx.fillText("/", 1117, 1030);
+					} else if(edc == 'Graduate Studies') {
+						ctx.fillText("/", 1297, 1030);
+					}					
+					if(cstat == 'Single') {
+						ctx.fillText("/", 391, 725);
+					} else if(cstat == 'Married') {
+						ctx.fillText("/", 545, 725);
+					} else if(cstat == 'Separated') {
+						ctx.fillText("/", 727, 725);
+					} else if(cstat == 'Widowed') {
+						ctx.fillText("/", 947, 725);
+					}
+					if(gend == 'Male') {
+						ctx.fillText("/", 1275, 725);
+					} else if(gend == 'Female') {
+						ctx.fillText("/", 1405, 725);
+					}					
+					ctx.fillText(fullname, 300, 597);			
+					ctx.fillText(nname, 1290, 597);
+					ctx.fillText(reg, 320, 635);
+					ctx.fillText(pr, 460, 635);
+					ctx.fillText(ct, 680, 635);
+					ctx.fillText(ds, 940, 635);		
+					ctx.fillText(br, 1115, 635);
+					ctx.fillText(pk, 1310, 635);
+					ctx.fillText(zp, 1500, 635);
+					ctx.fillText(bdy, 365, 770);
+					ctx.fillText(bp, 880, 770);	
+					ctx.fillText(ag, 1490, 770);
+					ctx.fillText(rlg, 330, 805);						
+					ctx.fillText(nat, 980, 805);
+					ctx.fillText(cnty, 1300, 805);		
+					ctx.fillText(fth, 430, 915);
+					ctx.fillText(mth, 1150, 915);
+					ctx.fillText(sps, 410, 950);
+					ctx.fillText(bldt, 380, 840);
+					ctx.fillText(hgt, 610, 840);
+					ctx.fillText(wgt, 880, 840);
+					ctx.fillText(pos, 340, 1070);
+					ctx.fillText(skl, 1000, 1070);
+					ctx.fillText(org, 200, 1140);		
+					ctx.fillText(cntc, 395, 1255);
+					ctx.fillText(fcb, 860, 1255);
+					ctx.fillText(eml, 1312, 1255);	
+					ctx.fillText(ss, 330, 1335);
+					ctx.fillText(phil, 910, 1335);
+					ctx.fillText(vtr, 1380, 1335);	
+					ctx.fillText(pspt, 350, 1370);
+					ctx.fillText(prof, 850, 1370);	
+					ctx.fillText(pag, 1330, 1370);
+					ctx.fillText(lic, 510, 1405);
+					ctx.fillText(sen, 1230, 1405);	
+					ctx.fillText(chr, 455, 1535);	
+					ctx.fillText(are, 870, 1535);
+					ctx.fillText(mcn, 1270, 1535);			
+					ctx.fillText(ctcnam, 305, 1685);	
+					ctx.fillText(ctcnum, 1190, 1685);
+					ctx.fillText(ctcadr, 340, 1725);
+					ctx.fillText(benn1, 195, 1850);	
+					ctx.fillText(benn2, 195, 1900);
+					ctx.fillText(benn3, 195, 1955);
+					//ctx.fillText(benn4, 340, 1725);
+					ctx.fillText(benb1, 555, 1850);	
+					ctx.fillText(benb2, 555, 1900);
+					ctx.fillText(benb3, 555, 1955);
+					//ctx.fillText(benb4, 340, 1725);
+					ctx.fillText(beng1, 1040, 1850);	
+					ctx.fillText(beng2, 1040, 1900);
+					ctx.fillText(beng3, 1040, 1955);
+					//ctx.fillText(beng4, 340, 1725);
+					ctx.fillText(benr1, 1320, 1850);	
+					ctx.fillText(benr2, 1320, 1900);
+					ctx.fillText(benr3, 1320, 1955);
+					//ctx.fillText(benr4, 340, 1725);
+					if(cta != '') {
+						ctarr = cta.match(/(?:\S+\s*){1,4}/g);						
+						ctx.fillText(ctarr[0], 1170, 2095);	
+						if(ctarr[1] !== undefined || ctarr[1] !== '') {
+							ctx.fillText(ctarr[1], 1170, 2125);	
+						}				
+					}					
+				};
+				img.src = './images/form.jpg';				
+			},
             cancelUpdate() {                
                 this.editPaymentModal.classList.add('hidden');
             },
@@ -322,7 +469,7 @@
                 paymentModal.classList.add('hidden');
             },
             showForm(id) {
-                alert("This will lead you to a registration form in pdf format for beneficiary with id number: " + id);
+                alert("This will lead you to download a registration form in png format for beneficiary with id number: " + id);
             },
             initDateInput(di) {
                 let dt = new Date();

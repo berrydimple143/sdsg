@@ -54,7 +54,7 @@
                     Disable
                     </button>
                     <button type="button" @click.prevent="showForm(ben.id)" class="inline-flex items-center  text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1  cursor-pointer">
-                    <?php include('../includes/admin/icons/form.php'); ?>
+                    <?php include('../includes/admin/icons/download.php'); ?>
                     Form
                     </button>                    
                     <button type="button" @click.prevent="showTable(ben.id)" class="inline-flex items-center  text-white bg-gradient-to-r from-gray-500 via-gray-600 to-gray-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-gray-300 dark:focus:ring-gray-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1 cursor-pointer">

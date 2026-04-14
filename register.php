@@ -5,11 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SDSD Initiative Inc.</title>
   <link href="./src/output.css" rel="stylesheet">
-  <link rel="icon" type="image/x-icon" href="./images/logo.ico">
-  <script defer src="./js/alpinejs.cdn.min.js"></script>
-  <script defer src="./js/cropper-2.1.0.js"></script>  
+  <link rel="icon" type="image/x-icon" href="./images/logo.ico">  
+  <script defer src="./js/alpinejs.cdn.min.js"></script> 
 </head>
-<body x-data="formApp()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover">
+<body x-data="formApp()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover overflow-x-hidden">
 	<?php include('./includes/front/modals/registration-successful.php'); ?>	
 	<?php include('./includes/front/modals/loadingPicture.php'); ?>			
 	<?php //include('./includes/front/modals/imageModal.php'); ?>	
@@ -21,28 +20,29 @@
 				<div class="max-w-4xl mx-auto flex-col">
 					<div		
 					    id="photoHolder" 			    
-						class="flex space-x-4 p-2">
+						class="flex space-x-1 p-1">
 						<video class="" id="preview" autoplay playsinline width="400" height="340"></video>
+						<img x-ref="imageForCrop" id="imageForCrop" class="bg-blue-700 border-1 border-blue-200 p-2 hidden">
 					</div>
-					<div class="flex items-center justify-between">
+					<div class="flex items-center space-x-2">
 					<button type="button" class="inline-flex items-center text-white bg-gradient-to-r from-green-600 via-green-700 to-green-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-400 dark:focus:ring-green-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-md px-4 py-3 mt-2 cursor-pointer" @click.prevent="captureNow">
                     <?php include('./includes/admin/icons/camera.php'); ?>
                     Capture Now
                     </button>
 					<button 
-					class="items-center text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-400 dark:focus:ring-blue-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-3 cursor-pointer mt-2"
-					@click.prevent="closeWindow">Close</button>
+					class="inline-flex items-center text-white bg-gradient-to-r from-orange-600 via-orange-700 to-orange-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-orange-400 dark:focus:ring-orange-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-3 cursor-pointer mt-2"
+					@click.prevent="closeWindow">
+					<?php include('./includes/admin/icons/close.php'); ?>
+					Close</button>
 					</div>
 					<button 
 					x-show="isSupported" 
-					@click.prevent="zoomNow"
-					class="items-center text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-400 dark:focus:ring-blue-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-3 cursor-pointer mt-2"
-					@click.prevent="captureNow">+</button>
+					@click.prevent="zoomNow" 
+					class="items-center text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-400 dark:focus:ring-blue-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-3 cursor-pointer mt-2">+</button>
 					<button 
 					x-show="isSupported" 
 					@click.prevent="zoomOut"
-					class="items-center text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-400 dark:focus:ring-blue-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-3 cursor-pointer mt-2"
-					@click.prevent="captureNow">-</button>
+					class="items-center text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-400 dark:focus:ring-blue-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-3 cursor-pointer mt-2">-</button>
 				</div>
 			</div>
 		</div>
@@ -53,8 +53,7 @@
 	  		<?php include('./includes/front/registration-form.php'); ?>
 		</div>
 	</div>
-	<script>				    
-
+	<script>	
 		function formApp() {
 		  return {
 		  	regions: [],
@@ -198,9 +197,13 @@
 			isSupported: false,
 			stream: null,
 			track: null,
-			filename: 'John VJ-Rosalita-2026-3-12-15-3-27.png',
+			filename: '',
 		    errors: {},
 			loadingPictureModal: null,
+			photoButton: null,
+			pictureCanvas: null,
+			imageForCrop: null,			
+			croppedDataUrl: null,
 			printCanvas() {
                 // 1. Get data URL
                 const dataUrl = this.$refs.printableForm.toDataURL('image/png');
@@ -218,13 +221,10 @@
             },
 			downloadCanvas() {
                 const canvas = this.$refs.printableForm;
-                // Convert canvas content to a PNG data URL
                 const image = canvas.toDataURL('image/png');
-                
-                // Create a temporary link element to trigger download
                 const link = document.createElement('a');
                 link.href = image;
-                link.download = 'sdsgform.png'; // Sets the filename
+                link.download = 'sdsgform.png';
                 link.click();
             },
 			convertDate(dt, frmt) {
@@ -269,7 +269,7 @@
 			) {
 				const canvas = document.getElementById('formCanvas');
 				const ctx = canvas.getContext('2d');
-				const img = new Image();				
+				const img = new Image();
 				img.onload = function() {
 					ctx.drawImage(img, 0, 0);
 					ctx.font = '25px Arial';
@@ -469,10 +469,37 @@
 				} else {
 					console.log(response);
 				}	
-				setTimeout(() => {
-					alert("Picture was uploaded successfully!");
+				setTimeout(() => {					
 					this.loadingPictureModal.classList.add('hidden');
+					this.photoButton.classList.add('hidden');	
+					this.video.classList.add('hidden');	
+					this.pictureCanvas.classList.remove('hidden');
+					this.cropImage(`./images/photos/${this.filename}`);
+					//this.$refs.imageForCrop.src = `./images/photos/${this.filename}`;
+					console.log(this.$ref.printablePicture.src);
 				}, 3000);
+			},
+			cropImage(imgUrl) {
+				const canvas = document.getElementById('pictureCanvas');
+				const ctx = canvas.getContext('2d');
+				const img = new Image();
+
+				img.onload = function() {
+					// Define crop coordinates and dimensions
+					const sx = 50, sy = 50, sWidth = 160, sHeight = 200; // Source
+					const dx = 0, dy = 0, dWidth = 160, dHeight = 200; // Destination
+
+					// Set canvas to the size of the crop
+					canvas.width = dWidth;
+					canvas.height = dHeight;
+
+					// Draw only the specified part of the image
+					ctx.drawImage(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+					
+					// Convert to a base64 string or Blob for display/upload
+					const croppedDataUrl = canvas.toDataURL('image/jpeg');					
+				};
+				img.src = imgUrl;
 			},
 			downloadSameOrigin(imgUrl, fileName) {
 				const link = document.createElement('a');
@@ -514,8 +541,9 @@
 				try {
 					const constraints = {
 						video: {
-							width: { ideal: 200 },
-							height: { ideal: 140 }
+							aspectRatio: { ideal: 1.0 },
+							width: { ideal: 150 },
+							height: { ideal: 160 }
 						}
 					};
 					this.stream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -526,12 +554,16 @@
 				}
 			},
 			captureImage() {
-				this.photoModal = document.getElementById('photoModal');
-				this.photoModal.classList.remove('hidden');
-				this.video = document.getElementById('preview');
-				this.startPreview();
-				// this.imageModal = document.getElementById('imageModal');
-				// this.imageModal.classList.remove('hidden');
+				if(this.firstname == '' && this.lastname == '') {
+					alert("You must enter a firstname and lastname first before taking picture!");
+				} else {
+					this.photoModal = document.getElementById('photoModal');
+					this.photoModal.classList.remove('hidden');
+					this.video = document.getElementById('preview');
+					this.startPreview();
+					// this.imageModal = document.getElementById('imageModal');
+					// this.imageModal.classList.remove('hidden');
+				}				
 			},
 			async getAllData(page) {
                 let response = await fetch('http://localhost/sdsg/api/admin/getAllData.php', {
@@ -556,9 +588,12 @@
                     this.puroks = res.data; 
                 }               
             },
-			init() {				
+			init() {
 				this.drawText();
 				this.getAllData('region');
+				this.photoButton = document.getElementById("photoButton");
+				this.pictureCanvas = document.getElementById("pictureCanvas");
+				this.imageForCrop = document.getElementById("imageForCrop");				
 			},
 
 			getTribe(trb) {
@@ -674,9 +709,24 @@
 				this.drawText();
 			},
 		    validate() {
-		      this.errors = {}
-		      if (!this.firstname) this.errors.firstname = "(Required)"
-		      if (!this.lastname) this.errors.lastname = "(Required)"
+		      this.errors = {}			  
+			  
+		      if(!this.firstname) {
+				this.errors.firstname = "(Required)";
+				alert('First Name is required');
+				const fname = document.getElementById("firstname");
+				fname.focus();
+			  } 
+		      if(!this.lastname) {
+				this.errors.lastname = "(Required)";
+				alert('Last Name is required');
+				const lname = document.getElementById("lastname");
+				lname.focus();
+			  } 
+			  if(!this.filename) {
+				alert('Picture is required');				
+				this.photoButton.focus();
+			  }
 		      //if (!this.email) this.errors.email = "(Required)"		      
 		      return Object.keys(this.errors).length === 0
 		    },
@@ -746,7 +796,8 @@
 						benrelationship3: this.benrelationship3, benbirthdate3: this.benbirthdate3,
 						benname4: this.benname4, benage4: this.benage4,
 						benrelationship4: this.benrelationship4, benbirthdate4: this.benbirthdate4,
-						insurance: this.insurance, burial: this.burial, courseToAvail: this.courseToAvail
+						insurance: this.insurance, burial: this.burial, 
+						courseToAvail: this.courseToAvail, filename: this.filename
 			        })
 			      });
 
