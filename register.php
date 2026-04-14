@@ -443,7 +443,12 @@
             },
 			async takeNow() {
 				try {
-					const blob = await this.imageCapture.takePhoto({fillLightMode: "auto", redEyeReduction: true});											
+					const blob = await this.imageCapture.takePhoto({
+						fillLightMode: "auto", 
+						redEyeReduction: true, 
+						imageWidth: 400,
+  						imageHeight: 450
+					});											
 					this.imageUrl = URL.createObjectURL(blob);
 					//const myFile = new File([this.imageUrl], "image.png", { type: "image/png" });
 					//console.log(myFile);
@@ -786,7 +791,7 @@
 						modal.classList.add('hidden');
 						this.downloadCanvas();
 						setTimeout(() => {
-							window.location = "login.php";
+							window.location = "index.php";
 						}, 2000);
 					}, 2000);
 			      }
