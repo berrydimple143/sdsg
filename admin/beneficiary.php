@@ -36,7 +36,7 @@
                             placeholder="Search beneficiary here and press enter" 
                             class="text-md bg-white h-6 w-80 p-4 rounded-sm border-green-900 shadow-md outline-none">
                     </div>
-                    <button type="button" class="inline-flex items-center text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
+                    <button type="button" @click.prevent="addBeneficiary" class="inline-flex items-center text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
                     <?php include('../includes/admin/icons/add.php'); ?>
                         Add Beneficiary
                     </button>
@@ -69,6 +69,12 @@
             beneficiaries: [],
             users: [],
             payments: [],
+            editBeneficiary(id) {
+                alert(`This will show a form to edit the beneficiary with ID number: ${id}`);
+            },
+            addBeneficiary() {
+                alert(`This will show a form to add a beneficiary.`);
+            },
             downloadCanvas() {
                 const canvas = this.$refs.printableForm;
                 const image = canvas.toDataURL('image/png');
