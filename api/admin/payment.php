@@ -30,6 +30,8 @@
 			$info = $controller->getAllDataByField($data);
 		} elseif($mode == 'single') {
 			$info = $controller->getOneDataByField($data);
+		} elseif($mode == 'download') {
+			$info = $controller->getDataAndAssocByField($data);
         }
         if($info) {
 			http_response_code(200);

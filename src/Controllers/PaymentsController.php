@@ -46,6 +46,11 @@
             return User::getOneDataByField('id', $user_id);
         }
 
+        public function getDataAndAssocByField($data) {
+            $user_id = trim(htmlspecialchars($data['user_id']));
+            return User::getDataAndAssocByField("usr.id", $user_id);
+        }
+
         public function changeStatus($id, $status) {
 			return Payment::changeStatus($id, $status);
 		}

@@ -17,6 +17,7 @@
     <?php include('../includes/admin/modals/add-successful.php'); ?>
     <?php include('../includes/admin/modals/delete-successful.php'); ?>
     <?php include('../includes/admin/modals/edit-successful.php'); ?>
+    
     <canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="top-0 left-0 hidden"></canvas>
 
     <div class="flex h-screen bg-transparent">
@@ -66,7 +67,35 @@
             owner: '',            
             errors: [],
             beneficiaries: [],
+            users: [],
             payments: [],
+            downloadCanvas() {
+                const canvas = this.$refs.printableForm;
+                const image = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.href = image;
+                link.download = `${this.user.firstname}-${this.user.lastname}.png`;
+                link.click();
+            },
+            drawText() {
+				this.drawForm(this.firstname, this.lastname, this.middlename, this.suffix,
+					this.nickname, this.region, this.province, this.city, this.district,
+					this.barangay, this.purok, this.zipcode, this.bday, this.birthplace,
+					this.age, this.religion, this.nationality, this.country, this.civilstatus, 
+					this.gender, this.bloodtype, this.height, this.weight, this.father,
+					this.mother, this.spouse, this.education, this.position, this.skill,
+					this.organization, this.contact, this.fb, this.email, this.sss,
+					this.philhealth, this.voter, this.passport, this.profid, this.pagibig,
+					this.license, this.senior, this.classification, this.chairman, this.area,
+					this.mcnumber, this.tribe, this.contactname, this.contactnumber,
+					this.contactaddress, this.benname1, this.benname2, this.benname3,
+					this.benname4, this.convertDate(this.benbirthdate1), 
+                    this.convertDate(this.benbirthdate2), this.convertDate(this.benbirthdate3), 
+                    this.convertDate(this.benbirthdate4), this.benage1, this.benage2, this.benage3, 
+                    this.benage4, this.benrelationship1, this.benrelationship2, this.benrelationship3, 
+                    this.benrelationship4, this.insurance, this.burial, this.courseToAvail, this.filename
+				);
+			},
             drawForm(fname, lname, mname, sfx, nname, reg, pr, ct, ds, br, pk, zp, bdy, bp, ag, 
 				rlg, nat, cnty, cstat, gend, bldt, hgt, wgt, fth, mth, sps, edc, pos, skl, org,
 				cntc, fcb, eml, ss, phil, vtr, pspt, prof, pag, lic, sen, cls, chr, are, mcn,
@@ -81,11 +110,11 @@
 					ctx.font = '25px Arial';
 					ctx.fillStyle = '#3e3d3d'; 
 					const fullname = `${fname}  ${mname}  ${lname}  ${sfx}`;
-					if(fln !== '') {
-						const img = new Image();
-						img.src = `./images/photos/${fln}`;
-						ctx.drawImage(img, 1300, 65);
-					}					
+					if(fln !== '') {                        
+						const img2 = new Image();
+						img2.src = `../images/photos/${fln}`;                       
+						ctx.drawImage(img2, 1300, 65);
+					}
 					if(ins == '50') {
 						ctx.fillText('/', 220, 2063);
 					} else if(ins == '100') {
@@ -211,7 +240,7 @@
 						}				
 					}					
 				};
-				img.src = './images/form.jpg';				
+				img.src = '../images/form.jpg';				
 			},
             cancelUpdate() {                
                 this.editPaymentModal.classList.add('hidden');
@@ -468,8 +497,46 @@
             cancelPayment() {                
                 paymentModal.classList.add('hidden');
             },
-            showForm(id) {
-                alert("This will lead you to download a registration form in png format for beneficiary with id number: " + id);
+            async showForm(id) {
+                this.userId = id;
+                try {
+                    let response = await fetch('http://localhost/sdsg/api/admin/payment.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ 
+                            user_id: id,
+                            amount: 10,
+                            created_at: '2026-02-21',
+                            mode: "download"
+                        })
+                    });
+                    let user = await response.json();                    
+                    let usr = user.data;
+                    this.user = usr;
+                    //console.log(JSON.stringify(this.users));
+                    this.drawForm(usr.firstname, usr.lastname, usr.middlename, usr.suffix,
+                        usr.nickname, usr.region, usr.province, usr.city, usr.district,
+                        usr.barangay, usr.purok, usr.zipcode, this.convertDate(usr.bday), usr.birthplace,
+                        usr.age, usr.religion, usr.nationality, usr.country, usr.civilstatus, 
+                        usr.gender, usr.bloodtype, usr.height, usr.weight, usr.father,
+                        usr.mother, usr.spouse, usr.education, usr.position, usr.skill,
+                        usr.organization, usr.contact, usr.fb, usr.email, usr.sss,
+                        usr.philhealth, usr.voter, usr.passport, usr.profid, usr.pagibig,
+                        usr.license, usr.senior, usr.classification, usr.chairman, usr.area,
+                        usr.mcnumber, usr.tribe, usr.contactname, usr.contactnumber,
+                        usr.contactaddress, usr.benname1, usr.benname2, usr.benname3,
+                        usr.benname4, this.convertDate(usr.benbirthdate1), 
+                        this.convertDate(usr.benbirthdate2), this.convertDate(usr.benbirthdate3), 
+                        this.convertDate(usr.benbirthdate4), usr.benage1, usr.benage2, usr.benage3, 
+                        usr.benage4, usr.benrelationship1, usr.benrelationship2, usr.benrelationship3, 
+                        usr.benrelationship4, usr.insurance, usr.burial, usr.courseToAvail, usr.photo
+                    );
+                    setTimeout(() => {
+						this.downloadCanvas();						
+					}, 2000);
+                } catch (error) {
+		      		console.error('Error fetching data:', error);
+                } 
             },
             initDateInput(di) {
                 let dt = new Date();
