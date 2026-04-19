@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SDSD Initiative Inc.</title>
+  <link rel="icon" type="image/x-icon" href="./images/logo.ico">
   <link href="./src/output.css" rel="stylesheet">
   <script defer src="./js/alpinejs.cdn.min.js"></script>
 </head>

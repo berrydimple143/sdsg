@@ -16,11 +16,14 @@
     <?php include('../includes/admin/modals/change-successful.php'); ?>
     <?php include('../includes/admin/modals/add-successful.php'); ?>
     <?php include('../includes/admin/modals/delete-successful.php'); ?>
-    <?php include('../includes/admin/modals/edit-successful.php'); ?>
-    
+    <?php include('../includes/admin/modals/edit-successful.php'); ?>        
     <canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="top-0 left-0 hidden"></canvas>
-
-    <div class="flex h-screen bg-transparent">
+    <div id="beneficiaryModal" class="flex items-center justify-center min-h-screen hidden">  		 
+  		 <div class="px-3 py-3 w-full">  		 		
+	  		<?php include('../includes/admin/beneficiary-form.php'); ?>
+		</div>
+	</div>
+    <div id="beneficiaryPage" class="flex h-screen bg-transparent">
         <input type="checkbox" id="menu-toggle" class="hidden peer">
         <?php include('../includes/admin/sidebar.php'); ?>
         <div class="flex flex-col flex-1 overflow-y-auto">
@@ -56,6 +59,8 @@
             created_at: '',
             paymentModal: null,
             paymentsTableModal: null,
+            beneficiaryModal: null,
+            beneficiaryPage: null,
             editPaymentModal: null,
             changeSuccessful: null,
             deleteSuccessful: null,
@@ -69,11 +74,20 @@
             beneficiaries: [],
             users: [],
             payments: [],
+            checkAuth() {
+                let logged = sessionStorage.getItem("logged");
+                setTimeout(() => {
+                    if(!logged) {
+                        window.location = "../login.php";
+                    }
+                }, 50);
+            },
             editBeneficiary(id) {
                 alert(`This will show a form to edit the beneficiary with ID number: ${id}`);
             },
-            addBeneficiary() {
-                alert(`This will show a form to add a beneficiary.`);
+            addBeneficiary() {                
+                this.beneficiaryModal.classList.remove('hidden');
+                this.beneficiaryPage.classList.add('hidden');                
             },
             downloadCanvas() {
                 const canvas = this.$refs.printableForm;
@@ -557,6 +571,9 @@
                 return `${dt.getFullYear()}-${month}-${day} ${hour}:${minute}:${second}`; 
             },
             async init() { 
+                this.checkAuth();
+                this.beneficiaryModal = document.getElementById('beneficiaryModal');
+                this.beneficiaryPage = document.getElementById('beneficiaryPage');
                 this.created_at = this.initDateInput(''); 
                 let user_id = sessionStorage.getItem('user_id');                
                 let response = await fetch('http://localhost/sdsg/api/admin/readMembers.php', {
