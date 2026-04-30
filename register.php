@@ -9,12 +9,12 @@
   <link rel="icon" type="image/x-icon" href="./images/logo.ico">
   <script defer src="./js/alpinejs.cdn.min.js"></script>
 </head>
-<body x-data="formApp()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover">
+<body x-data="formApp()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover overflow-x-hidden">
 	<?php include('./includes/front/modals/registration-successful.php'); ?>	
 	<?php include('./includes/front/modals/signature.php'); ?>	
 	<?php include('./includes/front/modals/loadingPicture.php'); ?>			
 	<?php //include('./includes/front/modals/imageModal.php'); ?>	
-	<canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="top-0 left-0"></canvas>
+	<canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="hidden top-0 left-0"></canvas>
 
 	<div id="photoModal" class="hidden fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center p-4 z-50">
 		<div class="w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
