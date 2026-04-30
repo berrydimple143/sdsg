@@ -7,3 +7,6 @@
     scrollbar-width: none; /* Firefox */
   }
 }
+.modal-content {
+  position: unset;
+}

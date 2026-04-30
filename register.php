@@ -5,14 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SDSD Initiative Inc.</title>
   <link href="./src/output.css" rel="stylesheet">
+  <link href="./css/site.css" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="./images/logo.ico">
   <script defer src="./js/alpinejs.cdn.min.js"></script>
 </head>
-<body x-data="formApp()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover overflow-x-hidden">
+<body x-data="formApp()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover">
 	<?php include('./includes/front/modals/registration-successful.php'); ?>	
+	<?php include('./includes/front/modals/signature.php'); ?>	
 	<?php include('./includes/front/modals/loadingPicture.php'); ?>			
 	<?php //include('./includes/front/modals/imageModal.php'); ?>	
-	<canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="top-0 left-0 hidden"></canvas>
+	<canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="top-0 left-0"></canvas>
 
 	<div id="photoModal" class="hidden fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center p-4 z-50">
 		<div class="w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -201,8 +203,13 @@
 			filename: '',
 		    errors: {},
 			loadingPictureModal: null,
+			signatureModal: null,
 			photoButton: null,
 			uploadedImage: null,
+			signatureCanvas: null,
+			ctxCanvas: null,
+			signatureURL: '',
+			mCanvas: null,			
 			printCanvas() {
                 // 1. Get data URL
                 const dataUrl = this.$refs.printableForm.toDataURL('image/png');
@@ -257,14 +264,14 @@
 					this.convertDate(this.benbirthdate3), this.convertDate(this.benbirthdate4),
 					this.benage1, this.benage2, this.benage3, this.benage4, this.benrelationship1,
 					this.benrelationship2, this.benrelationship3, this.benrelationship4,
-					this.insurance, this.burial, this.courseToAvail, this.filename
+					this.insurance, this.burial, this.courseToAvail, this.filename, this.signatureURL
 				);
 			},
 			drawForm(fname, lname, mname, sfx, nname, reg, pr, ct, ds, br, pk, zp, bdy, bp, ag, 
 				rlg, nat, cnty, cstat, gend, bldt, hgt, wgt, fth, mth, sps, edc, pos, skl, org,
 				cntc, fcb, eml, ss, phil, vtr, pspt, prof, pag, lic, sen, cls, chr, are, mcn,
 				trb, ctcnam, ctcnum, ctcadr, benn1, benn2, benn3, benn4, benb1, benb2, benb3,
-				benb4, beng1, beng2, beng3, beng4, benr1, benr2, benr3, benr4, ins, bur, cta, fln
+				benb4, beng1, beng2, beng3, beng4, benr1, benr2, benr3, benr4, ins, bur, cta, fln, sign
 			) {
 				const canvas = document.getElementById('formCanvas');
 				const ctx = canvas.getContext('2d');
@@ -273,12 +280,21 @@
 					ctx.drawImage(img, 0, 0);
 					ctx.font = '25px Arial';
 					ctx.fillStyle = '#3e3d3d'; 
+					if(sign !== '') {
+						const img3 = new Image();
+						img3.onload = function() {
+							ctx.drawImage(img3, 610, 2190);
+						}
+						img3.src = sign;						
+					}
 					const fullname = `${fname}  ${mname}  ${lname}  ${sfx}`;
 					if(fln !== '') {
-						const img = new Image();
-						img.src = `./images/photos/${fln}`;
-						ctx.drawImage(img, 1300, 65);
-					}					
+						const img2 = new Image();
+						img2.onload = function() {
+							ctx.drawImage(img2, 1300, 65);
+						}
+						img2.src = `./images/photos/${fln}`;						
+					}
 					if(ins == '50') {
 						ctx.fillText('/', 220, 2063);
 					} else if(ins == '100') {
@@ -566,14 +582,84 @@
 				} else if(page == 'purok') {
                     this.puroks = res.data; 
                 }               
-            },
-			init() {
-				this.drawText();
-				this.getAllData('region');
-				this.photoButton = document.getElementById("photoButton");
-				this.uploadedImage = document.getElementById("uploadedImage");
+            },			
+			moveSignature(e) {				
+				this.mCanvas.lastX = this.mCanvas.x;
+				this.mCanvas.lastY = this.mCanvas.y;
+				// this.mCanvas.x = e.x - this.signatureCanvas.offsetLeft;
+				// this.mCanvas.y = e.y - this.signatureCanvas.offsetTop;	
+				const rect = this.signatureCanvas.getBoundingClientRect();			
+				this.mCanvas.x = e.clientX - rect.left;
+				this.mCanvas.y = e.clientY - rect.top;
+				this.drawSignature("move");
 			},
-
+			downSignature(e) {
+				this.drawSignature("down");
+			},
+			upSignature(e) {
+				this.drawSignature("up");
+			},
+			outSignature(e) {
+				this.drawSignature("up");
+			},
+			initSignatureCanvas() {
+				this.signatureCanvas = document.getElementById("signatureCanvas");
+				this.ctxCanvas = this.signatureCanvas.getContext("2d");
+				this.signatureCanvas.style.border = "1px solid black";
+				this.mCanvas = {
+					draw: false,
+					x: 0,
+					y: 0,
+					lastX: 0,
+					lastY: 0
+				};
+			},
+			showSignatureModal() {				
+				this.signatureModal = document.getElementById('signatureModal');
+                this.signatureModal.classList.remove('hidden');		
+			},
+			saveSignature() {				
+				this.signatureURL = this.signatureCanvas.toDataURL();	
+				// const head = 'data:image/png;base64,';
+				// const sizeInBytes = Math.round((this.signatureURL.length - head.length) * 3 / 4);		
+				// console.log(sizeInBytes);	
+                this.signatureModal.classList.add('hidden');
+				this.drawText();
+			},
+			hideSignatureModal() {				
+                this.signatureModal.classList.add('hidden');		
+			},
+			clearSignatureModal() {
+				let temp = confirm("Are you sure you want to erase your signature?");
+				if(temp) {
+					this.ctxCanvas.clearRect(0, 0, this.signatureCanvas.offsetWidth, this.signatureCanvas.offsetHeight);
+				}
+			},
+			drawSignature(val) {
+				if (val === "up") {
+					this.mCanvas.draw = false;
+				}
+				if (val === "down") {
+					this.mCanvas.draw = true;
+				}
+				if (this.mCanvas.draw) {
+					//console.log("drawing");
+					this.ctxCanvas.beginPath();
+					this.ctxCanvas.moveTo(this.mCanvas.lastX, this.mCanvas.lastY);
+					this.ctxCanvas.lineTo(this.mCanvas.x, this.mCanvas.y);
+					this.ctxCanvas.strokeStyle = 2;
+					this.ctxCanvas.lineWidth = 1;
+					this.ctxCanvas.stroke();
+					this.ctxCanvas.closePath();
+				}
+			},
+			init() {
+				this.drawText();				
+				this.getAllData('region');
+				this.initSignatureCanvas();
+				this.photoButton = document.getElementById("photoButton");
+				this.uploadedImage = document.getElementById("uploadedImage");				
+			},
 			getTribe(trb) {
 				const tribeContainer = document.getElementById('tribe-container');	
 				if(trb == "Others") {
