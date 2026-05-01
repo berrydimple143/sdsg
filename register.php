@@ -9,55 +9,21 @@
   <link rel="icon" type="image/x-icon" href="./images/logo.ico">
   <script defer src="./js/alpinejs.cdn.min.js"></script>
 </head>
-<body x-data="formApp()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover">
+<body x-data="formApp()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover overflow-x-hidden">
 	<?php include('./includes/front/modals/registration-successful.php'); ?>	
+	<?php include('./includes/front/modals/add-successful.php'); ?>
+	<?php include('./includes/front/modals/pictureModal.php'); ?>
 	<?php include('./includes/front/modals/signature.php'); ?>	
 	<?php include('./includes/front/modals/loadingPicture.php'); ?>			
 	<?php //include('./includes/front/modals/imageModal.php'); ?>	
-	<canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="top-0 left-0"></canvas>
-
-	<div id="photoModal" class="hidden fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center p-4 z-50">
-		<div class="w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-			<div class="px-5 py-3 bg-white shadow-2xl w-lg">  		 		
-				<div class="max-w-4xl mx-auto flex-col">
-					<div		
-					    id="photoHolder" 			    
-						class="flex space-x-1 p-1">
-						<video class="" id="preview" autoplay playsinline width="400" height="340"></video>
-						<!-- <img x-ref="uploadedImage" id="uploadedImage" class="bg-blue-700 border-1 border-blue-200 p-2 hidden"> -->
-					</div>
-					<div class="flex items-center space-x-2">
-					<button type="button" class="inline-flex items-center text-white bg-gradient-to-r from-green-600 via-green-700 to-green-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-400 dark:focus:ring-green-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-md px-4 py-3 mt-2 cursor-pointer" @click.prevent="captureNow">
-                    <?php include('./includes/admin/icons/camera.php'); ?>
-                    Capture Now
-                    </button>
-					<button 
-					class="inline-flex items-center text-white bg-gradient-to-r from-orange-600 via-orange-700 to-orange-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-orange-400 dark:focus:ring-orange-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-3 cursor-pointer mt-2"
-					@click.prevent="closeWindow">
-					<?php include('./includes/admin/icons/close.php'); ?>
-					Close</button>
-					</div>
-					<button 
-					x-show="isSupported" 
-					@click.prevent="zoomNow" 
-					class="items-center text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-400 dark:focus:ring-blue-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-3 cursor-pointer mt-2">+</button>
-					<button 
-					x-show="isSupported" 
-					@click.prevent="zoomOut"
-					class="items-center text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-400 dark:focus:ring-blue-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-3 cursor-pointer mt-2">-</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
+	<canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="hidden top-0 left-0"></canvas>
   	<div class="flex items-center justify-center min-h-screen">  		 
   		 <div class="px-3 py-3 w-full">  		 		
 	  		<?php include('./includes/front/registration-form.php'); ?>
 		</div>
 	</div>
-	<script>				    
-
-		function formApp() {
+	<script>			
+	    function formApp() {
 		  return {
 		  	regions: [],
 		    provinces: [],
@@ -195,7 +161,7 @@
 		    loading: false,
 			photoModal: null,
 			imageCapture: null,
-			imageUrl: null,
+			imageUrl: '',
 			zoomInValue: 2,
 			isSupported: false,
 			stream: null,
@@ -209,22 +175,7 @@
 			signatureCanvas: null,
 			ctxCanvas: null,
 			signatureURL: '',
-			mCanvas: null,			
-			printCanvas() {
-                // 1. Get data URL
-                const dataUrl = this.$refs.printableForm.toDataURL('image/png');
-
-                // 2. Open new window
-                const windowContent = '<!DOCTYPE html>' +
-                    '<html><head><title>Print Canvas</title></head><body>' +
-                    '<img src="' + dataUrl + '" onload="window.print();window.close();">' +
-                    '</body></html>';
-                
-                const printWin = window.open('', '', 'width=600,height=400');
-                printWin.document.open();
-                printWin.document.write(windowContent);
-                printWin.document.close();
-            },
+			mCanvas: null,
 			downloadCanvas() {
                 const canvas = this.$refs.printableForm;
                 const image = canvas.toDataURL('image/png');
@@ -264,36 +215,36 @@
 					this.convertDate(this.benbirthdate3), this.convertDate(this.benbirthdate4),
 					this.benage1, this.benage2, this.benage3, this.benage4, this.benrelationship1,
 					this.benrelationship2, this.benrelationship3, this.benrelationship4,
-					this.insurance, this.burial, this.courseToAvail, this.filename, this.signatureURL
+					this.insurance, this.burial, this.courseToAvail, this.filename, this.signatureURL, this.imageUrl
 				);
 			},
 			drawForm(fname, lname, mname, sfx, nname, reg, pr, ct, ds, br, pk, zp, bdy, bp, ag, 
 				rlg, nat, cnty, cstat, gend, bldt, hgt, wgt, fth, mth, sps, edc, pos, skl, org,
 				cntc, fcb, eml, ss, phil, vtr, pspt, prof, pag, lic, sen, cls, chr, are, mcn,
 				trb, ctcnam, ctcnum, ctcadr, benn1, benn2, benn3, benn4, benb1, benb2, benb3,
-				benb4, beng1, beng2, beng3, beng4, benr1, benr2, benr3, benr4, ins, bur, cta, fln, sign
+				benb4, beng1, beng2, beng3, beng4, benr1, benr2, benr3, benr4, ins, bur, cta, fln, sign, picURL
 			) {
 				const canvas = document.getElementById('formCanvas');
 				const ctx = canvas.getContext('2d');
-				const img = new Image();
-				img.onload = function() {
-					ctx.drawImage(img, 0, 0);
+				const formImg = new Image();
+				formImg.onload = function() {
+					ctx.drawImage(formImg, 0, 0);
 					ctx.font = '25px Arial';
-					ctx.fillStyle = '#3e3d3d'; 
-					if(sign !== '') {
-						const img3 = new Image();
-						img3.onload = function() {
-							ctx.drawImage(img3, 610, 2190);
-						}
-						img3.src = sign;						
-					}
+					ctx.fillStyle = '#3e3d3d'; 					
 					const fullname = `${fname}  ${mname}  ${lname}  ${sfx}`;
-					if(fln !== '') {
-						const img2 = new Image();
-						img2.onload = function() {
-							ctx.drawImage(img2, 1300, 65);
+					if(picURL !== '') {
+						const pic = new Image();
+						pic.onload = function() {
+							ctx.drawImage(pic, 1300, 65);
 						}
-						img2.src = `./images/photos/${fln}`;						
+						pic.src = picURL;
+					}
+					if(sign !== '') {
+						const signatureImg = new Image();
+						signatureImg.onload = function() {
+							ctx.drawImage(signatureImg, 610, 2180);
+						}
+						signatureImg.src = sign;						
 					}
 					if(ins == '50') {
 						ctx.fillText('/', 220, 2063);
@@ -399,19 +350,15 @@
 					ctx.fillText(benn1, 195, 1850);	
 					ctx.fillText(benn2, 195, 1900);
 					ctx.fillText(benn3, 195, 1955);
-					//ctx.fillText(benn4, 340, 1725);
 					ctx.fillText(benb1, 555, 1850);	
 					ctx.fillText(benb2, 555, 1900);
 					ctx.fillText(benb3, 555, 1955);
-					//ctx.fillText(benb4, 340, 1725);
 					ctx.fillText(beng1, 1040, 1850);	
 					ctx.fillText(beng2, 1040, 1900);
 					ctx.fillText(beng3, 1040, 1955);
-					//ctx.fillText(beng4, 340, 1725);
 					ctx.fillText(benr1, 1320, 1850);	
 					ctx.fillText(benr2, 1320, 1900);
 					ctx.fillText(benr3, 1320, 1955);
-					//ctx.fillText(benr4, 340, 1725);
 					if(cta != '') {
 						ctarr = cta.match(/(?:\S+\s*){1,4}/g);						
 						ctx.fillText(ctarr[0], 1170, 2095);	
@@ -420,7 +367,7 @@
 						}				
 					}					
 				};
-				img.src = './images/form.jpg';				
+				formImg.src = './images/form.jpg';				
 			},			
 			getFilenameWithDate(p) {
 				const now = new Date();
@@ -432,22 +379,6 @@
 				const seconds = now.getSeconds();
 				return `${p}-${year}-${month}-${day}-${hours}-${minutes}-${seconds}`;
 			},
-			// async compressImageBlob(blob, quality = 0.7) {
-			// 	const img = new Image();
-			// 	img.src = URL.createObjectURL(blob);
-			// 	await img.decode(); 
-			// 	const canvas = document.createElement('canvas');
-			// 	canvas.width = img.naturalWidth;
-			// 	canvas.height = img.naturalHeight;
-			// 	const ctx = canvas.getContext('2d');
-			// 	ctx.drawImage(img, 0, 0);
-			// 	return new Promise((resolve) => {
-			// 		canvas.toBlob((compressedBlob) => {
-			// 			URL.revokeObjectURL(img.src);
-			// 			resolve(compressedBlob);
-			// 		}, 'image/jpeg', quality);
-			// 	});
-			// },
 			captureNow() {
                 this.photoModal = document.getElementById('photoModal');
                 this.photoModal.classList.add('hidden');			
@@ -465,45 +396,19 @@
 						imageWidth: 400,
   						imageHeight: 450
 					});											
-					this.imageUrl = URL.createObjectURL(blob);
-					//const myFile = new File([this.imageUrl], "image.png", { type: "image/png" });
-					//console.log(myFile);
-					//this.downloadSameOrigin(this.imageUrl, 'myPhoto.png');
-					this.uploadImage(blob);					
+					this.imageUrl = URL.createObjectURL(blob);					
+					this.drawText();					
+					this.loadingPictureModal.classList.remove('hidden');
+					setTimeout(() => {
+						this.loadingPictureModal.classList.add('hidden');
+						this.photoButton.classList.add('hidden');	
+						this.uploadedImage.classList.remove('hidden');
+						this.$refs.uploadedImage.src = this.imageUrl;
+					}, 3000);
 				} catch (error) {
 					console.error("Error fetching data:", error);
 				}
-			},
-			async uploadImage(blob) {
-				const formData = new FormData();
-				this.filename = this.getFilenameWithDate(`${this.firstname}-${this.lastname}`) + '.png';
-				formData.append('image', blob, this.filename);
-				this.loadingPictureModal = document.getElementById('loadingPictureModal');
-				this.loadingPictureModal.classList.remove('hidden');
-				const response = await fetch('http://localhost/sdsg/api/upload.php', {
-					method: 'POST',
-					body: formData
-				});
-				if (response.ok) {					
-					console.log("Picture was uploaded successfully!");
-				} else {
-					console.log(response);
-				}	
-				setTimeout(() => {					
-					this.loadingPictureModal.classList.add('hidden');
-					this.photoButton.classList.add('hidden');	
-					this.uploadedImage.classList.remove('hidden');
-					this.$refs.uploadedImage.src = `./images/photos/${this.filename}`;
-				}, 3000);
-			},
-			downloadSameOrigin(imgUrl, fileName) {
-				const link = document.createElement('a');
-				link.href = imgUrl;
-				link.download = fileName;
-				document.body.appendChild(link);
-				link.click();
-				document.body.removeChild(link);
-			},		
+			},			
 			closeWindow() {
 				this.photoModal.classList.add('hidden');
 			},
@@ -548,17 +453,11 @@
 					console.error("Error accessing camera: ", err);
 				}
 			},
-			captureImage() {
-				if(this.firstname == '' && this.lastname == '') {
-					alert("You must enter a firstname and lastname first before taking picture!");
-				} else {
-					this.photoModal = document.getElementById('photoModal');
-					this.photoModal.classList.remove('hidden');
-					this.video = document.getElementById('preview');
-					this.startPreview();
-					// this.imageModal = document.getElementById('imageModal');
-					// this.imageModal.classList.remove('hidden');
-				}				
+			captureImage() {				
+				this.photoModal = document.getElementById('photoModal');
+				this.photoModal.classList.remove('hidden');
+				this.video = document.getElementById('preview');
+				this.startPreview();						
 			},
 			async getAllData(page) {
                 let response = await fetch('http://localhost/sdsg/api/admin/getAllData.php', {
@@ -620,10 +519,16 @@
 			},
 			saveSignature() {				
 				this.signatureURL = this.signatureCanvas.toDataURL();	
+				//console.log(this.signatureURL.length);
 				// const head = 'data:image/png;base64,';
 				// const sizeInBytes = Math.round((this.signatureURL.length - head.length) * 3 / 4);		
 				// console.log(sizeInBytes);	
                 this.signatureModal.classList.add('hidden');
+				const signatureSuccessful = document.getElementById("signatureSuccessful");
+				signatureSuccessful.classList.remove('hidden');
+				setTimeout(() => {
+					signatureSuccessful.classList.add('hidden');
+				}, 2000);
 				this.drawText();
 			},
 			hideSignatureModal() {				
@@ -658,7 +563,8 @@
 				this.getAllData('region');
 				this.initSignatureCanvas();
 				this.photoButton = document.getElementById("photoButton");
-				this.uploadedImage = document.getElementById("uploadedImage");				
+				this.uploadedImage = document.getElementById("uploadedImage");	
+				this.loadingPictureModal = document.getElementById('loadingPictureModal');			
 			},
 			getTribe(trb) {
 				const tribeContainer = document.getElementById('tribe-container');	
@@ -686,15 +592,6 @@
 				fourthBeneficiaryAge.classList.remove('hidden');
 				fourthBeneficiaryRelation.classList.remove('hidden');
 			},
-
-			// async getZipcode() {
-			// 	return await fetch('./data/zipcodes.json')
-			// 	.then(response => response.json())
-			// 	.then(json => {
-			// 		console.log(json); 
-			// 	}).catch(error => console.error('Error fetching JSON:', error));
-			// },
-
 			async getAllDataWithId(page, id) {
                 let response = await fetch('http://localhost/sdsg/api/admin/getAllDataWithId.php', {
 					method: 'POST',

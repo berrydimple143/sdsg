@@ -8,7 +8,7 @@
      @mouseout="outSignature($event)" 
      id="signatureCanvas" 
      width="370" 
-     height="150" 
+     height="130" 
      class="border-2 border-dashed border-gray-400 my-2"></canvas>
     <div class="flex space-x-2 items-center">
         <button @click.prevent="saveSignature" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-800 cursor-pointer">
