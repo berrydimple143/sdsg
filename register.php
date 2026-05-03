@@ -12,11 +12,13 @@
 <body x-data="formApp()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover overflow-x-hidden">
 	<?php include('./includes/front/modals/registration-successful.php'); ?>	
 	<?php include('./includes/front/modals/add-successful.php'); ?>
+	<?php include('./includes/front/modals/select-image.php'); ?>
+	<?php include('./includes/front/modals/upload-image.php'); ?>
 	<?php include('./includes/front/modals/pictureModal.php'); ?>
 	<?php include('./includes/front/modals/signature.php'); ?>	
 	<?php include('./includes/front/modals/loadingPicture.php'); ?>			
 	<?php //include('./includes/front/modals/imageModal.php'); ?>	
-	<canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="hidden top-0 left-0"></canvas>
+	<canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="hidden top-0 left-0"></canvas>	
   	<div class="flex items-center justify-center min-h-screen">  		 
   		 <div class="px-3 py-3 w-full">  		 		
 	  		<?php include('./includes/front/registration-form.php'); ?>
@@ -169,6 +171,8 @@
 			filename: '',
 		    errors: {},
 			loadingPictureModal: null,
+			selectImageModal: null,
+			uploadImageModal: null,
 			signatureModal: null,
 			photoButton: null,
 			uploadedImage: null,
@@ -379,8 +383,7 @@
 				const seconds = now.getSeconds();
 				return `${p}-${year}-${month}-${day}-${hours}-${minutes}-${seconds}`;
 			},
-			captureNow() {
-                this.photoModal = document.getElementById('photoModal');
+			captureNow() {                
                 this.photoModal.classList.add('hidden');			
 				this.track = this.video.srcObject.getVideoTracks()[0];
 				this.imageCapture = new ImageCapture(this.track);
@@ -454,10 +457,88 @@
 				}
 			},
 			captureImage() {				
-				this.photoModal = document.getElementById('photoModal');
+				this.selectImageModal.classList.remove('hidden');
+			},
+			showUploadImageModal() {
+				this.selectImageModal.classList.add('hidden');
+				this.uploadImageModal.classList.remove('hidden');
+			},
+			processUpload() {
+				const photoFile = document.getElementById('photoFile');
+				if(photoFile.files.length > 0) {
+					const pfile = photoFile.files[0];					
+					const fileImg = new Image();			
+					const canvas = document.getElementById('uploadedPicture');
+					const ctx = canvas.getContext('2d');		
+					fileImg.onload = function() {						
+						const MAX_WIDTH = 500;
+						let width = fileImg.width;
+						let height = fileImg.height;
+						if(width > MAX_WIDTH) {
+							height *= MAX_WIDTH / width;
+							width = MAX_WIDTH;
+						}
+						canvas.width = width;
+						canvas.height = height;
+						ctx.drawImage(fileImg, 0, 0, width, height);								
+					}
+					fileImg.src = URL.createObjectURL(pfile);	
+					this.imageUrl = canvas.toDataURL();
+					console.log(this.imageUrl);				
+					this.drawText();
+					this.uploadImageModal.classList.add('hidden');
+				}
+			},
+			handleImageUpload(event) {
+				const file = event.target.files[0];
+				if (!file || !file.type.startsWith('image/')) return;
+
+				// 1. Load the image into an Image object
+				const img = new Image();
+				img.src = URL.createObjectURL(file);
+				
+				img.onload = () => {
+					// 2. Setup Canvas for Resizing
+					const canvas = document.createElement('canvas');
+					const ctx = canvas.getContext('2d');
+
+					const MAX_WIDTH = 800;
+					let width = img.width;
+					let height = img.height;
+
+					// Maintain aspect ratio
+					if (width > MAX_WIDTH) {
+						height *= MAX_WIDTH / width;
+						width = MAX_WIDTH;
+					}
+
+					canvas.width = width;
+					canvas.height = height;
+
+					// 3. Draw and Resize
+					ctx.drawImage(img, 0, 0, width, height);
+
+					// 4. Convert to Blob for upload
+					// canvas.toBlob((blob) => {
+					// 	const formData = new FormData();
+					// 	formData.append('resized_image', blob, 'image.jpg');
+
+					// 	// Example Upload
+					// 	fetch('/upload-endpoint', {
+					// 		method: 'POST',
+					// 		body: formData
+					// 	}).then(response => console.log('Upload successful'));
+					// }, 'image/jpeg', 0.8); // Set quality to 80%
+				};
+			},
+			hideImageSelectModal() {
+				this.selectImageModal.classList.add('hidden');
+			},
+			gotoCapture() {
+				this.selectImageModal.classList.add('hidden');
 				this.photoModal.classList.remove('hidden');
 				this.video = document.getElementById('preview');
-				this.startPreview();						
+				this.startPreview();
 			},
 			async getAllData(page) {
                 let response = await fetch('http://localhost/sdsg/api/admin/getAllData.php', {
@@ -481,7 +562,7 @@
 				} else if(page == 'purok') {
                     this.puroks = res.data; 
                 }               
-            },			
+            },
 			moveSignature(e) {				
 				this.mCanvas.lastX = this.mCanvas.x;
 				this.mCanvas.lastY = this.mCanvas.y;
@@ -562,7 +643,10 @@
 				this.drawText();				
 				this.getAllData('region');
 				this.initSignatureCanvas();
+				this.uploadImageModal = document.getElementById('uploadImageModal');
+				this.selectImageModal = document.getElementById('selectImageModal');
 				this.photoButton = document.getElementById("photoButton");
+				this.photoModal = document.getElementById('photoModal');
 				this.uploadedImage = document.getElementById("uploadedImage");	
 				this.loadingPictureModal = document.getElementById('loadingPictureModal');			
 			},
@@ -576,12 +660,10 @@
 					this.tribe = trb;
 				}
 			},
-
 			setTribe() {
 				this.tribe = this.tribe1;
 				this.drawText();
 			},
-
 			addBeneficiary() {
 				const fourthBeneficiaryName = document.getElementById('benname4');
 				const fourthBeneficiaryBday = document.getElementById('benbirthdate4');
