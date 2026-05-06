@@ -6,8 +6,10 @@
   <title>SDSD Initiative Inc.</title>
   <link href="./src/output.css" rel="stylesheet">
   <link href="./css/site.css" rel="stylesheet">
-  <link rel="icon" type="image/x-icon" href="./images/logo.ico">
-  <script defer src="./js/alpinejs.cdn.min.js"></script>
+  <link href="./css/croppie-2.6.5.min.css" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="./images/logo.ico">  
+  <script defer src="./js/alpine-2.6.0.js"></script> 
+  <script defer src="./js/croppie-2.6.5.min.js"></script>
 </head>
 <body x-data="formApp()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover overflow-x-hidden">
 	<?php include('./includes/front/modals/registration-successful.php'); ?>	
@@ -248,7 +250,7 @@
 						signatureImg.onload = function() {
 							ctx.drawImage(signatureImg, 610, 2180);
 						}
-						signatureImg.src = sign;						
+						signatureImg.src = sign;
 					}
 					if(ins == '50') {
 						ctx.fillText('/', 220, 2063);
@@ -462,32 +464,71 @@
 			showUploadImageModal() {
 				this.selectImageModal.classList.add('hidden');
 				this.uploadImageModal.classList.remove('hidden');
-			},
-			processUpload() {
+			},			
+			processUpload(e) {
 				const photoFile = document.getElementById('photoFile');
-				if(photoFile.files.length > 0) {
-					const pfile = photoFile.files[0];					
-					const fileImg = new Image();			
-					const canvas = document.getElementById('uploadedPicture');
-					const ctx = canvas.getContext('2d');		
-					fileImg.onload = function() {						
-						const MAX_WIDTH = 500;
-						let width = fileImg.width;
-						let height = fileImg.height;
-						if(width > MAX_WIDTH) {
-							height *= MAX_WIDTH / width;
-							width = MAX_WIDTH;
+				const uploadedPicture = document.getElementById('uploadedPicture');
+				const pfile = photoFile.files[0];	
+
+				if (pfile && pfile.type.startsWith('image/')) {
+					const imURL = URL.createObjectURL(pfile);
+					uploadedPicture.src = imURL;
+      				uploadedPicture.style.display = 'block';
+					uploadedPicture.croppie({
+						viewport: {
+							width: 150,
+							height: 200
 						}
-						canvas.width = width;
-						canvas.height = height;
-						ctx.drawImage(fileImg, 0, 0, width, height);								
-					}
-					fileImg.src = URL.createObjectURL(pfile);	
-					this.imageUrl = canvas.toDataURL();
-					console.log(this.imageUrl);				
-					this.drawText();
-					this.uploadImageModal.classList.add('hidden');
-				}
+					});
+				}				
+				// console.log(uploadedPicture.src);
+				// const canvas = document.getElementById('uploadedPicture');
+				// const ctx = canvas.getContext('2d');				
+				// const reader = new FileReader();
+				// let img = new Image();				
+				// reader.onload = function(event) {					
+				// 	img.onload = function() {
+				// 		canvas.width = img.width;
+				// 		canvas.height = img.height;
+				// 		ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+				// 	}
+				// 	img.src = event.target.result;					
+				// }
+				// reader.readAsDataURL(pfile);
+				//console.log(canvas.toDataURL());
+				// this.imageUrl = URL.createObjectURL(blob);					
+				// this.drawText();					
+				// this.loadingPictureModal.classList.remove('hidden');
+				// setTimeout(() => {
+				// 	this.loadingPictureModal.classList.add('hidden');
+				// 	this.photoButton.classList.add('hidden');	
+				// 	this.uploadedImage.classList.remove('hidden');
+				// 	this.$refs.uploadedImage.src = this.imageUrl;
+				// }, 3000);
+
+				// if(photoFile.files.length > 0) {
+				// 	const pfile = photoFile.files[0];					
+				// 	const fileImg = new Image();			
+				// 	const canvas = document.getElementById('uploadedPicture');
+				// 	const ctx = canvas.getContext('2d');		
+				// 	fileImg.onload = function() {						
+				// 		const MAX_WIDTH = 500;
+				// 		let width = fileImg.width;
+				// 		let height = fileImg.height;
+				// 		if(width > MAX_WIDTH) {
+				// 			height *= MAX_WIDTH / width;
+				// 			width = MAX_WIDTH;
+				// 		}
+				// 		canvas.width = width;
+				// 		canvas.height = height;
+				// 		ctx.drawImage(fileImg, 0, 0, width, height);								
+				// 	}
+				// 	fileImg.src = URL.createObjectURL(pfile);	
+				// 	this.imageUrl = canvas.toDataURL();
+				// 	console.log(this.imageUrl);				
+				// 	this.drawText();
+				// 	this.uploadImageModal.classList.add('hidden');
+				// }
 			},
 			handleImageUpload(event) {
 				const file = event.target.files[0];
