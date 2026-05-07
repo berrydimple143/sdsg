@@ -3,7 +3,6 @@
     "@tailwindcss/cli": "^4.1.13",
     "alpinejs": "^3.15.12",
     "cropperjs": "^2.1.1",
-    "croppie": "^2.6.5",
     "tailwindcss": "^4.1.13"
   }
 }

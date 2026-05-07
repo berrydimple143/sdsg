@@ -230,6 +230,8 @@
 				trb, ctcnam, ctcnum, ctcadr, benn1, benn2, benn3, benn4, benb1, benb2, benb3,
 				benb4, beng1, beng2, beng3, beng4, benr1, benr2, benr3, benr4, ins, bur, cta, fln, sign, picURL
 			) {
+				const formPath = new URL('./images/form.jpg', window.location.href).href;
+				console.log(formPath);
 				const canvas = document.getElementById('formCanvas');
 				const ctx = canvas.getContext('2d');
 				const formImg = new Image();
@@ -372,8 +374,8 @@
 							ctx.fillText(ctarr[1], 1170, 2125);	
 						}				
 					}					
-				};
-				formImg.src = './images/form.jpg';				
+				};				
+				formImg.src = formPath;				
 			},			
 			getFilenameWithDate(p) {
 				const now = new Date();
@@ -495,7 +497,7 @@
 				this.imageUrl = null;
 				this.croppedImageUrl = null;
 				if (this.cropper) this.cropper.destroy();
-			},
+			},			
 			processUpload(e) {
 				const file = e.target.files[0];
 				if(!file) return;
@@ -506,9 +508,9 @@
 				// Initialize Cropper on next tick after image is rendered
 				
 				this.$nextTick(() => {
-					if (this.cropper) this.cropper.destroy();
+					if(this.cropper) this.cropper.destroy();
 					this.cropper = new Cropper(this.$refs.imageElement, {
-						aspectRatio: 1, // Optional: Force square crop
+						aspectRatio: 1,
 						viewMode: 1,
 					});
 				});			
