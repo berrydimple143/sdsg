@@ -230,8 +230,8 @@
 				trb, ctcnam, ctcnum, ctcadr, benn1, benn2, benn3, benn4, benb1, benb2, benb3,
 				benb4, beng1, beng2, beng3, beng4, benr1, benr2, benr3, benr4, ins, bur, cta, fln, sign, picURL
 			) {
-				const canvas = document.getElementById('formCanvas');
-				const ctx = canvas.getContext('2d');
+				const formCanvas = document.getElementById('formCanvas');
+				const ctx = formCanvas.getContext('2d');
 				const formImg = new Image();
 				formImg.onload = function() {
 					ctx.drawImage(formImg, 0, 0);
