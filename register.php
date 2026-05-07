@@ -6,10 +6,8 @@
   <title>SDSD Initiative Inc.</title>
   <link href="./src/output.css" rel="stylesheet">
   <link href="./css/site.css" rel="stylesheet">
-  <link href="./css/croppie-2.6.5.min.css" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="./images/logo.ico">  
-  <script defer src="./js/alpine-2.6.0.js"></script> 
-  <script defer src="./js/croppie-2.6.5.min.js"></script>
+  <script defer type="module" src="./js/main.js"></script>
 </head>
 <body x-data="formApp()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover overflow-x-hidden">
 	<?php include('./includes/front/modals/registration-successful.php'); ?>	
@@ -164,8 +162,7 @@
 			video: null,
 		    loading: false,
 			photoModal: null,
-			imageCapture: null,
-			imageUrl: '',
+			imageCapture: null,			
 			zoomInValue: 2,
 			isSupported: false,
 			stream: null,
@@ -182,6 +179,9 @@
 			ctxCanvas: null,
 			signatureURL: '',
 			mCanvas: null,
+			imageUrl: null,
+			croppedImageUrl: null,
+			cropper: null,
 			downloadCanvas() {
                 const canvas = this.$refs.printableForm;
                 const image = canvas.toDataURL('image/png');
@@ -465,22 +465,89 @@
 				this.selectImageModal.classList.add('hidden');
 				this.uploadImageModal.classList.remove('hidden');
 			},			
-			processUpload(e) {
-				const photoFile = document.getElementById('photoFile');
-				const uploadedPicture = document.getElementById('uploadedPicture');
-				const pfile = photoFile.files[0];	
+			cropImage() {
+				if (!this.cropper) return;
+            
+				// Get cropped canvas and convert to Data URL or Blob
+				const canvas = this.cropper.getCroppedCanvas();
+				this.croppedImageUrl = canvas.toDataURL('image/png');
 
-				if (pfile && pfile.type.startsWith('image/')) {
-					const imURL = URL.createObjectURL(pfile);
-					uploadedPicture.src = imURL;
-      				uploadedPicture.style.display = 'block';
-					uploadedPicture.croppie({
-						viewport: {
-							width: 150,
-							height: 200
-						}
+				// if (!this.cropper) return;
+				// console.log('Cropper running.');
+				// // Use getCroppedCanvas to extract the image
+				// const canvas = this.cropper.getCroppedCanvas({
+				// 	width: 300,  // Output width
+				// 	height: 300, // Output height
+				// });
+
+				// // Option A: Display as an image in the browser
+				// const croppedDataUrl = canvas.toDataURL('image/png');
+				// document.getElementById('result').innerHTML = `<img src="${croppedDataUrl}">`;
+
+				// // Option B: Convert to Blob for server upload
+				// canvas.toBlob((blob) => {
+				// 	const formData = new FormData();
+				// 	formData.append('croppedImage', blob, 'avatar.png');
+				// 	// Now you can use fetch or XMLHttpRequest to POST formData to your server
+				// }, 'image/png');
+			},
+			reset() {
+				this.imageUrl = null;
+				this.croppedImageUrl = null;
+				if (this.cropper) this.cropper.destroy();
+			},
+			processUpload(e) {
+				const file = e.target.files[0];
+				if(!file) return;
+
+				// Read file and create a temporary URL
+				this.imageUrl = URL.createObjectURL(file);
+
+				// Initialize Cropper on next tick after image is rendered
+				
+				this.$nextTick(() => {
+					if (this.cropper) this.cropper.destroy();
+					this.cropper = new Cropper(this.$refs.imageElement, {
+						aspectRatio: 1, // Optional: Force square crop
+						viewMode: 1,
 					});
-				}				
+				});			
+				
+				// const imageElement = document.getElementById('imageElement');
+				// const inputElement = document.getElementById('imageInput');
+				// const file = e.target.files[0];				
+				
+				// if(file && file.type.startsWith('image/')) {
+				// 	const reader = new FileReader();
+				// 	reader.onload = (event) => {
+				// 		// Set the image source to the uploaded file
+				// 		imageElement.src = event.target.result;
+						
+				// 		// Destroy existing cropper instance if it exists
+				// 		if(cropper) cropper.destroy();
+						
+				// 		// 2. Initialize Cropper.js
+				// 		cropper = new Cropper(imageElement, {
+				// 			aspectRatio: 1, // Optional: Force a square crop
+				// 			viewMode: 1,    // Restrict crop box to within the image
+				// 		});
+				// 	};
+				// 	reader.readAsDataURL(file);
+				// }
+
+				// const photoFile = document.getElementById('photoFile');
+				// const uploadedPicture = document.getElementById('uploadedPicture');
+				// const pfile = photoFile.files[0];	
+
+				// if (pfile && pfile.type.startsWith('image/')) {
+				// 	const imURL = URL.createObjectURL(pfile);
+				// 	uploadedPicture.src = imURL;
+      			// 	uploadedPicture.style.display = 'block';		
+				// 	const image = new Image();
+				// 	image.src = imURL;			
+				// 	const cropper = new Cropper(image);
+				// 	console.log(cropper);
+				// }				
 				// console.log(uploadedPicture.src);
 				// const canvas = document.getElementById('uploadedPicture');
 				// const ctx = canvas.getContext('2d');				
