@@ -7,7 +7,7 @@
   <link href="./src/output.css" rel="stylesheet">
   <link href="./css/site.css" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="./images/logo.ico">  
-  <script defer type="module" src="./js/main.js"></script>
+  <script type="module" src="./js/main.js"></script>
 </head>
 <body x-data="formApp()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover overflow-x-hidden">
 	<?php include('./includes/front/modals/registration-successful.php'); ?>	

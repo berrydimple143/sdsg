@@ -6,7 +6,8 @@
   <title>SDSD Initiative Inc.</title>
   <link rel="icon" type="image/x-icon" href="./images/logo.ico">
   <link href="./src/output.css" rel="stylesheet">
-  <script defer src="./js/alpinejs.cdn.min.js"></script>
+  <!-- <script defer src="./js/alpinejs.cdn.min.js"></script> -->
+   <script type="module" src="./js/main.js"></script>
 </head>
 <body class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover bg-no-repeat">
   		<?php include('./includes/front/modals/login-successful.php'); ?>
