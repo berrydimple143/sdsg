@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2026 at 09:09 AM
+-- Generation Time: May 18, 2026 at 10:14 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -381,6 +381,13 @@ CREATE TABLE `users` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `firstname`, `middlename`, `lastname`, `email`, `username`, `password`, `phone`, `mobile`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Ariza', '', 'Denila', 'arizadenila@gmail.com', 'arizadenila', '$2y$10$A7BoRfUUrbWu5OmSnAsIoekcqKGtNhP63QV1yZhwDoMWOyuVy6pR6', '', '09933290524', 1, '2026-05-18 02:12:06', '2026-05-18 02:12:06');
+
 -- --------------------------------------------------------
 
 --
@@ -624,7 +631,7 @@ ALTER TABLE `regions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user_types`
