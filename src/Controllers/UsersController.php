@@ -57,7 +57,7 @@
 			$middlename = trim(htmlspecialchars($data['middlename']));
 			$suffix = trim(htmlspecialchars($data['suffix']));
 			$barangay_id = trim(htmlspecialchars($data['barangay_id']));
-			if(!$this->isExisting($firstname, $lastname, $middlename, $suffix, $barangay_id)) {		
+			if(!$this->isExisting($firstname, $lastname, $middlename, $suffix, $barangay_id)) {				
 				$region_id = trim(htmlspecialchars($data['region_id']));
 				$province_id = trim(htmlspecialchars($data['province_id']));
 				$city_id = trim(htmlspecialchars($data['city_id']));
@@ -121,10 +121,9 @@
 				$insurance = trim(htmlspecialchars($data['insurance']));
 				$burial = trim(htmlspecialchars($data['burial']));
 				$courseToAvail = trim(htmlspecialchars($data['courseToAvail']));
-				$filename = trim(htmlspecialchars($data['filename']));
-
-				if($firstname AND $lastname AND $region_id AND $province_id AND $city_id AND $district_id AND $barangay_id AND $purok_id AND $civilstatus AND $gender AND $filename) {
-					$inserted = User::createMember($firstname, $middlename, $lastname, $email, $region_id, $province_id, $city_id, $district_id, $barangay_id, $purok_id, $civilstatus, $gender, $religion, $bloodtype,  $nickname, $suffix, $zipcode, $birthdate, $birthplace, $age, $nationality, $country, $height, $weight, $father, $mother, $spouse, $education, $position, $skill, $organization, $contact, $fb, $sss, $philhealth, $voter, $passport, $profid, $pagibig, $license, $senior, $chairman, $area, $mcnumber, $classification, $tribe, $contactname, $contactnumber, $contactaddress, $benname1, $benage1, $benrelationship1, $benbirthdate1, $benname2, $benage2, $benrelationship2, $benbirthdate2, $benname3, $benage3, $benrelationship3, $benbirthdate3, $benname4, $benage4, $benrelationship4, $benbirthdate4, $insurance, $burial, $courseToAvail, $filename);
+				$filename = trim(htmlspecialchars($data['filename']));				
+				if($firstname AND $lastname AND $region_id AND $province_id AND $city_id AND $district_id AND $barangay_id AND $purok_id AND $civilstatus AND $gender) {					
+					$inserted = User::createMember($firstname, $middlename, $lastname, $email, $region_id, $province_id, $city_id, $district_id, $barangay_id, $purok_id, $civilstatus, $gender, $religion, $bloodtype,  $nickname, $suffix, $zipcode, $birthdate, $birthplace, $age, $nationality, $country, $height, $weight, $father, $mother, $spouse, $education, $position, $skill, $organization, $contact, $fb, $sss, $philhealth, $voter, $passport, $profid, $pagibig, $license, $senior, $chairman, $area, $mcnumber, $classification, $tribe, $contactname, $contactnumber, $contactaddress, $benname1, $benage1, $benrelationship1, $benbirthdate1, $benname2, $benage2, $benrelationship2, $benbirthdate2, $benname3, $benage3, $benrelationship3, $benbirthdate3, $benname4, $benage4, $benrelationship4, $benbirthdate4, $insurance, $burial, $courseToAvail, $filename);					
 					if($inserted) {
 						return 'ok';
 					} else {

@@ -96,20 +96,23 @@
 			http_response_code(200);
 			echo json_encode([
 				'status' => true,
-				'message' => 'Registration successful.'
+				'message' => 'Registration successful.',
+				'errorData' => ''
 			]);		
 		} else {
 			if($returnData == "exist") {
 				http_response_code(409);
 				echo json_encode([
 					'status' => false,
-					'message' => 'This user already exists.'
+					'message' => 'This user already exists.',
+					'errorData' => 'exist'
 				]);
 			} else {
 				http_response_code(401);
 				echo json_encode([
 					'status' => false,
-					'message' => 'Registration failed.'
+					'message' => 'Registration failed.',
+					'errorData' => $returnData
 				]);
 			}			
 		}
@@ -118,7 +121,8 @@
 		http_response_code(405);
 		echo json_encode([
 			'status' => false,
-			'message' => 'Only POST requests are allowed.'
+			'message' => 'Only POST requests are allowed.',
+			'errorData' => 'not allowed'
 		]);
 	} 
 ?>

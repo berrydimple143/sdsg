@@ -9,20 +9,17 @@
   <script defer src="../js/alpinejs.cdn.min.js"></script>
 </head>
 <body x-data="pageLoad()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover bg-no-repeat">
+    <?php include('../includes/admin/modals/save-successful.php'); ?>
     <?php include('../includes/admin/modals/tables/payments.php'); ?>
-    <?php include('../includes/admin/modals/payment.php'); ?>    
+    <?php include('../includes/admin/modals/payment.php'); ?>
     <?php include('../includes/admin/modals/edit-payment.php'); ?>
     <?php include('../includes/admin/modals/delete-payment.php'); ?>
     <?php include('../includes/admin/modals/change-successful.php'); ?>
     <?php include('../includes/admin/modals/add-successful.php'); ?>
     <?php include('../includes/admin/modals/delete-successful.php'); ?>
     <?php include('../includes/admin/modals/edit-successful.php'); ?>        
-    <canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="top-0 left-0 hidden"></canvas>
-    <div id="beneficiaryModal" class="flex items-center justify-center min-h-screen hidden">  		 
-  		 <div class="px-3 py-3 w-full">  		 		
-	  		<?php include('../includes/admin/beneficiary-form.php'); ?>
-		</div>
-	</div>
+    <?php include('../includes/admin/bform.php'); ?>	
+    <canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="top-0 left-0 hidden"></canvas>    	
     <div id="beneficiaryPage" class="flex h-screen bg-transparent">
         <input type="checkbox" id="menu-toggle" class="hidden peer">
         <?php include('../includes/admin/sidebar.php'); ?>
@@ -74,6 +71,342 @@
             beneficiaries: [],
             users: [],
             payments: [],
+            regions: [],
+		    provinces: [],
+		    cities: [],
+			districts: [],
+			barangays: [],
+			puroks: [],
+			cstatuses: [
+				{ id: 1, value: 'Single' },
+				{ id: 2, value: "Married" },
+				{ id: 3, value: 'Separated' },
+				{ id: 4, value: "Widowed" }
+			],
+			genders: [
+				{ id: 1, value: 'Male' },
+				{ id: 2, value: "Female" }
+			],
+			bloodtypes: [
+				{ id: 1, value: 'A+' },
+				{ id: 2, value: "A-" },
+				{ id: 3, value: 'B+' },
+				{ id: 4, value: "B-" },
+				{ id: 5, value: 'O+' },
+				{ id: 6, value: "O-" },
+				{ id: 7, value: 'AB+' },
+				{ id: 8, value: "AB-" }
+			],
+			attainments: [
+				{ id: 1, value: 'Elementary Level' },
+				{ id: 2, value: 'Elementary Graduate' },
+				{ id: 3, value: 'High School Level' },
+				{ id: 4, value: 'High School Graduate' },
+				{ id: 5, value: 'College Undergraduate' },
+				{ id: 6, value: "College Graduate" },
+				{ id: 7, value: 'Vocational' },
+				{ id: 8, value: "Graduate Studies" }
+			],
+			insurances: [
+				{ id: 1, value: 50 },
+				{ id: 2, value: 100 },
+				{ id: 3, value: 150 },
+				{ id: 4, value: 200 },
+				{ id: 5, value: 250 },
+				{ id: 6, value: 300 }
+			],
+			burials: [
+				{ id: 1, value: 50 },
+				{ id: 2, value: 100 },
+				{ id: 3, value: 150 },
+				{ id: 4, value: 200 },
+				{ id: 5, value: 250 },
+				{ id: 6, value: 300 }
+			],			
+		    firstname: '',
+		    lastname: '',
+		    middlename: '',
+		    nickname: '',
+		    suffix: '',
+		    region: '',
+			region_id: '',			
+		    province: '',
+			province_id: '',
+		    city: '',		
+			city_id: '', 
+		    district: '',
+			district_id: '',
+		    barangay: '',
+			barangay_id: '',
+		    purok: '',
+			purok_id: '',
+			bday: '',
+			benday1: '',
+			benday2: '',
+			benday3: '',
+			benday4: '',
+		    zipcode: '',
+			birthdate: '',
+			benbirthdate1: '',
+			benbirthdate2: '',
+			benbirthdate3: '',
+			benbirthdate4: '',
+			birthplace: '',
+			age: '',
+			civilstatus: '',	
+			gender: '',		
+			nationality: 'Filipino',
+			country: 'Philippines',
+			religion: '',
+			bloodtype: '',
+			height: '',
+			weight: '',
+			father: '',
+			mother: '',
+			spouse: '',
+			position: '',
+			education: '',
+			skill: '',
+			organization: '',
+			contact: '',
+			fb: '',
+			email: '',
+			sss: '',
+			philhealth: '',
+			voter: '',
+			passport: '',
+			profid: '',
+			pagibig: '',
+			license: '',
+			senior: '',
+			chairman: '',
+			area: '',
+			mcnumber: '', 
+			classification: '',
+			tribe: '',
+			tribe1: '',
+			contactname: '',
+			contactnumber: '',
+			contactaddress: '',
+			benname1: '',
+			benage1: '',
+			benrelationship1: '',
+			benname2: '',
+			benage2: '',
+			benrelationship2: '',
+			benname3: '',
+			benname4: '',
+			benage3: '',
+			benage4: '',
+			benrelationship3: '',
+			benrelationship4: '',
+			insurance: '50',
+			burial: '50',
+			courseToAvail: '',
+		    loading: false,
+			photoModal: null,
+			filename: '',
+		    errors: {},
+			imageUrl: null,
+            validate() {
+                this.errors = {}			  
+                
+                if(!this.firstname) {
+                    this.errors.firstname = "(Required)";
+                    alert('First Name is required');
+                    const fname = document.getElementById("firstname");
+                    fname.focus();
+                } 
+                if(!this.lastname) {
+                    this.errors.lastname = "(Required)";
+                    alert('Last Name is required');
+                    const lname = document.getElementById("lastname");
+                    lname.focus();
+                }
+
+                return Object.keys(this.errors).length === 0;
+		    },
+            selectRegion(id, txt) {
+		    	this.region_id = id;
+				this.region = txt;
+		    	this.getAllDataWithId('province', id);
+		    },
+            selectProvince(id, txt) {
+				this.province_id = id;
+				this.province = txt;
+				this.getAllDataWithId('city', id);
+		    },	
+
+		    selectCity(id, txt) {
+				this.city_id = id;
+				this.city = txt;
+				this.getAllDataWithId('district', id);
+		    },
+
+			selectDistrict(id, txt) {
+		    	this.district_id = id;
+				this.district = txt;
+				this.getAllDataWithId('barangay', id);
+		    },
+			selectBarangay(id, txt) {
+		    	this.barangay_id = id;
+				this.barangay = txt;
+				this.getAllDataWithId('purok', id);
+		    },
+			selectPurok(id, txt) {
+				this.purok_id = id;
+				this.purok = txt;
+			},
+            async getAllData(page) {
+                let response = await fetch('http://localhost/sdsg/api/admin/getAllData.php', {
+					method: 'POST',
+					headers: {'Content-Type': 'application/json'},
+					body: JSON.stringify({                                     
+						page: page
+					})
+				});
+                let res = await response.json();
+                if(page == 'region') {					
+                    this.regions = res.data;      
+                } else if(page == 'province') {
+                    this.provinces = res.data;   
+				} else if(page == 'city') {
+                    this.cities = res.data; 
+				} else if(page == 'district') {
+                    this.districts = res.data; 
+				} else if(page == 'barangay') {
+                    this.barangays = res.data; 
+				} else if(page == 'purok') {
+                    this.puroks = res.data; 
+                }               
+            },
+            async getAllDataWithId(page, id) {
+                let response = await fetch('http://localhost/sdsg/api/admin/getAllDataWithId.php', {
+					method: 'POST',
+					headers: {'Content-Type': 'application/json'},
+					body: JSON.stringify({                                     
+						page: page,
+						id: id
+					})
+				});
+                let res = await response.json();
+                if(page == 'region') {
+                    this.regions = res.data;                    
+                } else if(page == 'province') {
+                    this.provinces = res.data;   
+				} else if(page == 'city') {
+                    this.cities = res.data; 
+				} else if(page == 'district') {
+                    this.districts = res.data; 
+				} else if(page == 'barangay') {
+                    this.barangays = res.data; 
+				} else if(page == 'purok') {
+                    this.puroks = res.data; 
+                }               
+            },
+            clearInputs() {
+		    		this.firstname = ''; this.lastname = ''; this.middlename = '';		    		
+		    		this.email = ''; this.region = ''; this.province = '';
+		    		this.city = ''; this.district = ''; this.barangay = '';
+		    		this.purok = ''; this.civilstatus = ''; this.gender = '';
+					this.religion = ''; this.bloodtype = ''; this.nickname = '';		    		
+		    		this.suffix = ''; this.zipcode = ''; this.birthdate = ''; 
+					this.birthplace = ''; this.age = ''; this.nationality = ''; 
+					this.country = ''; this.height = ''; this.weight = ''; this.father = '';
+		    		this.mother = ''; this.spouse = ''; this.education = '';
+					this.position = ''; this.skill = ''; this.organization = '';		    		
+		    		this.contact = ''; this.fb = ''; this.sss = ''; this.philhealth = '';		    		
+		    		this.voter = ''; this.passport = ''; this.profid = ''; this.pagibig = '';		    		
+		    		this.license = ''; this.senior = ''; this.chairman = ''; this.area = '';		    		
+		    		this.mcnumber = ''; this.classification = ''; this.tribe = '';
+		    		this.contactname = ''; this.contactnumber = ''; this.contactaddress = '';
+		    		this.benname1 = '';	this.benage1 = ''; this.benrelationship1 = '';
+					this.benbirthdate1 = ''; this.benname2 = ''; this.benage2 = '';
+		    		this.benrelationship2 = ''; this.benbirthdate2 = ''; this.benname3 = '';
+		    		this.benage3 = ''; this.benrelationship3 = ''; this.benbirthdate3 = '';
+					this.benname4 = ''; this.benage4 = ''; this.benrelationship4 = '';
+					this.benbirthdate4 = ''; this.insurance = ''; this.burial = '';
+					this.courseToAvail = '';
+		    },
+            async saveBeneficiary() {			  
+                if (!this.validate()) return;
+                    try {
+                    const response = await fetch("http://localhost/sdsg/api/member.php", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({ 
+                            firstname: this.firstname, lastname: this.lastname,
+                            middlename: this.middlename, email: this.email,
+                            nickname: this.nickname, suffix: this.suffix,
+                            region_id: this.region_id, province_id: this.province_id,
+                            city_id: this.city_id, district_id: this.district_id,
+                            barangay_id: this.barangay_id, purok_id: this.purok_id,
+                            zipcode: this.zipcode, birthdate: this.birthdate,
+                            birthplace: this.birthplace, age: this.age,
+                            civilstatus: this.civilstatus, gender: this.gender,
+                            nationality: this.nationality, country: this.country,
+                            religion: this.religion, bloodtype: this.bloodtype,
+                            height: this.height, weight: this.weight,
+                            father: this.father, mother: this.mother,
+                            spouse: this.spouse, education: this.education,
+                            position: this.position, skill: this.skill,
+                            organization: this.organization, contact: this.contact,
+                            fb: this.fb, sss: this.sss, philhealth: this.philhealth,
+                            voter: this.voter, passport: this.passport,
+                            profid: this.profid, pagibig: this.pagibig,
+                            license: this.license, senior: this.senior,
+                            chairman: this.chairman, area: this.area,
+                            mcnumber: this.mcnumber, classification: this.classification,
+                            tribe: this.tribe, contactname: this.contactname,
+                            contactnumber: this.contactnumber, contactaddress: this.contactaddress,
+                            benname1: this.benname1, benage1: this.benage1,
+                            benrelationship1: this.benrelationship1, benbirthdate1: this.benbirthdate1,
+                            benname2: this.benname2, benage2: this.benage2,
+                            benrelationship2: this.benrelationship2, benbirthdate2: this.benbirthdate2,
+                            benname3: this.benname3, benage3: this.benage3,
+                            benrelationship3: this.benrelationship3, benbirthdate3: this.benbirthdate3,
+                            benname4: this.benname4, benage4: this.benage4,
+                            benrelationship4: this.benrelationship4, benbirthdate4: this.benbirthdate4,
+                            insurance: this.insurance, burial: this.burial, 
+                            courseToAvail: this.courseToAvail, filename: this.filename
+                        })
+                    });
+
+                    const res = await response.json();                    
+                    this.beneficiaryModal.classList.add('hidden');
+                    const modal = document.getElementById('successModal');
+
+                    if(!res.status) {
+                        console.log(res.errorData);
+                        alert(res.message);                  
+                    } else {
+                        this.clearInputs();
+                        modal.classList.remove('hidden');
+                        setTimeout(() => {
+                            modal.classList.add('hidden');
+                            setTimeout(() => {
+                                window.location = "beneficiary.php";
+                            }, 2000);
+                        }, 2000);
+                    }
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                } 
+		    },
+            getBday(btype) {
+				if(btype == 'own') {
+					this.bday = this.convertDate(this.birthdate);
+				} else if(btype == 'ben1') {
+					this.benday1 = this.convertDate(this.benbirthdate1);
+				} else if(btype == 'ben2') {
+					this.benday2 = this.convertDate(this.benbirthdate2);
+				} else if(btype == 'ben3') {
+					this.benday3 = this.convertDate(this.benbirthdate3);
+				} else if(btype == 'ben4') {
+					this.benday4 = this.convertDate(this.benbirthdate4);
+				}
+				this.drawText();
+			},
             checkAuth() {
                 let logged = sessionStorage.getItem("logged");
                 setTimeout(() => {
@@ -88,6 +421,10 @@
             addBeneficiary() {                
                 this.beneficiaryModal.classList.remove('hidden');
                 this.beneficiaryPage.classList.add('hidden');                
+            },
+            cancelSave() {                
+                this.beneficiaryPage.classList.remove('hidden');
+                this.beneficiaryModal.classList.add('hidden');
             },
             downloadCanvas() {
                 const canvas = this.$refs.printableForm;
@@ -464,6 +801,29 @@
 					});
 				}
 			},
+            getTribe(trb) {
+				const tribeContainer = document.getElementById('tribe-container');	
+				if(trb == "Others") {
+					tribeContainer.classList.remove('hidden');
+					this.tribe = this.tribe1;
+				} else {
+					tribeContainer.classList.add('hidden');
+					this.tribe = trb;
+				}
+			},
+			setTribe() {
+				this.tribe = this.tribe1;
+			},
+			addBen() {
+				const fourthBeneficiaryName = document.getElementById('benname4');
+				const fourthBeneficiaryBday = document.getElementById('benbirthdate4');
+				const fourthBeneficiaryAge = document.getElementById('benage4');
+				const fourthBeneficiaryRelation = document.getElementById('benrelationship4');
+				fourthBeneficiaryName.classList.remove('hidden');
+				fourthBeneficiaryBday.classList.remove('hidden');
+				fourthBeneficiaryAge.classList.remove('hidden');
+				fourthBeneficiaryRelation.classList.remove('hidden');
+			},
             async showTable(id) {
                 this.getName(id);
                 this.userId = id;
@@ -572,6 +932,7 @@
             },
             async init() { 
                 this.checkAuth();
+                this.getAllData('region');
                 this.beneficiaryModal = document.getElementById('beneficiaryModal');
                 this.beneficiaryPage = document.getElementById('beneficiaryPage');
                 this.created_at = this.initDateInput(''); 
