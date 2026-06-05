@@ -17,6 +17,12 @@
 			return $districts->fetchAll(PDO::FETCH_ASSOC);
 		}
 
+		public static function getOneDataByField($field, $value) {
+			$pdo = Database::connect();
+			$district = $pdo->query("SELECT * FROM districts WHERE $field = '$value'");
+			return $district->fetch(PDO::FETCH_OBJ);
+		}
+
 		public static function getAllDataById($field, $value) {
 			$pdo = Database::connect();
 			$districts = $pdo->query("SELECT id, name, status, created_at FROM districts WHERE $field = '$value' ORDER BY name");

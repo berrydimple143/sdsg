@@ -16,6 +16,12 @@
 			return $provinces->fetchAll(PDO::FETCH_ASSOC);
 		}
 
+		public static function getOneDataByField($field, $value) {
+			$pdo = Database::connect();
+			$province = $pdo->query("SELECT * FROM provinces WHERE $field = '$value'");
+			return $province->fetch(PDO::FETCH_OBJ);
+		}
+
 		public static function getAllDataById($field, $value) {
 			$pdo = Database::connect();
 			$provinces = $pdo->query("SELECT id, name, status, created_at FROM provinces WHERE $field = '$value' ORDER BY name");

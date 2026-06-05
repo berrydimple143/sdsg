@@ -4,6 +4,10 @@
 
 
 	use App\Models\User;
+	use App\Models\Barangay;
+	use App\Models\District;
+	use App\Models\City;
+	use App\Models\Province;
 	use DateTime;
 
 	class UsersController {
@@ -47,6 +51,46 @@
 					return true;
 				} else {
 					return false;
+				}
+			}
+		}
+
+		public function storeMemberFromExcel($data) {
+			$firstname = trim(htmlspecialchars($data['firstname']));
+			$lastname = trim(htmlspecialchars($data['lastname']));
+			$middlename = trim(htmlspecialchars($data['middlename']));
+			$barangay = trim(htmlspecialchars($data['barangay']));
+			$janPay = trim(htmlspecialchars($data['janPay']));
+			$febPay = trim(htmlspecialchars($data['febPay']));
+			$marPay = trim(htmlspecialchars($data['marPay']));
+			$aprPay = trim(htmlspecialchars($data['aprPay']));
+			$mayPay = trim(htmlspecialchars($data['mayPay']));
+			$junPay = trim(htmlspecialchars($data['junPay']));
+			$julPay = trim(htmlspecialchars($data['julPay']));
+			$augPay = trim(htmlspecialchars($data['augPay']));
+			$sepPay = trim(htmlspecialchars($data['sepPay']));
+			$octPay = trim(htmlspecialchars($data['octPay']));
+			$novPay = trim(htmlspecialchars($data['novPay']));
+			$decPay = trim(htmlspecialchars($data['decPay']));
+			$barangay_id = $purok_id = $district_id = $city_id = $province_id = $region_id = 0;
+			$bar = Barangay::getOneDataByField('name', $barangay);	
+			$barangay_id = $bar->id;
+			$dist = District::getOneDataByField('id', $bar->district_id);
+			$district_id = $dist->id;
+			$ct = City::getOneDataByField('id', $dist->city_id);
+			$city_id = $ct->id;
+			$prov = Province::getOneDataByField('id', $ct->province_id);
+			$province_id = $prov->id;
+			$region_id = $prov->region_id;
+			
+			if(!$this->isExisting($firstname, $lastname, $middlename, '', $barangay_id)) {				
+				if($firstname AND $lastname) {					
+					$inserted = User::createMemberFromExcel($firstname, $middlename, $lastname, $region_id, $province_id, $city_id, $district_id, $barangay_id, $purok_id);					
+					if($inserted) {
+						return 'ok';
+					} else {
+						return 'dberror';
+					}
 				}
 			}
 		}

@@ -1,0 +1,17 @@
+{
+    "name": "hp/sdsg",
+    "autoload": {
+        "psr-4": {
+            "Hp\\Sdsg\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Virgil Rosalita",
+            "email": "shekinahberry143@gmail.com"
+        }
+    ],
+    "require": {
+        "phpoffice/phpspreadsheet": "^5.7"
+    }
+}

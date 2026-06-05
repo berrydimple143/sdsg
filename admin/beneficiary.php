@@ -18,7 +18,8 @@
     <?php include('../includes/admin/modals/add-successful.php'); ?>
     <?php include('../includes/admin/modals/delete-successful.php'); ?>
     <?php include('../includes/admin/modals/edit-successful.php'); ?>        
-    <?php include('../includes/admin/bform.php'); ?>	
+    <?php include('../includes/admin/bform.php'); ?>
+    <?php include('../includes/admin/modals/upload-excel.php'); ?>	
     <canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="top-0 left-0 hidden"></canvas>    	
     <div id="beneficiaryPage" class="flex h-screen bg-transparent">
         <input type="checkbox" id="menu-toggle" class="hidden peer">
@@ -36,10 +37,16 @@
                             placeholder="Search beneficiary here and press enter" 
                             class="text-md bg-white h-6 w-80 p-4 rounded-sm border-green-900 shadow-md outline-none">
                     </div>
-                    <button type="button" @click.prevent="addBeneficiary" class="inline-flex items-center text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
-                    <?php include('../includes/admin/icons/add.php'); ?>
-                        Add Beneficiary
-                    </button>
+                    <div class="flex space-x-1">
+                        <button type="button" @click.prevent="importBeneficiary" class="inline-flex items-center text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
+                        <?php include('../includes/admin/icons/import.php'); ?>
+                            Import Excel
+                        </button>
+                        <button type="button" @click.prevent="addBeneficiary" class="inline-flex items-center text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
+                        <?php include('../includes/admin/icons/add.php'); ?>
+                            Add Beneficiary
+                        </button>
+                    </div>
                 </div>                                							
                 <div class="relative overflow-x-auto bg-green-400 shadow-xs rounded-base border border-default">                                
                     <?php include('../includes/admin/tables/beneficiary.php'); ?>
@@ -63,6 +70,9 @@
             deleteSuccessful: null,
             deletePaymentModal: null,
             editSuccessfulModal: null,
+            uploadExcelModal: null,
+            excelUploadMessage: '',
+            excelUploadLoading: false,
             totalPay: 0.00,
             amount: '',
             searchWord: '',
@@ -421,6 +431,53 @@
             addBeneficiary() {                
                 this.beneficiaryModal.classList.remove('hidden');
                 this.beneficiaryPage.classList.add('hidden');                
+            },
+            hideExcelInput() {
+                this.$refs.excelFile.classList.add('hidden');
+                this.$refs.excelUploadButton.classList.remove('hidden');                
+            },
+            async uploadExcelFile() {
+                let file = this.$refs.excelFile.files[0];
+                if (!file) {
+                    alert('Please select an Excel file first.');
+                    return;
+                }
+
+                this.excelUploadLoading = true;
+                this.excelUploadMessage = '';
+
+                let formData = new FormData();
+                formData.append('excel_file', file);                
+                try {
+                    let response = await fetch('http://localhost/sdsg/api/admin/import.php', {
+                        method: 'POST',
+                        body: formData
+                    });                
+                    let data = await response.json();
+                    if(data.status) {
+                        window.location = "beneficiary.php";
+                    } else {
+                        alert("File upload failed.");
+                    }
+                } catch(error) {
+		      		console.error('Error fetching data:', error);
+                } 
+                // .then(response => response.json())
+                // .then(data => {
+                //     this.excelUploadLoading = false;
+                //     this.excelUploadMessage = data.message;
+                //     if(data.success) {
+                //         this.$refs.excelFile.value = '';
+                //     }
+                // })
+                // .catch(error => {
+                //     this.excelUploadLoading = false;
+                //     this.excelUploadMessage = 'An error occurred during upload.';
+                // });
+            },
+            importBeneficiary() {
+                this.beneficiaryPage.classList.add('hidden');
+                this.uploadExcelModal.classList.remove('hidden');
             },
             cancelSave() {                
                 this.beneficiaryPage.classList.remove('hidden');
@@ -930,11 +987,15 @@
                 let second = ("0" + (dt.getSeconds() + 1)).slice(-2);
                 return `${dt.getFullYear()}-${month}-${day} ${hour}:${minute}:${second}`; 
             },
+            initModals() {
+                this.beneficiaryModal = document.getElementById('beneficiaryModal');
+                this.beneficiaryPage = document.getElementById('beneficiaryPage');
+                this.uploadExcelModal = document.getElementById('uploadExcelModal');
+            },
             async init() { 
                 this.checkAuth();
                 this.getAllData('region');
-                this.beneficiaryModal = document.getElementById('beneficiaryModal');
-                this.beneficiaryPage = document.getElementById('beneficiaryPage');
+                this.initModals();   
                 this.created_at = this.initDateInput(''); 
                 let user_id = sessionStorage.getItem('user_id');                
                 let response = await fetch('http://localhost/sdsg/api/admin/readMembers.php', {

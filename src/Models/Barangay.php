@@ -29,6 +29,12 @@
 			return $barangay->fetch(PDO::FETCH_OBJ);
 		}
 
+		public static function getOneDataByField($field, $value) {
+			$pdo = Database::connect();
+			$barangay = $pdo->query("SELECT * FROM barangays WHERE $field = '$value'");
+			return $barangay->fetch(PDO::FETCH_OBJ);
+		}
+
         public static function changeStatus($id, $status) {
 			$pdo = Database::connect();
 			$updated_at = date('Y-m-d H:i:s');

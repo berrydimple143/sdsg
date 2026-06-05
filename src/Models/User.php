@@ -91,6 +91,47 @@
 			]);
 		}
 
+		public static function createMemberFromExcel($firstname, $middlename, $lastname,  $region_id, $province_id, $city_id, $district_id, $barangay_id, $purok_id) {
+			$pdo = Database::connect();
+			$user = $pdo->prepare("INSERT INTO users(firstname, middlename, lastname, status, created_at, updated_at) VALUES(:firstname, :middlename, :lastname, :status, :created_at, :updated_at)");			
+
+			$inserted = $user->execute([
+				":firstname" =>$firstname,
+				":middlename" =>$middlename,
+				":lastname" => $lastname,			
+				":status" => true,
+				":created_at" => date('Y-m-d H:i:s'),
+				":updated_at" => date('Y-m-d H:i:s')
+			]);
+
+			if($inserted) {
+				$uid = $pdo->lastInsertId();
+
+				$personal = $pdo->prepare("INSERT INTO personal_information(user_id, region_id,  province_id, city_id, district_id, barangay_id, purok_id) VALUES(:user_id,  :region_id, :province_id, :city_id, :district_id, :barangay_id, :purok_id)");	
+				$inserted2 = $personal->execute([
+					":user_id" =>$uid,
+					":region_id" => $region_id,
+					":province_id" => $province_id,
+					":city_id" =>$city_id,
+					":district_id" =>$district_id,
+					":barangay_id" => $barangay_id,
+					":purok_id" => $purok_id					
+				]);
+
+				$benefits = $pdo->prepare("INSERT INTO benefits(user_id, insurance, burial, courseToAvail) VALUES(:user_id, :insurance, :burial, :courseToAvail)");	
+				$inserted10 = $benefits->execute([
+					":user_id" =>$uid,
+					":insurance" => 50,
+					":burial" => 50,
+					":courseToAvail" => ''
+				]);
+
+				return $inserted;
+			} else {
+				return false;
+			}
+		}
+
 		public static function createMember($firstname, $middlename, $lastname, $email, $region_id, $province_id, $city_id, $district_id, $barangay_id, $purok_id, $civilstatus, $gender, $religion, $bloodtype, $nickname, $suffix, $zipcode, $birthdate, $birthplace, $age, $nationality, $country, $height, $weight, $father, $mother, $spouse, $education, $position, $skill, $organization, $contact, $fb, $sss, $philhealth, $voter, $passport, $profid, $pagibig, $license, $senior, $chairman, $area, $mcnumber, $classification, $tribe, $contactname, $contactnumber, $contactaddress, $benname1, $benage1, $benrelationship1, $benbirthdate1, $benname2, $benage2, $benrelationship2, $benbirthdate2, $benname3, $benage3, $benrelationship3, $benbirthdate3, $benname4, $benage4, $benrelationship4, $benbirthdate4, $insurance, $burial, $courseToAvail, $filename) {
 			$pdo = Database::connect();
 			$user = $pdo->prepare("INSERT INTO users(firstname, middlename, lastname, email,  status, created_at, updated_at) VALUES(:firstname, :middlename, :lastname, :email,  :status, :created_at, :updated_at)");			

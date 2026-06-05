@@ -17,6 +17,12 @@
 			return $cities->fetchAll(PDO::FETCH_ASSOC);
 		}
 
+		public static function getOneDataByField($field, $value) {
+			$pdo = Database::connect();
+			$city = $pdo->query("SELECT * FROM cities WHERE $field = '$value'");
+			return $city->fetch(PDO::FETCH_OBJ);
+		}
+
 		public static function getAllDataById($field, $value) {
 			$pdo = Database::connect();
 			$cities = $pdo->query("SELECT id, name, status, created_at FROM cities WHERE $field = '$value' ORDER BY name");
