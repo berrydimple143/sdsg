@@ -118,12 +118,35 @@
 					":purok_id" => $purok_id					
 				]);
 
-				$benefits = $pdo->prepare("INSERT INTO benefits(user_id, insurance, burial, courseToAvail) VALUES(:user_id, :insurance, :burial, :courseToAvail)");	
+				$family = $pdo->prepare("INSERT INTO family_background(user_id) VALUES(:user_id)");	
+				$inserted3 = $family->execute([":user_id" => $uid]);
+				
+				$ed = $pdo->prepare("INSERT INTO education_occupation(user_id) VALUES(:user_id)");	
+				$inserted4 = $ed->execute([":user_id" => $uid]);
+
+				$cont = $pdo->prepare("INSERT INTO contact_information(user_id) VALUES(:user_id)");	
+				$inserted5 = $cont->execute([":user_id" => $uid]);
+
+				$gov = $pdo->prepare("INSERT INTO government_id(user_id) VALUES(:user_id)");	
+				$inserted6 = $gov->execute([":user_id" =>$uid]);
+
+				$community = $pdo->prepare("INSERT INTO community_information(user_id) VALUES(:user_id)");	
+				$inserted7 = $community->execute([":user_id" => $uid]);
+
+				$emergency = $pdo->prepare("INSERT INTO emergency_contact(user_id) VALUES(:user_id)");	
+				$inserted8 = $emergency->execute([":user_id" => $uid]);
+
+				$beneficiaries = $pdo->prepare("INSERT INTO beneficiaries(user_id) VALUES(:user_id)");
+				$inserted9 = $beneficiaries->execute([":user_id" => $uid]);
+
+				$utypes = $pdo->prepare("INSERT INTO user_types(user_id) VALUES(:user_id)");	
+				$inserted11 = $utypes->execute([":user_id" => $uid]);
+
+				$benefits = $pdo->prepare("INSERT INTO benefits(user_id, insurance, burial) VALUES(:user_id, :insurance, :burial)");	
 				$inserted10 = $benefits->execute([
-					":user_id" =>$uid,
+					":user_id" => $uid,
 					":insurance" => 50,
-					":burial" => 50,
-					":courseToAvail" => ''
+					":burial" => 50
 				]);
 
 				return $inserted;

@@ -20,6 +20,7 @@
     <?php include('../includes/admin/modals/edit-successful.php'); ?>        
     <?php include('../includes/admin/bform.php'); ?>
     <?php include('../includes/admin/modals/upload-excel.php'); ?>	
+    <?php include('../includes/admin/modals/uploading.php'); ?>
     <canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="top-0 left-0 hidden"></canvas>    	
     <div id="beneficiaryPage" class="flex h-screen bg-transparent">
         <input type="checkbox" id="menu-toggle" class="hidden peer">
@@ -71,6 +72,7 @@
             deletePaymentModal: null,
             editSuccessfulModal: null,
             uploadExcelModal: null,
+            uploadingModal: null,
             excelUploadMessage: '',
             excelUploadLoading: false,
             totalPay: 0.00,
@@ -443,6 +445,8 @@
                     return;
                 }
 
+                this.uploadExcelModal.classList.add('hidden');
+                this.uploadingModal.classList.remove('hidden');
                 this.excelUploadLoading = true;
                 this.excelUploadMessage = '';
 
@@ -455,25 +459,16 @@
                     });                
                     let data = await response.json();
                     if(data.status) {
-                        window.location = "beneficiary.php";
+                        setTimeout(() => {
+                            this.uploadingModal.classList.add('hidden');
+                            window.location = "beneficiary.php";					
+                        }, 2000);                    
                     } else {
                         alert("File upload failed.");
                     }
                 } catch(error) {
 		      		console.error('Error fetching data:', error);
-                } 
-                // .then(response => response.json())
-                // .then(data => {
-                //     this.excelUploadLoading = false;
-                //     this.excelUploadMessage = data.message;
-                //     if(data.success) {
-                //         this.$refs.excelFile.value = '';
-                //     }
-                // })
-                // .catch(error => {
-                //     this.excelUploadLoading = false;
-                //     this.excelUploadMessage = 'An error occurred during upload.';
-                // });
+                }
             },
             importBeneficiary() {
                 this.beneficiaryPage.classList.add('hidden');
@@ -991,6 +986,7 @@
                 this.beneficiaryModal = document.getElementById('beneficiaryModal');
                 this.beneficiaryPage = document.getElementById('beneficiaryPage');
                 this.uploadExcelModal = document.getElementById('uploadExcelModal');
+                this.uploadingModal = document.getElementById('uploadingModal');
             },
             async init() { 
                 this.checkAuth();
