@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 30, 2026 at 04:54 AM
+-- Generation Time: Jun 08, 2026 at 08:03 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,7 +43,8 @@ CREATE TABLE `barangays` (
 INSERT INTO `barangays` (`id`, `district_id`, `name`, `status`, `created_at`, `updated_at`) VALUES
 (1, 3, 'Lubogan', 1, '2026-04-02 04:02:08', '2026-04-07 08:40:18'),
 (2, 1, 'Baliok', 1, '2026-04-02 04:02:26', '2026-04-08 01:38:34'),
-(3, 3, 'Bankas Heights', 1, '2026-04-02 04:02:53', '2026-04-02 06:48:41');
+(3, 3, 'Bankas', 1, '2026-04-02 04:02:53', '2026-06-07 01:49:40'),
+(5, 1, 'Pangi', 1, '2026-06-07 01:51:17', '2026-06-07 01:51:17');
 
 -- --------------------------------------------------------
 
@@ -72,13 +73,6 @@ CREATE TABLE `beneficiaries` (
   `benbirthdate4` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `beneficiaries`
---
-
-INSERT INTO `beneficiaries` (`id`, `user_id`, `benname1`, `benage1`, `benrelationship1`, `benbirthdate1`, `benname2`, `benage2`, `benrelationship2`, `benbirthdate2`, `benname3`, `benage3`, `benrelationship3`, `benbirthdate3`, `benname4`, `benage4`, `benrelationship4`, `benbirthdate4`) VALUES
-(1, 3, '', 0, '', '1970-01-01', '', 0, '', '1970-01-01', '', 0, '', '1970-01-01', '', 0, '', '1970-01-01');
-
 -- --------------------------------------------------------
 
 --
@@ -92,13 +86,6 @@ CREATE TABLE `benefits` (
   `burial` int(4) DEFAULT NULL,
   `courseToAvail` varchar(254) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `benefits`
---
-
-INSERT INTO `benefits` (`id`, `user_id`, `insurance`, `burial`, `courseToAvail`) VALUES
-(1, 3, 50, 50, '');
 
 -- --------------------------------------------------------
 
@@ -140,13 +127,6 @@ CREATE TABLE `community_information` (
   `tribe` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `community_information`
---
-
-INSERT INTO `community_information` (`id`, `user_id`, `chairman`, `area`, `mcnumber`, `classification`, `tribe`) VALUES
-(1, 3, '', '', '', '4P&#039;s', 'Muslim');
-
 -- --------------------------------------------------------
 
 --
@@ -160,13 +140,6 @@ CREATE TABLE `contact_information` (
   `fb` varchar(254) DEFAULT NULL,
   `photo` varchar(254) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `contact_information`
---
-
-INSERT INTO `contact_information` (`id`, `user_id`, `contact`, `fb`, `photo`) VALUES
-(1, 3, '09383839238', '', '');
 
 -- --------------------------------------------------------
 
@@ -207,13 +180,6 @@ CREATE TABLE `education_occupation` (
   `organization` varchar(254) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `education_occupation`
---
-
-INSERT INTO `education_occupation` (`id`, `user_id`, `education`, `position`, `skill`, `organization`) VALUES
-(1, 3, 'Elementary Level', 'N/A', 'N/A', 'N/A');
-
 -- --------------------------------------------------------
 
 --
@@ -228,13 +194,6 @@ CREATE TABLE `emergency_contact` (
   `contactaddress` varchar(254) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `emergency_contact`
---
-
-INSERT INTO `emergency_contact` (`id`, `user_id`, `contactname`, `contactnumber`, `contactaddress`) VALUES
-(1, 3, 'Virgil Rosalita', '09392838383', 'Lubogan, Toril');
-
 -- --------------------------------------------------------
 
 --
@@ -248,13 +207,6 @@ CREATE TABLE `family_background` (
   `mother` varchar(100) DEFAULT NULL,
   `spouse` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `family_background`
---
-
-INSERT INTO `family_background` (`id`, `user_id`, `father`, `mother`, `spouse`) VALUES
-(1, 3, 'Virgil Rosalita', 'Prinaniel Rosalita', 'N/A');
 
 -- --------------------------------------------------------
 
@@ -274,13 +226,6 @@ CREATE TABLE `government_id` (
   `license` varchar(20) DEFAULT NULL,
   `senior` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `government_id`
---
-
-INSERT INTO `government_id` (`id`, `user_id`, `sss`, `philhealth`, `voter`, `passport`, `profid`, `pagibig`, `license`, `senior`) VALUES
-(1, 3, '', '', '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -304,7 +249,8 @@ CREATE TABLE `images` (
 CREATE TABLE `payments` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `amount` float NOT NULL DEFAULT 0,
+  `amount` float DEFAULT 0,
+  `type` varchar(20) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -339,13 +285,6 @@ CREATE TABLE `personal_information` (
   `weight` varchar(10) DEFAULT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `personal_information`
---
-
-INSERT INTO `personal_information` (`id`, `nickname`, `suffix`, `region_id`, `province_id`, `city_id`, `district_id`, `barangay_id`, `purok_id`, `zipcode`, `birthdate`, `birthplace`, `age`, `civilstatus`, `gender`, `nationality`, `country`, `religion`, `bloodtype`, `height`, `weight`, `user_id`) VALUES
-(1, 'Jo', '', 3, 2, 1, 3, 1, 1, '8000', '2019-05-12', 'Lubogan', 7, 'Single', 'Male', 'Filipino', 'Philippines', 'Missionary Baptist', 'A+', '100', '20', 3);
 
 -- --------------------------------------------------------
 
@@ -449,9 +388,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `middlename`, `lastname`, `email`, `username`, `password`, `phone`, `mobile`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Ariza', '', 'Denila', 'arizadenila@gmail.com', 'arizadenila', '$2y$10$A7BoRfUUrbWu5OmSnAsIoekcqKGtNhP63QV1yZhwDoMWOyuVy6pR6', '', '09933290524', 1, '2026-05-18 02:12:06', '2026-05-18 02:12:06'),
-(2, 'Virgil', 'Tecson', 'Rosalita', 'shekinahberry143@gmail.com', 'berrydimple', '$2y$10$5o6GT10NsWJn3SenljuEXuZ2yNbsAIoWyMdwlzOAQz4Z1vos5XgOK', '0822253844', '09096400461', 1, '2026-05-18 02:51:27', '2026-05-18 02:51:27'),
-(3, 'John', 'Tecson', 'Rosalita', '', '', '', '', '', 1, '2026-05-18 03:00:22', '2026-05-18 03:00:22');
+(1, 'Virgil', 'Tecson', 'Rosalita', 'shekinahberry143@gmail.com', 'berrydimple', '$2y$10$v7iYABjDCS2k927FwDMwzewqplmpCUaBLgvb0/Hy7/Zx7O0Gs.ml2', '(082) 225-3844', '09096400461', 1, '2026-06-08 00:02:48', '2026-06-08 00:02:48');
 
 -- --------------------------------------------------------
 
@@ -467,13 +404,6 @@ CREATE TABLE `user_types` (
   `designation` varchar(50) DEFAULT NULL,
   `classification` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `user_types`
---
-
-INSERT INTO `user_types` (`id`, `user_id`, `mtype`, `position`, `designation`, `classification`) VALUES
-(1, 3, 'member', '', '', 'nonpaying');
 
 --
 -- Indexes for dumped tables
@@ -601,19 +531,19 @@ ALTER TABLE `user_types`
 -- AUTO_INCREMENT for table `barangays`
 --
 ALTER TABLE `barangays`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `beneficiaries`
 --
 ALTER TABLE `beneficiaries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `benefits`
 --
 ALTER TABLE `benefits`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `cities`
@@ -625,13 +555,13 @@ ALTER TABLE `cities`
 -- AUTO_INCREMENT for table `community_information`
 --
 ALTER TABLE `community_information`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `contact_information`
 --
 ALTER TABLE `contact_information`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `districts`
@@ -643,25 +573,25 @@ ALTER TABLE `districts`
 -- AUTO_INCREMENT for table `education_occupation`
 --
 ALTER TABLE `education_occupation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `emergency_contact`
 --
 ALTER TABLE `emergency_contact`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `family_background`
 --
 ALTER TABLE `family_background`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `government_id`
 --
 ALTER TABLE `government_id`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `images`
@@ -679,7 +609,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `personal_information`
 --
 ALTER TABLE `personal_information`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `provinces`
@@ -703,13 +633,13 @@ ALTER TABLE `regions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user_types`
 --
 ALTER TABLE `user_types`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
