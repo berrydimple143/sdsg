@@ -168,11 +168,8 @@
 					":amount" => $idPay,
 					":type" => 'ID'
 				]);
-
-				$payArray = [
-								$janPay, $febPay, $marPay, $aprPay, $mayPay, $junPay, 
-								$julPay, $augPay, $sepPay, $octPay, $novPay, $decPay
-							];
+				$payArray = [];
+				$dateArray = [];				
 				$jan = new DateTime('2026-01-01 01:01:01');
 				$feb = new DateTime('2026-02-01 01:01:01');
 				$mar = new DateTime('2026-03-01 01:01:01');
@@ -185,22 +182,56 @@
 				$oct = new DateTime('2026-10-01 01:01:01');
 				$nov = new DateTime('2026-11-01 01:01:01');
 				$dec = new DateTime('2026-12-01 01:01:01');
-				$dateArray = [
-					$jan->format('Y-m-d H:i:s'),
-					$feb->format('Y-m-d H:i:s'),
-					$mar->format('Y-m-d H:i:s'),
-					$apr->format('Y-m-d H:i:s'),
-					$may->format('Y-m-d H:i:s'),
-					$jun->format('Y-m-d H:i:s'),
-					$jul->format('Y-m-d H:i:s'),
-					$aug->format('Y-m-d H:i:s'),
-					$sep->format('Y-m-d H:i:s'),
-					$oct->format('Y-m-d H:i:s'),
-					$nov->format('Y-m-d H:i:s'),
-					$dec->format('Y-m-d H:i:s')
-				];
+				if((int)$janPay > 0) {
+					$payArray[] = $janPay;
+					$dateArray[] = $jan->format('Y-m-d H:i:s');
+				}
+				if((int)$febPay > 0) {
+					$payArray[] = $febPay;
+					$dateArray[] = $feb->format('Y-m-d H:i:s');
+				}
+				if((int)$marPay > 0) {
+					$payArray[] = $marPay;
+					$dateArray[] = $mar->format('Y-m-d H:i:s');
+				}
+				if((int)$aprPay > 0) {
+					$payArray[] = $aprPay;
+					$dateArray[] = $apr->format('Y-m-d H:i:s');
+				}			
+				if((int)$mayPay > 0) {
+					$payArray[] = $mayPay;
+					$dateArray[] = $may->format('Y-m-d H:i:s');
+				}	
+				if((int)$junPay > 0) {
+					$payArray[] = $junPay;
+					$dateArray[] = $jun->format('Y-m-d H:i:s');
+				}
+				if((int)$julPay > 0) {
+					$payArray[] = $julPay;
+					$dateArray[] = $jul->format('Y-m-d H:i:s');
+				}
+				if((int)$augPay > 0) {
+					$payArray[] = $augPay;
+					$dateArray[] = $aug->format('Y-m-d H:i:s');
+				}
+				if((int)$sepPay > 0) {
+					$payArray[] = $sepPay;
+					$dateArray[] = $sep->format('Y-m-d H:i:s');
+				}
+				if((int)$octPay > 0) {
+					$payArray[] = $octPay;
+					$dateArray[] = $oct->format('Y-m-d H:i:s');
+				}
+				if((int)$novPay > 0) {
+					$payArray[] = $novPay;
+					$dateArray[] = $nov->format('Y-m-d H:i:s');
+				}
+				if((int)$decPay > 0) {
+					$payArray[] = $decPay;
+					$dateArray[] = $dec->format('Y-m-d H:i:s');
+				}
 
-				for($i=0; $i < 12; $i++) {
+				for($i=0; $i < count($payArray); $i++) {
 					$pay = $pdo->prepare("INSERT INTO payments(user_id, amount, type, created_at, updated_at) VALUES(:user_id, :amount, :type, :created_at, :updated_at)");			
 					$pay->execute([
 						":user_id" => $uid,
