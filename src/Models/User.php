@@ -3,6 +3,7 @@
 
 	use App\Core\Database;
 	use PDO;
+	use DateTime;
 
 	class User {
 
@@ -55,6 +56,12 @@
 			return $user->fetch(PDO::FETCH_ASSOC);
 		}
 
+		public static function countUser($firstname, $lastname, $middlename, $barangay) {
+			$pdo = Database::connect();
+			$ben = $pdo->query("SELECT COUNT(*) FROM users AS usr INNER JOIN personal_information AS per ON usr.id = per.user_id WHERE usr.firstname='$firstname' AND usr.lastname='$lastname' AND usr.middlename='$middlename' AND per.barangay_id='$barangay'");
+			return $ben->fetchColumn();
+		}
+
 		public static function getUser($id) {
 			$pdo = Database::connect();
 			$user = $pdo->query("SELECT * FROM users WHERE id=$id");
@@ -91,7 +98,7 @@
 			]);
 		}
 
-		public static function createMemberFromExcel($firstname, $middlename, $lastname,  $region_id, $province_id, $city_id, $district_id, $barangay_id, $purok_id) {
+		public static function createMemberFromExcel($firstname, $middlename, $lastname,  $region_id, $province_id, $city_id, $district_id, $barangay_id, $purok_id, $idPay, $janPay, $febPay, $marPay, $aprPay, $mayPay, $junPay, $julPay, $augPay, $sepPay, $octPay, $novPay, $decPay) {
 			$pdo = Database::connect();
 			$user = $pdo->prepare("INSERT INTO users(firstname, middlename, lastname, status, created_at, updated_at) VALUES(:firstname, :middlename, :lastname, :status, :created_at, :updated_at)");			
 
@@ -139,8 +146,14 @@
 				$beneficiaries = $pdo->prepare("INSERT INTO beneficiaries(user_id) VALUES(:user_id)");
 				$inserted9 = $beneficiaries->execute([":user_id" => $uid]);
 
-				$utypes = $pdo->prepare("INSERT INTO user_types(user_id) VALUES(:user_id)");	
-				$inserted11 = $utypes->execute([":user_id" => $uid]);
+				$utypes = $pdo->prepare("INSERT INTO user_types(user_id, mtype, position, designation, classification) VALUES(:user_id, :mtype, :position, :designation, :classification)");	
+				$inserted11 = $utypes->execute([
+					":user_id" => $uid,
+					":mtype" => 'member',
+					":position" => '',
+					":designation" => '',
+					":classification" => 'paying'
+				]);
 
 				$benefits = $pdo->prepare("INSERT INTO benefits(user_id, insurance, burial) VALUES(:user_id, :insurance, :burial)");	
 				$inserted10 = $benefits->execute([
@@ -148,6 +161,55 @@
 					":insurance" => 50,
 					":burial" => 50
 				]);
+
+				$IDPayment = $pdo->prepare("INSERT INTO payments(user_id, amount, type) VALUES(:user_id, :amount, :type)");
+				$IDPayment->execute([
+					":user_id" => $uid,
+					":amount" => $idPay,
+					":type" => 'ID'
+				]);
+
+				$payArray = [
+								$janPay, $febPay, $marPay, $aprPay, $mayPay, $junPay, 
+								$julPay, $augPay, $sepPay, $octPay, $novPay, $decPay
+							];
+				$jan = new DateTime('2026-01-01 01:01:01');
+				$feb = new DateTime('2026-02-01 01:01:01');
+				$mar = new DateTime('2026-03-01 01:01:01');
+				$apr = new DateTime('2026-04-01 01:01:01');
+				$may = new DateTime('2026-05-01 01:01:01');
+				$jun = new DateTime('2026-06-01 01:01:01');
+				$jul = new DateTime('2026-07-01 01:01:01');
+				$aug = new DateTime('2026-08-01 01:01:01');
+				$sep = new DateTime('2026-09-01 01:01:01');
+				$oct = new DateTime('2026-10-01 01:01:01');
+				$nov = new DateTime('2026-11-01 01:01:01');
+				$dec = new DateTime('2026-12-01 01:01:01');
+				$dateArray = [
+					$jan->format('Y-m-d H:i:s'),
+					$feb->format('Y-m-d H:i:s'),
+					$mar->format('Y-m-d H:i:s'),
+					$apr->format('Y-m-d H:i:s'),
+					$may->format('Y-m-d H:i:s'),
+					$jun->format('Y-m-d H:i:s'),
+					$jul->format('Y-m-d H:i:s'),
+					$aug->format('Y-m-d H:i:s'),
+					$sep->format('Y-m-d H:i:s'),
+					$oct->format('Y-m-d H:i:s'),
+					$nov->format('Y-m-d H:i:s'),
+					$dec->format('Y-m-d H:i:s')
+				];
+
+				for($i=0; $i < 12; $i++) {
+					$pay = $pdo->prepare("INSERT INTO payments(user_id, amount, type, created_at, updated_at) VALUES(:user_id, :amount, :type, :created_at, :updated_at)");			
+					$pay->execute([
+						":user_id" => $uid,
+						":amount" => $payArray[$i],
+						":type" => 'Monthly Due',
+						":created_at" => $dateArray[$i],
+						":updated_at" => $dateArray[$i]
+					]);
+				}
 
 				return $inserted;
 			} else {

@@ -18,23 +18,26 @@
 				$lastname = $rows[$i][0]; // First column
 				$firstname = $rows[$i][1]; // Second column
 				$middlename = $rows[$i][2]; // Third column
-				$janPay = $rows[$i][3];
-				$febPay = $rows[$i][4];
-				$marPay = $rows[$i][5];
-				$aprPay = $rows[$i][6];
-				$mayPay = $rows[$i][7];
-				$junPay = $rows[$i][8];
-				$julPay = $rows[$i][9];
-				$augPay = $rows[$i][10];
-				$sepPay = $rows[$i][11];
-				$octPay = $rows[$i][12];
-				$novPay = $rows[$i][13];
-				$decPay = $rows[$i][14];
-				$barangay = $rows[$i][15];
+				$barangay = $rows[$i][3];
+				$idPay = $rows[$i][4];
+				$janPay = $rows[$i][6];				
+				$febPay = $rows[$i][7];
+				$marPay = $rows[$i][8];
+				$aprPay = $rows[$i][9];
+				$mayPay = $rows[$i][10];
+				$junPay = $rows[$i][11];
+				$julPay = $rows[$i][12];
+				$augPay = $rows[$i][13];
+				$sepPay = $rows[$i][14];
+				$octPay = $rows[$i][15];
+				$novPay = $rows[$i][16];
+				$decPay = $rows[$i][17];
+				
 				$info = [
 					'lastname' => $lastname,
 					'firstname' => $firstname,
 					'middlename' => $middlename,
+					'idPay' => $idPay,
 					'janPay' => $janPay,
 					'febPay' => $febPay,
 					'marPay' => $marPay,
@@ -59,7 +62,7 @@
 				echo json_encode([
 					'status' => false,
 					'message' => 'Internal Server Error.',
-					'errorData' => 'server error'
+					'errorData' => $errors
 				]);
 			} else {
 				http_response_code(200);

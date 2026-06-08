@@ -10,6 +10,7 @@
         $data = [
 			'user_id' => $input->user_id,
 			'amount' => $input->amount,
+			'type' => $input->type,
 			'created_at' => $input->created_at,
             'mode' => $mode
 		];

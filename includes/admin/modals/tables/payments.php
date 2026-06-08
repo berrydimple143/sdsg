@@ -1,5 +1,5 @@
 <div id="paymentsTableModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">            
-        <div class="w-[50%] max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow dark:border md:mt-0 dark:bg-gray-800 dark:border-gray-700">                     
+        <div class="w-[75%] max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow dark:border md:mt-0 dark:bg-gray-800 dark:border-gray-700">                     
             <div class="p-2">
                 <h1 class="text-2xl font-bold bg-green-400 p-2">Payments of <span x-model="owner" x-text="owner"></span></h1>							
                 <div class="relative overflow-x-auto bg-green-400 shadow-xs rounded-base border border-default">                                
@@ -11,6 +11,9 @@
                                 </th>
                                 <th scope="col" class="px-6 py-3 font-bold">
                                     Amount
+                                </th>
+                                <th scope="col" class="px-6 py-3 font-bold">
+                                    Type
                                 </th>
                                 <th scope="col" class="px-6 py-3 font-bold">
                                     Date of Payment
@@ -31,6 +34,8 @@
                                     <th scope="row" class="flex items-center space-x-2 px-6 py-4 font-medium text-fg-brand-subtle whitespace-nowrap">
                                         <?php include('../includes/admin/icons/peso-black.php'); ?>         
                                         <span x-text="pay.amount.toFixed(2)"></span>                         
+                                    </th>
+                                    <th scope="row" x-text="pay.type" class="px-6 py-4 font-medium text-fg-brand-subtle whitespace-nowrap">                                
                                     </th>
                                     <th scope="row" x-text="convertDate(pay.created_at)" class="px-6 py-4 font-medium text-fg-brand-subtle whitespace-nowrap">                                
                                     </th>                                   
@@ -61,6 +66,10 @@
                 <button @click.prevent="closeTable" type="button" class="inline-flex items-center  text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2 cursor-pointer mt-2">
                     <?php include('../includes/admin/icons/inactive.php'); ?>
                     Close
+                </button>
+                <button type="button" @click.prevent="payNow(userId)" class="inline-flex items-center text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1 cursor-pointer">
+                    <?php include('../includes/admin/icons/peso.php'); ?>
+                    Pay
                 </button>
             </div>
         </div>                

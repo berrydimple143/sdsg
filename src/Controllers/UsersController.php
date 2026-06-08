@@ -60,6 +60,7 @@
 			$lastname = trim(htmlspecialchars($data['lastname']));
 			$middlename = trim(htmlspecialchars($data['middlename']));
 			$barangay = trim(htmlspecialchars($data['barangay']));
+			$idPay = trim(htmlspecialchars($data['idPay']));
 			$janPay = trim(htmlspecialchars($data['janPay']));
 			$febPay = trim(htmlspecialchars($data['febPay']));
 			$marPay = trim(htmlspecialchars($data['marPay']));
@@ -83,9 +84,9 @@
 			$province_id = $prov->id;
 			$region_id = $prov->region_id;
 			
-			if(!$this->isExisting($firstname, $lastname, $middlename, '', $barangay_id)) {				
-				if($firstname AND $lastname) {					
-					$inserted = User::createMemberFromExcel($firstname, $middlename, $lastname, $region_id, $province_id, $city_id, $district_id, $barangay_id, $purok_id);					
+			if(!$this->isUserExisting($firstname, $lastname, $middlename, $barangay_id)) {			
+				if($firstname AND $lastname) {			
+					$inserted = User::createMemberFromExcel($firstname, $middlename, $lastname, $region_id, $province_id, $city_id, $district_id, $barangay_id, $purok_id, $idPay, $janPay, $febPay, $marPay, $aprPay, $mayPay, $junPay, $julPay, $augPay, $sepPay, $octPay, $novPay, $decPay);					
 					if($inserted) {
 						return 'ok';
 					} else {
@@ -181,6 +182,14 @@
 
 		private function isExisting($firstname, $lastname, $middlename, $suffix, $barangay) {
 			if(User::findUserByFields($firstname, $lastname, $middlename, $suffix, $barangay)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		private function isUserExisting($firstname, $lastname, $middlename, $barangay) {
+			if(User::countUser($firstname, $lastname, $middlename, $barangay) > 0) {
 				return true;
 			} else {
 				return false;

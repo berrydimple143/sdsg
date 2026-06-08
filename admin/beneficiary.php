@@ -77,6 +77,7 @@
             excelUploadLoading: false,
             totalPay: 0.00,
             amount: '',
+            type: '',
             searchWord: '',
             owner: '',            
             errors: [],
@@ -458,14 +459,14 @@
                         body: formData
                     });                
                     let data = await response.json();
-                    if(data.status) {
+                    //if(data.status) {
                         setTimeout(() => {
                             this.uploadingModal.classList.add('hidden');
-                            window.location = "beneficiary.php";					
-                        }, 2000);                    
-                    } else {
-                        alert("File upload failed.");
-                    }
+                            window.location = "beneficiary.php";
+                        }, 2000);
+                    // } else {
+                    //     alert("File upload failed.");
+                    // }
                 } catch(error) {
 		      		console.error('Error fetching data:', error);
                 }
@@ -725,6 +726,7 @@
                     body: JSON.stringify({ 
                         user_id: id,                        
                         amount: 10,
+                        type: 'ID',
                         created_at: '2026-02-21',
                         mode: "single"
                     })
@@ -888,6 +890,7 @@
                         body: JSON.stringify({ 
                             user_id: this.userId,
                             amount: 10,
+                            type: 'ID',
                             created_at: '2026-02-21',
                             mode: "search"
                         })
@@ -908,6 +911,7 @@
                         body: JSON.stringify({ 
                             user_id: this.userId,
                             amount: this.amount,
+                            type: this.type,
                             created_at: this.created_at,
                             mode: "add"
                         })

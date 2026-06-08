@@ -7,8 +7,8 @@
         
         public static function getAllDataByField($field, $value, $order) {
 			$pdo = Database::connect();
-			$districts = $pdo->query("SELECT * FROM payments WHERE $field = '$value' ORDER BY $order");
-			return $districts->fetchAll(PDO::FETCH_ASSOC);
+			$payments = $pdo->query("SELECT * FROM payments WHERE $field = '$value' ORDER BY $order");
+			return $payments->fetchAll(PDO::FETCH_ASSOC);
 		}
 
         public static function deleteData($id) {
@@ -36,12 +36,13 @@
 			return $payment->execute([$amount, $updated_at, $id]);
 		}
 
-        public static function create($user_id, $amount, $created_at) {
+        public static function create($user_id, $amount, $type, $created_at) {
             $pdo = Database::connect();
-			$payment = $pdo->prepare("INSERT INTO payments(user_id, amount, created_at, updated_at) VALUES(:user_id, :amount, :created_at, :updated_at)");
+			$payment = $pdo->prepare("INSERT INTO payments(user_id, amount, type, created_at, updated_at) VALUES(:user_id, :amount, :type, :created_at, :updated_at)");
             $inserted = $payment->execute([
 				":user_id" => $user_id,
 				":amount" => $amount,
+				":type" => $type,
 				":created_at" => $created_at,
 				":updated_at" => $created_at
 			]);
