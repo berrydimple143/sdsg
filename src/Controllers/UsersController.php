@@ -73,16 +73,24 @@
 			$octPay = trim(htmlspecialchars($data['octPay']));
 			$novPay = trim(htmlspecialchars($data['novPay']));
 			$decPay = trim(htmlspecialchars($data['decPay']));
-			$barangay_id = $purok_id = $district_id = $city_id = $province_id = $region_id = 0;
+			$barangay_id = $purok_id = $district_id = $city_id = $province_id = $region_id = null;
 			$bar = Barangay::getOneDataByField('name', $barangay);	
-			$barangay_id = $bar->id;
-			$dist = District::getOneDataByField('id', $bar->district_id);
-			$district_id = $dist->id;
-			$ct = City::getOneDataByField('id', $dist->city_id);
-			$city_id = $ct->id;
-			$prov = Province::getOneDataByField('id', $ct->province_id);
-			$province_id = $prov->id;
-			$region_id = $prov->region_id;
+			if($bar) {
+				$barangay_id = $bar->id;
+				$dist = District::getOneDataByField('id', $bar->district_id);
+				if($dist) {
+					$district_id = $dist->id;
+					$ct = City::getOneDataByField('id', $dist->city_id);
+					if($ct) {
+						$city_id = $ct->id;
+						$prov = Province::getOneDataByField('id', $ct->province_id);
+						if($prov) {
+							$province_id = $prov->id;
+							$region_id = $prov->region_id;
+						}
+					}
+				}
+			}
 			
 			if(!$this->isUserExisting($firstname, $lastname, $middlename, $barangay_id)) {			
 				if($firstname AND $lastname) {			

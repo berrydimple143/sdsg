@@ -6,6 +6,9 @@
   <title>SDSD Initiative Inc. - Administration Panel</title>
   <link href="../src/output.css" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="../images/logo.ico">
+  <style>
+    [x-cloak] { display: none !important; }
+  </style>
   <script defer src="../js/alpinejs.cdn.min.js"></script>
 </head>
 <body x-data="pageLoad()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover bg-no-repeat">
@@ -33,10 +36,10 @@
                         <h1 class="text-2xl text-purple-600 font-bold p-2 text-shadow-lg">List of Beneficiaries</h1>
                         <input 
                             type="text" 
-                            x-model="searchWord" 
-                            @keyup.enter="searchData"  
-                            placeholder="Search beneficiary here and press enter" 
-                            class="text-md bg-white h-6 w-80 p-4 rounded-sm border-green-900 shadow-md outline-none">
+                            x-model="searchQuery"
+                            @input="currentPage = 1"
+                            placeholder="Search beneficiary here ..." 
+                            class="text-md bg-white h-6 w-64 p-4 rounded-sm border-green-900 shadow-md outline-none">
                     </div>
                     <div class="flex space-x-1">
                         <button type="button" @click.prevent="importBeneficiary" class="inline-flex items-center text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
@@ -221,6 +224,10 @@
 			filename: '',
 		    errors: {},
 			imageUrl: null,
+            currentPage: 1,
+            searchQuery: '',
+            pageSize: 5,
+            maxVisibleButtons: 5,
             validate() {
                 this.errors = {}			  
                 
@@ -992,6 +999,10 @@
                 this.uploadExcelModal = document.getElementById('uploadExcelModal');
                 this.uploadingModal = document.getElementById('uploadingModal');
             },
+            capitalizeFirstLetter(str) {
+                if(!str) return "";
+                return str.charAt(0).toUpperCase() + str.slice(1);
+            },
             async init() { 
                 this.checkAuth();
                 this.getAllData('region');
@@ -1013,7 +1024,44 @@
                 if(this.beneficiaries.length > 0) { 
                     this.showRow = true;
                 }
-            }	
+            },
+            get totalPages() {
+                return Math.ceil(this.filteredItems.length / this.pageSize);
+            },
+            get paginatedItems() {
+                const start = (this.currentPage - 1) * this.pageSize;
+                const end = start + this.pageSize;
+                return this.filteredItems.slice(start, end);
+            },
+            get filteredItems() {
+                let benefactor = this.beneficiaries.filter(item => item.lastname.toLowerCase().includes(this.searchQuery.toLowerCase()) || item.firstname.toLowerCase().includes(this.searchQuery.toLowerCase()) || item.middlename.toLowerCase().includes(this.searchQuery.toLowerCase()) || item.barangay.toLowerCase().includes(this.searchQuery.toLowerCase()) || item.classification.toLowerCase().includes(this.searchQuery.toLowerCase()));
+                return benefactor;
+            },
+            nextPage() {
+                if (this.currentPage < this.totalPages) this.currentPage++;
+            },
+            prevPage() {
+                if (this.currentPage > 1) this.currentPage--;
+            },
+            goToPage(page) {
+                this.currentPage = page;
+            },
+            get visiblePages() {
+                let start = Math.max(1, this.currentPage - Math.floor(this.maxVisibleButtons / 2));
+                let end = start + this.maxVisibleButtons - 1;
+
+                if (end > this.totalPages) {
+                    end = this.totalPages;
+                    start = Math.max(1, end - this.maxVisibleButtons + 1);
+                }
+
+                const pages = [];
+                for (let i = start; i <= end; i++) {
+                    pages.push(i);
+                }
+                return pages;
+            }   
+
 		  }
 		}        
 	</script>

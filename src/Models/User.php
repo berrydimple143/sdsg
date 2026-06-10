@@ -40,7 +40,7 @@
 
 		public static function getAllUserWithDetails() {
 			$pdo = Database::connect();
-			$user = $pdo->query("SELECT usr.id AS id, usr.firstname AS firstname, usr.lastname AS lastname, usr.middlename AS middlename, usr.status AS status, utype.classification AS classification FROM users AS usr INNER JOIN user_types AS utype ON usr.id = utype.user_id ORDER BY usr.created_at DESC");
+			$user = $pdo->query("SELECT bar.name AS barangay, usr.id AS id, usr.firstname AS firstname, usr.lastname AS lastname, usr.middlename AS middlename, usr.status AS status, utype.classification AS classification FROM users AS usr INNER JOIN user_types AS utype ON usr.id = utype.user_id INNER JOIN personal_information AS per ON usr.id = per.user_id OR (per.barangay_id IS NULL) INNER JOIN barangays as bar ON per.barangay_id = bar.id ORDER BY usr.lastname");
 			return $user->fetchAll(PDO::FETCH_ASSOC);
 		}
 
@@ -100,7 +100,7 @@
 
 		public static function createMemberFromExcel($firstname, $middlename, $lastname,  $region_id, $province_id, $city_id, $district_id, $barangay_id, $purok_id, $idPay, $janPay, $febPay, $marPay, $aprPay, $mayPay, $junPay, $julPay, $augPay, $sepPay, $octPay, $novPay, $decPay) {
 			$pdo = Database::connect();
-			$user = $pdo->prepare("INSERT INTO users(firstname, middlename, lastname, status, created_at, updated_at) VALUES(:firstname, :middlename, :lastname, :status, :created_at, :updated_at)");			
+			$user = $pdo->prepare("INSERT INTO users(firstname, middlename, lastname, status, created_at, updated_at) VALUES(:firstname, :middlename, :lastname, :status, :created_at, :updated_at)");
 
 			$inserted = $user->execute([
 				":firstname" =>$firstname,
@@ -110,6 +110,25 @@
 				":created_at" => date('Y-m-d H:i:s'),
 				":updated_at" => date('Y-m-d H:i:s')
 			]);
+
+			if(empty($idPay) || $idPay == null) { $idPay = 0; }		
+			if(empty($janPay) || $janPay == null) { $janPay = 0; }	
+			if(empty($febPay) || $febPay == null) { $febPay = 0; }	
+			if(empty($marPay) || $marPay == null) { $marPay = 0; }					
+			if(empty($aprPay) || $aprPay == null) { $aprPay = 0; }	
+			if(empty($mayPay) || $mayPay == null) { $mayPay = 0; }	
+			if(empty($junPay) || $junPay == null) { $junPay = 0; }	
+			if(empty($julPay) || $julPay == null) { $julPay = 0; }	
+			if(empty($augPay) || $augPay == null) { $augPay = 0; }	
+			if(empty($sepPay) || $sepPay == null) { $sepPay = 0; }	
+			if(empty($octPay) || $octPay == null) { $octPay = 0; }	
+			if(empty($novPay) || $novPay == null) { $novPay = 0; }	
+			if(empty($decPay) || $decPay == null) { $decPay = 0; }	
+			$total = $idPay + $janPay + $febPay + $marPay + $aprPay + $mayPay + $junPay + $julPay + $augPay + $sepPay + $octPay + $novPay + $decPay;
+			$pstatus = 'nonpaying';
+			if($total > 0) {
+				$pstatus = 'paying';
+			}
 
 			if($inserted) {
 				$uid = $pdo->lastInsertId();
@@ -144,7 +163,7 @@
 				$inserted8 = $emergency->execute([":user_id" => $uid]);
 
 				$beneficiaries = $pdo->prepare("INSERT INTO beneficiaries(user_id) VALUES(:user_id)");
-				$inserted9 = $beneficiaries->execute([":user_id" => $uid]);
+				$inserted9 = $beneficiaries->execute([":user_id" => $uid]);				
 
 				$utypes = $pdo->prepare("INSERT INTO user_types(user_id, mtype, position, designation, classification) VALUES(:user_id, :mtype, :position, :designation, :classification)");	
 				$inserted11 = $utypes->execute([
@@ -152,7 +171,7 @@
 					":mtype" => 'member',
 					":position" => '',
 					":designation" => '',
-					":classification" => 'paying'
+					":classification" => $pstatus
 				]);
 
 				$benefits = $pdo->prepare("INSERT INTO benefits(user_id, insurance, burial) VALUES(:user_id, :insurance, :burial)");	
@@ -160,14 +179,7 @@
 					":user_id" => $uid,
 					":insurance" => 50,
 					":burial" => 50
-				]);
-
-				$IDPayment = $pdo->prepare("INSERT INTO payments(user_id, amount, type) VALUES(:user_id, :amount, :type)");
-				$IDPayment->execute([
-					":user_id" => $uid,
-					":amount" => $idPay,
-					":type" => 'ID'
-				]);
+				]);					
 				$payArray = [];
 				$dateArray = [];				
 				$jan = new DateTime('2026-01-01 01:01:01');
@@ -181,7 +193,16 @@
 				$sep = new DateTime('2026-09-01 01:01:01');
 				$oct = new DateTime('2026-10-01 01:01:01');
 				$nov = new DateTime('2026-11-01 01:01:01');
-				$dec = new DateTime('2026-12-01 01:01:01');
+				$dec = new DateTime('2026-12-01 01:01:01');				
+
+				if((int)$idPay > 0) {
+					$IDPayment = $pdo->prepare("INSERT INTO payments(user_id, amount, type) VALUES(:user_id, :amount, :type)");
+					$IDPayment->execute([
+						":user_id" => $uid,
+						":amount" => $idPay,
+						":type" => 'ID'
+					]);
+				}				
 				if((int)$janPay > 0) {
 					$payArray[] = $janPay;
 					$dateArray[] = $jan->format('Y-m-d H:i:s');

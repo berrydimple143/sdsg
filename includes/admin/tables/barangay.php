@@ -1,6 +1,9 @@
 <table class="w-full text-sm text-left rtl:text-right text-fg-brand-subtle">
     <thead class="text-sm text-white bg-brand border-b border-brand-light">
         <tr>
+            <th scope="col" class="px-3 py-2 border-1 border-black font-medium">
+                #
+            </th>
             <th scope="col" class="px-6 py-3 font-medium">
                 Barangay
             </th>
@@ -27,9 +30,11 @@
             <td colspan="6" class="px-3 py-2 text-center text-md font-bold">No barangays yet ...</td>
         </tr>
         
-        <template x-for="ben in barangays" :key="ben.id">
+        <template x-for="(ben, index) in barangays" :key="ben.id">
 
             <tr class="bg-brand border-b border-brand-light hover:bg-green-500">
+                <th scope="row" x-text="index + 1" class="px-3 py-2 border-1 border-gray-500 font-medium text-fg-brand-subtle whitespace-nowrap">                                
+                </th>
                 <th scope="row" 
                     class="px-6 py-4 font-medium text-fg-brand-subtle whitespace-nowrap">  
                     <button 

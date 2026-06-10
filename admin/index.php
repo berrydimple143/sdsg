@@ -46,19 +46,19 @@
                                     mtype: 'paying'
                                 })
                             });
-                		const reg = await response.json();									
-						this.paying[0] = reg.janMembers;
-						this.paying[1] = reg.febMembers;
-						this.paying[2] = reg.marMembers;
-						this.paying[3] = reg.aprMembers;
-						this.paying[4] = reg.mayMembers;
-						this.paying[5] = reg.junMembers;
-						this.paying[6] = reg.julMembers;
-						this.paying[7] = reg.augMembers;
-						this.paying[8] = reg.sepMembers;
-						this.paying[9] = reg.octMembers;
-						this.paying[10] = reg.novMembers;
-						this.paying[11] = reg.decMembers;
+                		const reg = await response.json();	
+						this.paying[0] = reg.janMembers === 0 ? null : reg.janMembers;
+						this.paying[1] = reg.febMembers === 0 ? null : reg.febMembers;
+						this.paying[2] = reg.marMembers === 0 ? null : reg.marMembers;
+						this.paying[3] = reg.aprMembers === 0 ? null : reg.aprMembers;
+						this.paying[4] = reg.mayMembers === 0 ? null : reg.mayMembers;
+						this.paying[5] = reg.junMembers === 0 ? null : reg.junMembers;
+						this.paying[6] = reg.julMembers === 0 ? null : reg.julMembers;
+						this.paying[7] = reg.augMembers === 0 ? null : reg.augMembers;
+						this.paying[8] = reg.sepMembers === 0 ? null : reg.sepMembers;
+						this.paying[9] = reg.octMembers === 0 ? null : reg.octMembers;
+						this.paying[10] = reg.novMembers === 0 ? null : reg.novMembers;
+						this.paying[11] = reg.decMembers === 0 ? null : reg.decMembers;
 				},
 				async getNotPaying() {
 					let response = await fetch('http://localhost/sdsg/api/admin/countMembers.php', {
@@ -68,19 +68,19 @@
                                     mtype: 'nonpaying'
                                 })
                             });
-                		const reg = await response.json();									
-						this.regular[0] = reg.janMembers;
-						this.regular[1] = reg.febMembers;
-						this.regular[2] = reg.marMembers;
-						this.regular[3] = reg.aprMembers;
-						this.regular[4] = reg.mayMembers;
-						this.regular[5] = reg.junMembers;
-						this.regular[6] = reg.julMembers;
-						this.regular[7] = reg.augMembers;
-						this.regular[8] = reg.sepMembers;
-						this.regular[9] = reg.octMembers;
-						this.regular[10] = reg.novMembers;
-						this.regular[11] = reg.decMembers;
+                		const reg = await response.json();			
+						this.regular[0] = reg.janMembers === 0 ? null : reg.janMembers;
+						this.regular[1] = reg.febMembers === 0 ? null : reg.febMembers;
+						this.regular[2] = reg.marMembers === 0 ? null : reg.marMembers;
+						this.regular[3] = reg.aprMembers === 0 ? null : reg.aprMembers;
+						this.regular[4] = reg.mayMembers === 0 ? null : reg.mayMembers;
+						this.regular[5] = reg.junMembers === 0 ? null : reg.junMembers;
+						this.regular[6] = reg.julMembers === 0 ? null : reg.julMembers;
+						this.regular[7] = reg.augMembers === 0 ? null : reg.augMembers;
+						this.regular[8] = reg.sepMembers === 0 ? null : reg.sepMembers;
+						this.regular[9] = reg.octMembers === 0 ? null : reg.octMembers;
+						this.regular[10] = reg.novMembers === 0 ? null : reg.novMembers;
+						this.regular[11] = reg.decMembers === 0 ? null : reg.decMembers;
 				},
 				checkAuth() {
 					let logged = sessionStorage.getItem("logged");
@@ -110,25 +110,40 @@
 										data: this.regular,
 										borderColor: '#e71d00', 
 										borderWidth: 1,
+										minBarLength: 6,
+										skipNull: true,
 										backgroundColor: '#f17766',
 									},
 									{
 										label: 'Paying Beneficiaries',
 										data: this.paying,
 										borderWidth: 1,
+										minBarLength: 6,
+										skipNull: true,
 										borderColor: '#2e4b21', 
 										backgroundColor: '#00e757',
 									}
 								]
 							},
 							options: {
-								plugins: {
+								plugins: {		
+									datalabels: {
+										display: function(context) {
+											const value = context.dataset.data[context.dataIndex];
+											return value !== null && value !== 0; // Hides label if 0 or null
+										}
+									},							
 									legend: {
 										labels: {										
 											font: {
 												size: 18
 											}
 										}
+									}
+								},
+								scales: {
+									y: {
+										beginAtZero: true
 									}
 								}
 							}
