@@ -1034,7 +1034,7 @@
                 return this.filteredItems.slice(start, end);
             },
             get filteredItems() {
-                let benefactor = this.beneficiaries.filter(item => item.lastname.toLowerCase().includes(this.searchQuery.toLowerCase()) || item.firstname.toLowerCase().includes(this.searchQuery.toLowerCase()) || item.middlename.toLowerCase().includes(this.searchQuery.toLowerCase()) || item.barangay.toLowerCase().includes(this.searchQuery.toLowerCase()) || item.classification.toLowerCase().includes(this.searchQuery.toLowerCase()));
+                let benefactor = this.beneficiaries.filter(item => item.lastname.toLowerCase().includes(this.searchQuery.toLowerCase()) || item.firstname.toLowerCase().includes(this.searchQuery.toLowerCase()) || item.middlename.toLowerCase().includes(this.searchQuery.toLowerCase()) || item.classification.toLowerCase().includes(this.searchQuery.toLowerCase()));
                 return benefactor;
             },
             nextPage() {
