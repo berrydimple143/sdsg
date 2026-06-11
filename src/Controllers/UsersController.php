@@ -12,6 +12,10 @@
 
 	class UsersController {
 
+		public function deleteData($id) {
+			return User::deleteData($id);					
+		}
+
 		public function changeStatus($id, $status) {
 			return User::changeStatus($id, $status);					
 		}

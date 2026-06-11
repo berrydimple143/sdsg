@@ -92,34 +92,7 @@
                         >
                             <p class="font-bold text-gray-900">Edit</p>                            
                         </div>
-                    </div>
-
-                    <div 
-                        x-data="{ isOpen: false }" 
-                        @mouseenter="isOpen = true" 
-                        @mouseleave="isOpen = false"
-                        class="relative"
-                    >
-                        
-                        <button x-show="!ben.status" @click.prevent="changeUserStatus(ben.id, 1)" type="button" class="inline-flex items-center text-white bg-gradient-to-r from-green-600 via-green-700 to-green-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-400 dark:focus:ring-green-900 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1  cursor-pointer">
-                        <?php include('../includes/admin/icons/active2.php'); ?>
-                        &nbsp;
-                        </button>
-
-                        <div 
-                            x-show="isOpen" 
-                            x-cloak
-                            x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="opacity-0 translate-y-1"
-                            x-transition:enter-end="opacity-100 translate-y-0"
-                            x-transition:leave="transition ease-in duration-150"
-                            x-transition:leave-start="opacity-100 translate-y-0"
-                            x-transition:leave-end="opacity-0 translate-y-1"
-                            class="absolute z-10 w-14 p-1 mt-1 bg-white rounded-lg shadow-xl border border-gray-200 left-0"
-                        >
-                            <p class="font-bold text-gray-900">Enable</p>                            
-                        </div>
-                    </div>
+                    </div>                   
 
                     <div 
                         x-data="{ isOpen: false }" 
@@ -128,8 +101,8 @@
                         class="relative"
                     >
 
-                        <button x-show="ben.status" @click.prevent="changeUserStatus(ben.id, 0)" type="button" class="inline-flex items-center  text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1  cursor-pointer">
-                        <?php include('../includes/admin/icons/inactive.php'); ?>
+                        <button @click.prevent="deleteBeneficiaryConfirm(ben.id)" type="button" class="inline-flex items-center  text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1  cursor-pointer">
+                        <?php include('../includes/admin/icons/trash2.php'); ?>
                             &nbsp;
                         </button>
 
@@ -144,7 +117,7 @@
                             x-transition:leave-end="opacity-0 translate-y-1"
                             class="absolute z-10 w-16 p-1 mt-1 bg-white rounded-lg shadow-xl border border-gray-200 left-0"
                         >
-                            <p class="font-bold text-gray-900">Disable</p>                            
+                            <p class="font-bold text-gray-900">Delete</p>                            
                         </div>
                     </div>
 

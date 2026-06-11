@@ -19,6 +19,7 @@
     <?php include('../includes/admin/modals/delete-payment.php'); ?>
     <?php include('../includes/admin/modals/change-successful.php'); ?>
     <?php include('../includes/admin/modals/add-successful.php'); ?>
+    <?php include('../includes/admin/modals/delete-beneficiary.php'); ?>
     <?php include('../includes/admin/modals/delete-successful.php'); ?>
     <?php include('../includes/admin/modals/edit-successful.php'); ?>        
     <?php include('../includes/admin/bform.php'); ?>
@@ -65,6 +66,8 @@
             showRow: false,
             userId: null,
             created_at: '',
+            deleteBeneficiaryId: null,
+            deleteBeneficiaryModal: null,
             paymentModal: null,
             paymentsTableModal: null,
             beneficiaryModal: null,
@@ -721,6 +724,9 @@
             cancelDeletion() {
                 this.deletePaymentModal.classList.add('hidden');
             },
+            cancelBeneficiaryDeletion() {
+                this.deleteBeneficiaryModal.classList.add('hidden');
+            },
             deleteConfirm(id) {
                 this.deleteId = id;
                 this.deletePaymentModal = document.getElementById('deletePaymentModal');
@@ -819,14 +825,34 @@
                     this.displayModal('change', 2000);
                 }
             },
+            async deleteBeneficiary() {
+                try {
+                    let response = await fetch('http://localhost/sdsg/api/admin/deleteData.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ 
+                            id: this.deleteBeneficiaryId,
+                            page: 'beneficiary'
+                        })
+                    });
+                    let res = await response.json();
+                } catch (error) {
+		      		console.error('Error fetching data:', error);
+                } finally {
+                    this.init();
+                    this.displayModal('deleteUser', 2000);
+                }
+            },
             displayModal(page, msec) {
                 if(page == 'change') {
                     this.changeSuccessful = document.getElementById('changeSuccessful');
                     this.changeSuccessful.classList.remove('hidden');
                 } else if(page == 'delete') {
                     this.deletePaymentModal.classList.add('hidden');
-                    this.paymentsTableModal.classList.add('hidden');
-                    this.deleteSuccessful = document.getElementById('deleteSuccessful');
+                    this.paymentsTableModal.classList.add('hidden');                    
+                    this.deleteSuccessful.classList.remove('hidden');
+                } else if(page == 'deleteUser') {
+                    this.deleteBeneficiaryModal.classList.add('hidden');                   
                     this.deleteSuccessful.classList.remove('hidden');
                 } else if(page == 'edit') {
                     this.editPaymentModal.classList.add('hidden');
@@ -836,12 +862,12 @@
                 } else if(page == 'add') {
                     this.paymentModal.classList.add('hidden');
                     this.addSuccessful = document.getElementById('addSuccessful');
-                    this.addSuccessful.classList.remove('hidden');
+                    this.addSuccessful.classList.remove('hidden');                
                 }
                 setTimeout(() => {
                     if(page == 'change') {
                         this.changeSuccessful.classList.add('hidden');
-                    } else if(page == 'delete') {
+                    } else if(page == 'delete' || page == 'deleteUser') {
                         this.deleteSuccessful.classList.add('hidden');
                     } else if(page == 'edit') {
                         this.editSuccessfulModal.classList.add('hidden');
@@ -998,6 +1024,12 @@
                 this.beneficiaryPage = document.getElementById('beneficiaryPage');
                 this.uploadExcelModal = document.getElementById('uploadExcelModal');
                 this.uploadingModal = document.getElementById('uploadingModal');
+                this.deleteBeneficiaryModal = document.getElementById('deleteBeneficiaryModal');
+                this.deleteSuccessful = document.getElementById('deleteSuccessful');
+            },
+            deleteBeneficiaryConfirm(id) {
+                this.deleteBeneficiaryId = id;
+                this.deleteBeneficiaryModal.classList.remove('hidden');                
             },
             capitalizeFirstLetter(str) {
                 if(!str) return "";

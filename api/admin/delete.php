@@ -8,7 +8,6 @@
 	use App\Controllers\BarangaysController;
 	use App\Controllers\PuroksController;
 	use App\Controllers\PaymentsController;
-	use App\Controllers\UsersController;
 
 	if($_SERVER['REQUEST_METHOD'] === "POST") {		
 		$data = json_decode(file_get_contents("php://input"));
@@ -24,8 +23,6 @@
 			$controller = new PuroksController();
 		} elseif($data->page == 'payment') {
 			$controller = new PaymentsController();
-		} elseif($data->page == 'beneficiary') {
-			$controller = new UsersController();
         }
         
         if(empty($data->id)) {

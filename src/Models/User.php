@@ -423,5 +423,12 @@
 			$user = $pdo->prepare("DELETE FROM users WHERE id=?");
 			return $user->execute([$id]);			
 		}
+
+		public static function deleteData($id) {
+			$pdo = Database::connect();
+			$user = $pdo->prepare("DELETE usr, utype, per, pay, gov, fam, emc, edc, ctc, com, bnf, bnc FROM users usr LEFT JOIN user_types utype ON usr.id = utype.user_id LEFT JOIN personal_information per ON usr.id = per.user_id LEFT JOIN payments pay ON usr.id = pay.user_id LEFT JOIN government_id gov ON usr.id = gov.user_id LEFT JOIN family_background fam ON usr.id = fam.user_id LEFT JOIN emergency_contact emc ON usr.id = emc.user_id LEFT JOIN education_occupation edc ON usr.id = edc.user_id LEFT JOIN contact_information ctc ON usr.id = ctc.user_id LEFT JOIN community_information com ON usr.id = com.user_id LEFT JOIN benefits bnf ON usr.id = bnf.user_id LEFT JOIN beneficiaries bnc ON usr.id = bnc.user_id WHERE usr.id=?");
+			return $user->execute([$id]);
+		}
+
 	}
 ?>
