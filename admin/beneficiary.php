@@ -81,6 +81,7 @@
             uploadingModal: null,
             excelUploadMessage: '',
             excelUploadLoading: false,
+            saveMode: '',
             totalPay: 0.00,
             amount: '',
             type: '',
@@ -349,12 +350,12 @@
 		    		this.benage3 = ''; this.benrelationship3 = ''; this.benbirthdate3 = '';
 					this.benname4 = ''; this.benage4 = ''; this.benrelationship4 = '';
 					this.benbirthdate4 = ''; this.insurance = ''; this.burial = '';
-					this.courseToAvail = '';
+					this.courseToAvail = ''; this.userId = null; this.saveMode = '';
 		    },
-            async saveBeneficiary() {			  
+            async saveBeneficiary() {                
                 if (!this.validate()) return;
                     try {
-                    const response = await fetch("http://localhost/sdsg/api/member.php", {
+                    const response = await fetch("http://localhost/sdsg/api/admin/beneficiary.php", {
                         method: "POST",
                         headers: {"Content-Type": "application/json"},
                         body: JSON.stringify({ 
@@ -391,30 +392,31 @@
                             benname4: this.benname4, benage4: this.benage4,
                             benrelationship4: this.benrelationship4, benbirthdate4: this.benbirthdate4,
                             insurance: this.insurance, burial: this.burial, 
-                            courseToAvail: this.courseToAvail, filename: this.filename
+                            courseToAvail: this.courseToAvail, filename: this.filename,
+                            userId: this.userId, mode: this.saveMode
                         })
                     });
 
                     const res = await response.json();                    
-                    this.beneficiaryModal.classList.add('hidden');
-                    const modal = document.getElementById('successModal');
+                    this.beneficiaryModal.classList.add('hidden');                 
 
-                    if(!res.status) {
-                        console.log(res.errorData);
+                    if(!res.status) {                        
                         alert(res.message);                  
                     } else {
-                        this.clearInputs();
+                        const modal = document.getElementById('successModal');
                         modal.classList.remove('hidden');
                         setTimeout(() => {
                             modal.classList.add('hidden');
-                            setTimeout(() => {
-                                window.location = "beneficiary.php";
-                            }, 2000);
                         }, 2000);
-                    }
+                    }                   
                 } catch (error) {
                     console.error('Error fetching data:', error);
-                } 
+                } finally {
+                    this.clearInputs();                       
+                    setTimeout(() => {
+                        window.location = "beneficiary.php";
+                    }, 2000);
+                }
 		    },
             getBday(btype) {
 				if(btype == 'own') {
@@ -438,12 +440,129 @@
                     }
                 }, 50);
             },
-            editBeneficiary(id) {
-                alert(`This will show a form to edit the beneficiary with ID number: ${id}`);
-            },
-            addBeneficiary() {                
+            async editBeneficiary(id) {
+                this.saveMode = 'edit';
+                this.userId = id;
                 this.beneficiaryModal.classList.remove('hidden');
                 this.beneficiaryPage.classList.add('hidden');                
+                try {
+                    let response = await fetch('http://localhost/sdsg/api/admin/getData.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ 
+                            id: id,
+                            page: 'beneficiary'
+                        })
+                    });
+                    let res = await response.json();
+                    let bf = res.data;
+                    this.lastname = bf.lastname;
+                    this.firstname = bf.firstname;
+                    this.middlename = bf.middlename;
+                    this.email = bf.email;
+                    this.region_id = bf.region_id;
+                    this.suffix = bf.suffix;
+                    this.nickname = bf.nickname;
+                    this.zipcode = bf.zipcode;
+                    this.birthplace = bf.birthplace;
+                    this.age = bf.age;
+                    this.civilstatus = bf.civilstatus;
+                    this.gender = bf.gender;
+                    this.nationality = bf.nationality;
+                    this.country = bf.country;
+                    this.religion = bf.religion;
+                    this.bloodtype = bf.bloodtype;
+                    this.height = bf.height;
+                    this.weight = bf.weight;
+                    this.sss = bf.sss;
+                    this.philhealth = bf.philhealth;
+                    this.voter = bf.voter;
+                    this.passport = bf.passport;
+                    this.profid = bf.profid;
+                    this.pagibig = bf.pagibig;
+                    this.license = bf.license;
+                    this.senior = bf.senior;
+                    this.father = bf.father;
+                    this.mother = bf.mother;
+                    this.spouse = bf.spouse;
+                    this.contactname = bf.contactname;
+                    this.contactnumber = bf.contactnumber;
+                    this.contactaddress = bf.contactaddress;
+                    this.education = bf.education;
+                    this.position = bf.position;
+                    this.skill = bf.skill;
+                    this.organization = bf.organization;
+                    this.contact = bf.contact;
+                    this.fb = bf.fb;
+                    this.photo = bf.photo;
+                    this.chairman = bf.chairman;
+                    this.area = bf.area;
+                    this.mcnumber = bf.mcnumber;
+                    this.classification = bf.classification;
+                    this.tribe = bf.tribe;
+                    this.insurance = bf.insurance;
+                    this.burial = bf.burial;
+                    this.courseToAvail = bf.courseToAvail;
+                    this.benname1 = bf.benname1;
+                    this.benname2 = bf.benname2;
+                    this.benname3 = bf.benname3;
+                    this.benname4 = bf.benname4;
+                    this.benage1 = bf.benage1;
+                    this.benage2 = bf.benage2;
+                    this.benage3 = bf.benage3;
+                    this.benage4 = bf.benage4;
+                    this.benrelationship1 = bf.benrelationship1;
+                    this.benrelationship2 = bf.benrelationship2;
+                    this.benrelationship3 = bf.benrelationship3;
+                    this.benrelationship4 = bf.benrelationship4;
+                    console.log(bf);
+                    if(res.data.region_id) {
+                        this.getAllDataWithId('province', bf.region_id);
+                        this.getAllDataWithId('city', bf.province_id);
+                        this.getAllDataWithId('district', bf.city_id);
+                        this.getAllDataWithId('barangay', bf.district_id);
+                        this.getAllDataWithId('purok', bf.barangay_id);
+                        setTimeout(() => {
+                            this.province_id = bf.province_id;
+                            this.city_id = bf.city_id;
+                            this.district_id = bf.district_id;
+                            this.barangay_id = bf.barangay_id;
+                            this.purok_id = bf.purok_id;
+                        }, 500);
+                    }
+                    this.birthdate = bf.birthdate;
+                    this.benbirthdate1 = bf.benbirthdate1;
+                    this.benbirthdate2 = bf.benbirthdate2;
+                    this.benbirthdate3 = bf.benbirthdate3;
+                    this.benbirthdate4 = bf.benbirthdate4;
+                    if(bf.birthdate || bf.birthdate != '') {
+                        this.birthdate = convertDateToHtml(bf.birthdate);
+                    } 
+                    if(bf.benbirthdate1 || bf.benbirthdate1 != '') {
+                        this.benbirthdate1 = convertDateToHtml(bf.benbirthdate1);
+                    } 
+                    if(bf.benbirthdate2 || bf.benbirthdate2 != '') {
+                        this.benbirthdate2 = convertDateToHtml(bf.benbirthdate2);
+                    } 
+
+                    if(bf.benbirthdate3 || bf.benbirthdate3 != '') {
+                        this.benbirthdate3 = convertDateToHtml(bf.benbirthdate3);
+                    } 
+                    if(bf.benbirthdate4 || bf.benbirthdate4 != '') {
+                        this.benbirthdate4 = convertDateToHtml(bf.benbirthdate4);
+                    }                            
+                } catch (error) {
+		      		console.error('Error fetching data:', error);
+                }
+            },
+            async populatePlaces() {
+                this.region_id = res.data.region_id;
+                this.province_id = res.data.province_id;
+            },
+            addBeneficiary() {      
+                this.saveMode = 'add';
+                this.beneficiaryModal.classList.remove('hidden');
+                this.beneficiaryPage.classList.add('hidden');           
             },
             hideExcelInput() {
                 this.$refs.excelFile.classList.add('hidden');
@@ -888,6 +1007,15 @@
 					});
 				}
 			},
+            convertDateToHtml() {
+                if(dt == '') {
+					return dt;
+				} else {
+					const date = new Date(dt);
+                    const usFormatter = new Intl.DateTimeFormat('en-US');
+                    return usFormatter.format(date);
+				}
+            },
             getTribe(trb) {
 				const tribeContainer = document.getElementById('tribe-container');	
 				if(trb == "Others") {

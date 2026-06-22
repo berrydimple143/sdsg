@@ -2,7 +2,6 @@
   	<div class="px-3 py-3 w-full"> 
         
          <form @submit.prevent="saveBeneficiary" class="max-w-7xl mx-auto bg-green-600 px-4 py-3 shadow-2xl">
-            
             <div class="pb-3">
                 <p class="text-center text-gray-900 text-lg text-shadow-md uppercase bg-gradient-to-t from-green-400 to-green-200 rounded-md py-2">Personal Information</p>
             </div>
@@ -32,7 +31,7 @@
                 </div>
                 <div>
                     <label for="region_id" class="text-white text-shadow-lg block mb-2 text-sm font-medium text-gray-900 dark:text-white">Region <span class="text-red-500 text-md font-bold">*</span></label>
-                    <select x-model="region_id" id="region_id" @change="selectRegion($event.target.value, $event.target.options[$event.target.selectedIndex].text)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
+                    <select x-model="region_id" id="region_id" @change="selectRegion($event.target.value, $event.target.options[$event.target.selectedIndex].text)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         <option value="">Select region here ...</option>
                         <template x-for="reg in regions" :key="reg.id">
                             <option :value="reg.id" x-text="reg.name"></option>
@@ -43,7 +42,7 @@
 
                 <div>
                     <label for="province_id" class="text-white text-shadow-lg block mb-2 text-sm font-medium text-gray-900 dark:text-white">Province <span class="text-red-500 text-md font-bold">*</span></label>
-                    <select x-model="province_id" @change="selectProvince($event.target.value, $event.target.options[$event.target.selectedIndex].text)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
+                    <select x-model="province_id" @change="selectProvince($event.target.value, $event.target.options[$event.target.selectedIndex].text)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         <option value="">Select province here ...</option>
                         <template x-for="prov in provinces" :key="prov.id">
                             <option :value="prov.id" x-text="prov.name"></option>
@@ -54,7 +53,7 @@
 
                 <div>
                     <label for="city_id" class="text-white text-shadow-lg block mb-2 text-sm font-medium text-gray-900 dark:text-white">Municipality/City <span class="text-red-500 text-md font-bold">*</span></label>
-                    <select x-model="city_id" @change="selectCity($event.target.value, $event.target.options[$event.target.selectedIndex].text)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
+                    <select x-model="city_id" @change="selectCity($event.target.value, $event.target.options[$event.target.selectedIndex].text)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         <option value="">Select municipality/city here ...</option>
                         <template x-for="ct in cities" :key="ct.id">
                             <option :value="ct.id" x-text="ct.name"></option>
@@ -65,7 +64,7 @@
 
                 <div>
                     <label for="district_id" class="text-white text-shadow-lg block mb-2 text-sm font-medium text-gray-900 dark:text-white">District <span class="text-red-500 text-md font-bold">*</span></label>
-                    <select x-model="district_id" @change="selectDistrict($event.target.value, $event.target.options[$event.target.selectedIndex].text)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
+                    <select x-model="district_id" @change="selectDistrict($event.target.value, $event.target.options[$event.target.selectedIndex].text)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         <option value="">Select district here ...</option>
                         <template x-for="dist in districts" :key="dist.id">
                             <option :value="dist.id" x-text="dist.name"></option>
@@ -76,10 +75,10 @@
 
                 <div>
                     <label for="barangay_id" class="text-white text-shadow-lg block mb-2 text-sm font-medium text-gray-900 dark:text-white">Barangay <span class="text-red-500 text-md font-bold">*</span></label>
-                    <select x-model="barangay_id" @change="selectBarangay($event.target.value, $event.target.options[$event.target.selectedIndex].text)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
+                    <select x-model="barangay_id" @change="selectBarangay($event.target.value, $event.target.options[$event.target.selectedIndex].text)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         <option value="">Select barangay here ...</option>
                         <template x-for="bar in barangays" :key="bar.id">
-                            <option :value="bar.id" x-text="bar.name"></option>
+                            <option :value="bar.id" x-text="capitalizeFirstLetter(bar.name)"></option>
                         </template>
                     </select>
                     <span x-show="errors.barangay_id" class="text-red-500" x-text="errors.barangay_id"></span>
@@ -87,7 +86,7 @@
                 
                 <div>
                     <label for="purok_id" class="text-white text-shadow-lg block mb-2 text-sm font-medium text-gray-900 dark:text-white">Purok/Sitio <span class="text-red-500 text-md font-bold">*</span></label>
-                    <select x-model="purok_id" @change="selectPurok($event.target.value, $event.target.options[$event.target.selectedIndex].text)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
+                    <select x-model="purok_id" @change="selectPurok($event.target.value, $event.target.options[$event.target.selectedIndex].text)" class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         <option value="">Select purok/sitio here ...</option>
                         <template x-for="pur in puroks" :key="pur.id">
                             <option :value="pur.id" x-text="pur.name"></option>
@@ -122,7 +121,7 @@
 
                 <div>
                     <label for="civilstatus" class="text-white text-shadow-lg block mb-2 text-sm font-medium text-gray-900 dark:text-white">Civil Status <span class="text-red-500 text-md font-bold">*</span></label>
-                    <select x-model="civilstatus"  class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
+                    <select x-model="civilstatus"  class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         <option value="">Select status here ...</option>
                         <template x-for="stat in cstatuses" :key="stat.id">
                             <option :value="stat.value" x-text="stat.value"></option>
@@ -133,7 +132,7 @@
 
                 <div>
                     <label for="gender" class="text-white text-shadow-lg block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender <span class="text-red-500 text-md font-bold">*</span></label>
-                    <select x-model="gender"  class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required="">
+                    <select x-model="gender"  class="bg-white mt-1 block w-full h-2/3 p-2 rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         <option value="">Select gender here ...</option>
                         <template x-for="gn in genders" :key="gn.id">
                             <option :value="gn.value" x-text="gn.value"></option>

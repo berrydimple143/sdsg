@@ -6,6 +6,9 @@
   <title>SDSD Initiative Inc. - Administration Panel - Provinces</title>
   <link href="../src/output.css" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="../images/logo.ico">
+  <style>
+    [x-cloak] { display: none !important; }
+  </style>
   <script defer src="../js/alpinejs.cdn.min.js"></script>
 </head>
 <body x-data="pageLoad()" class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover bg-no-repeat">      

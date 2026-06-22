@@ -12,6 +12,10 @@
 
 	class UsersController {
 
+		public function getData($id) {
+			return User::getBeneficiary($id);
+		}
+
 		public function deleteData($id) {
 			return User::deleteData($id);					
 		}
@@ -96,7 +100,7 @@
 				}
 			}
 			
-			if(!$this->isUserExisting($firstname, $lastname, $middlename, $barangay_id)) {			
+			if(!$this->isUserExisting($firstname, $lastname, $middlename, $barangay_id, 'add', null)) {			
 				if($firstname AND $lastname) {			
 					$inserted = User::createMemberFromExcel($firstname, $middlename, $lastname, $region_id, $province_id, $city_id, $district_id, $barangay_id, $purok_id, $idPay, $janPay, $febPay, $marPay, $aprPay, $mayPay, $junPay, $julPay, $augPay, $sepPay, $octPay, $novPay, $decPay);					
 					if($inserted) {
@@ -111,10 +115,13 @@
 		public function storeMember($data) {
 			$firstname = trim(htmlspecialchars($data['firstname']));
 			$lastname = trim(htmlspecialchars($data['lastname']));
-			$middlename = trim(htmlspecialchars($data['middlename']));
-			$suffix = trim(htmlspecialchars($data['suffix']));
+			$middlename = trim(htmlspecialchars($data['middlename']));			
 			$barangay_id = trim(htmlspecialchars($data['barangay_id']));
-			if(!$this->isExisting($firstname, $lastname, $middlename, $suffix, $barangay_id)) {				
+			$mode = trim(htmlspecialchars($data['mode']));
+			$uid = trim(htmlspecialchars($data['id']));
+
+			if(!$this->isUserExisting($firstname, $lastname, $middlename, $barangay_id, $mode, $uid)) {
+				$suffix = trim(htmlspecialchars($data['suffix']));
 				$region_id = trim(htmlspecialchars($data['region_id']));
 				$province_id = trim(htmlspecialchars($data['province_id']));
 				$city_id = trim(htmlspecialchars($data['city_id']));
@@ -127,7 +134,12 @@
 				$email = trim(htmlspecialchars($data['email']));
 				$nickname = trim(htmlspecialchars($data['nickname']));				
 				$zipcode = trim(htmlspecialchars($data['zipcode']));
-				$birthdate = date('Y-m-d', strtotime(trim(htmlspecialchars($data['birthdate']))));
+				$birthdate = trim(htmlspecialchars($data['birthdate']));				
+				if(!empty($birthdate)) {
+					$birthdate = date('Y-m-d', strtotime(trim(htmlspecialchars($data['birthdate']))));
+				} else {
+					$birthdate = null;
+				}	
 				$birthplace = trim(htmlspecialchars($data['birthplace']));
 				$age = trim(htmlspecialchars($data['age']));
 				$nationality = trim(htmlspecialchars($data['nationality']));
@@ -159,33 +171,63 @@
 				$contactname = trim(htmlspecialchars($data['contactname']));
 				$contactnumber = trim(htmlspecialchars($data['contactnumber']));
 				$contactaddress = trim(htmlspecialchars($data['contactaddress']));
-				$benbirthdate1 = date('Y-m-d', strtotime(trim(htmlspecialchars($data['benbirthdate1']))));
+
+				$benbirthdate1 = trim(htmlspecialchars($data['benbirthdate1']));				
+				if(!empty($benbirthdate1)) {
+					$benbirthdate1 = date('Y-m-d', strtotime(trim(htmlspecialchars($data['benbirthdate1']))));
+				} else {
+					$benbirthdate1 = null;
+				}
+
+				
 				$benname1 = trim(htmlspecialchars($data['benname1']));
 				$benage1 = trim(htmlspecialchars($data['benage1']));
 				$benrelationship1 = trim(htmlspecialchars($data['benrelationship1']));
 				$benname2 = trim(htmlspecialchars($data['benname2']));
 				$benage2 = trim(htmlspecialchars($data['benage2']));
 				$benrelationship2 = trim(htmlspecialchars($data['benrelationship2']));
-				$benbirthdate2 = date('Y-m-d', strtotime(trim(htmlspecialchars($data['benbirthdate2']))));
+
+				$benbirthdate2 = trim(htmlspecialchars($data['benbirthdate2']));				
+				if(!empty($benbirthdate2)) {
+					$benbirthdate2 = date('Y-m-d', strtotime(trim(htmlspecialchars($data['benbirthdate2']))));
+				} else {
+					$benbirthdate2 = null;
+				}
+				
 				$benname3 = trim(htmlspecialchars($data['benname3']));
 				$benage3 = trim(htmlspecialchars($data['benage3']));
 				$benrelationship3 = trim(htmlspecialchars($data['benrelationship3']));
-				$benbirthdate3 = date('Y-m-d', strtotime(trim(htmlspecialchars($data['benbirthdate3']))));
+
+				$benbirthdate3 = trim(htmlspecialchars($data['benbirthdate3']));				
+				if(!empty($benbirthdate3)) {
+					$benbirthdate3 = date('Y-m-d', strtotime(trim(htmlspecialchars($data['benbirthdate3']))));
+				} else {
+					$benbirthdate3 = null;
+				}
+				
 				$benname4 = trim(htmlspecialchars($data['benname4']));
 				$benage4 = trim(htmlspecialchars($data['benage4']));
 				$benrelationship4 = trim(htmlspecialchars($data['benrelationship4']));
-				$benbirthdate4 = date('Y-m-d', strtotime(trim(htmlspecialchars($data['benbirthdate4']))));
+
+				$benbirthdate4 = trim(htmlspecialchars($data['benbirthdate4']));				
+				if(!empty($benbirthdate4)) {
+					$benbirthdate4 = date('Y-m-d', strtotime(trim(htmlspecialchars($data['benbirthdate4']))));
+				} else {
+					$benbirthdate4 = null;
+				}
+				
 				$insurance = trim(htmlspecialchars($data['insurance']));
 				$burial = trim(htmlspecialchars($data['burial']));
 				$courseToAvail = trim(htmlspecialchars($data['courseToAvail']));
 				$filename = trim(htmlspecialchars($data['filename']));				
-				if($firstname AND $lastname AND $region_id AND $province_id AND $city_id AND $district_id AND $barangay_id AND $purok_id AND $civilstatus AND $gender) {					
-					$inserted = User::createMember($firstname, $middlename, $lastname, $email, $region_id, $province_id, $city_id, $district_id, $barangay_id, $purok_id, $civilstatus, $gender, $religion, $bloodtype,  $nickname, $suffix, $zipcode, $birthdate, $birthplace, $age, $nationality, $country, $height, $weight, $father, $mother, $spouse, $education, $position, $skill, $organization, $contact, $fb, $sss, $philhealth, $voter, $passport, $profid, $pagibig, $license, $senior, $chairman, $area, $mcnumber, $classification, $tribe, $contactname, $contactnumber, $contactaddress, $benname1, $benage1, $benrelationship1, $benbirthdate1, $benname2, $benage2, $benrelationship2, $benbirthdate2, $benname3, $benage3, $benrelationship3, $benbirthdate3, $benname4, $benage4, $benrelationship4, $benbirthdate4, $insurance, $burial, $courseToAvail, $filename);					
-					if($inserted) {
-						return 'ok';
-					} else {
-						return 'dberror';
+
+				if($firstname AND $lastname AND $mode) {		
+					if($mode == 'add') {
+						$result = User::createMember($firstname, $middlename, $lastname, $email, $region_id, $province_id, $city_id, $district_id, $barangay_id, $purok_id, $civilstatus, $gender, $religion, $bloodtype,  $nickname, $suffix, $zipcode, $birthdate, $birthplace, $age, $nationality, $country, $height, $weight, $father, $mother, $spouse, $education, $position, $skill, $organization, $contact, $fb, $sss, $philhealth, $voter, $passport, $profid, $pagibig, $license, $senior, $chairman, $area, $mcnumber, $classification, $tribe, $contactname, $contactnumber, $contactaddress, $benname1, $benage1, $benrelationship1, $benbirthdate1, $benname2, $benage2, $benrelationship2, $benbirthdate2, $benname3, $benage3, $benrelationship3, $benbirthdate3, $benname4, $benage4, $benrelationship4, $benbirthdate4, $insurance, $burial, $courseToAvail, $filename);					
+					} else if($mode == 'edit') {
+						$result = User::updateMember($firstname, $middlename, $lastname, $email, $region_id, $province_id, $city_id, $district_id, $barangay_id, $purok_id, $civilstatus, $gender, $religion, $bloodtype,  $nickname, $suffix, $zipcode, $birthdate, $birthplace, $age, $nationality, $country, $height, $weight, $father, $mother, $spouse, $education, $position, $skill, $organization, $contact, $fb, $sss, $philhealth, $voter, $passport, $profid, $pagibig, $license, $senior, $chairman, $area, $mcnumber, $classification, $tribe, $contactname, $contactnumber, $contactaddress, $benname1, $benage1, $benrelationship1, $benbirthdate1, $benname2, $benage2, $benrelationship2, $benbirthdate2, $benname3, $benage3, $benrelationship3, $benbirthdate3, $benname4, $benage4, $benrelationship4, $benbirthdate4, $insurance, $burial, $courseToAvail, $filename, $uid);					
 					}
+					if($result) { return 'ok'; } else { return 'dberror'; }
 				}
 			} else {
 				return 'exist';
@@ -200,8 +242,8 @@
 			}
 		}
 
-		private function isUserExisting($firstname, $lastname, $middlename, $barangay) {
-			if(User::countUser($firstname, $lastname, $middlename, $barangay) > 0) {
+		private function isUserExisting($firstname, $lastname, $middlename, $barangay, $mode, $id) {
+			if(User::countUser($firstname, $lastname, $middlename, $barangay, $mode, $id) > 0) {
 				return true;
 			} else {
 				return false;

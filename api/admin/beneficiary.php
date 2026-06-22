@@ -1,24 +1,18 @@
 <?php
-	require "../autoload.php";
+	require "../../autoload.php";
 	header("Content-Type: application/json");
 	use App\Controllers\UsersController;
 
-	if($_SERVER['REQUEST_METHOD'] === "POST") {
-		$newUser = new UsersController();
+	if($_SERVER['REQUEST_METHOD'] === "POST") {		
 		$user = json_decode(file_get_contents("php://input"));
 
 		$data = [
 			'firstname' => $user->firstname,
 			'lastname' => $user->lastname,
-            'region_id' => $user->region_id,
-			'province_id' => $user->province_id,
-            'city_id' => $user->city_id,
-			'district_id' => $user->district_id,
-            'barangay_id' => $user->barangay_id,
-			'purok_id' => $user->purok_id,
-            'civilstatus' => $user->civilstatus,
-			'gender' => $user->gender
-		];	
+            'insurance' => $user->insurance,
+            'burial' => $user->burial,
+            'mode' => $user->mode
+		];
 
 		foreach($data as $key => $value) {
 			if(empty($value)) {
@@ -30,7 +24,15 @@
 				exit();
 			}
 		}
-
+		
+		$data['civilstatus'] = $user->civilstatus;
+		$data['gender'] = $user->gender;
+		$data['region_id'] = $user->region_id;
+        $data['province_id'] = $user->province_id;
+		$data['city_id'] = $user->city_id;
+		$data['district_id'] = $user->district_id;
+		$data['barangay_id'] = $user->barangay_id;
+        $data['purok_id'] = $user->purok_id;		
         $data['religion'] = $user->religion;
         $data['bloodtype'] = $user->bloodtype;
 		$data['middlename'] = $user->middlename;
@@ -90,15 +92,16 @@
 		$data['burial'] = $user->burial;
         $data['courseToAvail'] = $user->courseToAvail;
 		$data['filename'] = $user->filename;
-		$data['mode'] = 'add';
-		$data['id'] = null;
+        $data['mode'] = $user->mode;
+        $data['id'] = $user->userId;
 
+        $newUser = new UsersController();
 		$returnData = $newUser->storeMember($data);
 		if($returnData == "ok") {
 			http_response_code(200);
 			echo json_encode([
 				'status' => true,
-				'message' => 'Registration successful.',
+				'message' => 'Save successful.',
 				'errorData' => ''
 			]);		
 		} else {
@@ -113,7 +116,7 @@
 				http_response_code(401);
 				echo json_encode([
 					'status' => false,
-					'message' => 'Registration failed.',
+					'message' => 'Save failed.',
 					'errorData' => $returnData
 				]);
 			}			
@@ -126,5 +129,5 @@
 			'message' => 'Only POST requests are allowed.',
 			'errorData' => 'not allowed'
 		]);
-	} 
+	}
 ?>

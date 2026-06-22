@@ -6,6 +6,9 @@
   <title>SDSD Initiative Inc.</title>
   <link href="../src/output.css" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="../images/logo.ico">
+  <style>
+    [x-cloak] { display: none !important; }
+  </style>
   <script defer src="../js/alpinejs.cdn.min.js"></script>
 </head>
 <body class="w-screen h-screen bg-[url(../images/greenbg.jpg)] bg-center bg-cover bg-no-repeat">
