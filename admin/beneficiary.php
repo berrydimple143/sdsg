@@ -25,14 +25,16 @@
     <?php include('../includes/admin/bform.php'); ?>
     <?php include('../includes/admin/modals/upload-excel.php'); ?>	
     <?php include('../includes/admin/modals/uploading.php'); ?>
-    <canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="top-0 left-0 hidden"></canvas>    	
+    <?php include('../includes/admin/modals/exporting.php'); ?>
+    <canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="top-0 left-0 hidden"></canvas>
     <div id="beneficiaryPage" class="flex h-screen bg-transparent">
         <input type="checkbox" id="menu-toggle" class="hidden peer">
         <?php include('../includes/admin/sidebar.php'); ?>
         <div class="flex flex-col flex-1 overflow-y-auto">
             <?php include('../includes/admin/header.php'); ?>
             <div class="p-1">
-                <div class="flex bg-green-400 items-center justify-between">
+
+                <div class="flex bg-green-400 items-center justify-between border-1 border-gray-800">
                     <div class="flex items-center space-x-2">
                         <h1 class="text-2xl text-purple-600 font-bold p-2 text-shadow-lg">List of Beneficiaries</h1>
                         <input 
@@ -45,14 +47,55 @@
                     <div class="flex space-x-1">
                         <button type="button" @click.prevent="importBeneficiary" class="inline-flex items-center text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
                         <?php include('../includes/admin/icons/import.php'); ?>
-                            Import Excel
+                            Import Excel File
                         </button>
                         <button type="button" @click.prevent="addBeneficiary" class="inline-flex items-center text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
                         <?php include('../includes/admin/icons/add.php'); ?>
                             Add Beneficiary
                         </button>
                     </div>
-                </div>                                							
+                </div>
+                    
+                <div class="flex items-center justify-between w-full p-1 bg-green-600">
+                    <div class="flex border-1 border-white p-1">
+                        <label for="regionFilter" class="text-white text-shadow-lg px-2 py-1">Filter By:</label>
+                        <select @change.prevent="selectRegionFilter($event.target.value, $event.target.options[$event.target.selectedIndex].text)" x-model="regionFilter" id="regionFilter" name="regionFilter" class="bg-white mt-1 block w-28 px-2 py-1  rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <option value="">Region</option>
+                            <template x-for="reg in regions" :key="reg.id">
+                                <option :value="reg.id" x-text="reg.name"></option>
+                            </template>
+                        </select>
+                        <select @change.prevent="selectProvinceFilter($event.target.value, $event.target.options[$event.target.selectedIndex].text)" x-model="provinceFilter" class="bg-white mt-1 block w-28 px-2 py-1  rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <option value="">Province</option>
+                            <template x-for="prov in provinces" :key="prov.id">
+                                <option :value="prov.id" x-text="prov.name"></option>
+                            </template>
+                        </select>
+                        <select @change.prevent="selectCityFilter($event.target.value, $event.target.options[$event.target.selectedIndex].text)" x-model="cityFilter" class="bg-white mt-1 block w-28 px-2 py-1  rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <option value="">City</option>
+                            <template x-for="ct in cities" :key="ct.id">
+                                <option :value="ct.id" x-text="ct.name"></option>
+                            </template>
+                        </select>
+                        <select @change="selectDistrictFilter($event.target.value, $event.target.options[$event.target.selectedIndex].text)" x-model="districtFilter" class="bg-white mt-1 block w-28 px-2 py-1  rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <option value="">District</option>
+                            <template x-for="dist in districts" :key="dist.id">
+                                <option :value="dist.id" x-text="dist.name"></option>
+                            </template>
+                        </select>
+                        <select @change="selectBarangayFilter($event.target.value, $event.target.options[$event.target.selectedIndex].text)" x-model="regionFilter" class="bg-white mt-1 block w-28 px-2 py-1  rounded-none outline-1 outline-gray-800 border-1 border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <option value="">Barangay</option>
+                            <template x-for="bar in barangays" :key="bar.id">
+                                <option :value="bar.id" x-text="bar.name"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <button type="button" @click.prevent="exportUsers" class="inline-flex items-center text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
+                        <?php include('../includes/admin/icons/export.php'); ?>
+                            Export to Excel
+                        </button>
+                </div>       
+
                 <div class="relative overflow-x-auto bg-green-400 shadow-xs rounded-base border border-default">                                
                     <?php include('../includes/admin/tables/beneficiary.php'); ?>
                 </div>
@@ -63,6 +106,14 @@
         function pageLoad() {
 		  return {
 		    user: {}, 
+            exportId: null,
+            exportPage: '',
+            totalUsers: 0,
+            regionFilter: '',
+            provinceFilter: '',
+            cityFilter: '',
+            districtFilter: '',            
+            barangayFilter: '',     
             showRow: false,
             userId: null,
             created_at: '',
@@ -79,6 +130,7 @@
             editSuccessfulModal: null,
             uploadExcelModal: null,
             uploadingModal: null,
+            exportingModal: null,
             excelUploadMessage: '',
             excelUploadLoading: false,
             saveMode: '',
@@ -250,28 +302,56 @@
 
                 return Object.keys(this.errors).length === 0;
 		    },
+            selectRegionFilter(id, txt) {                
+                this.selectRegion(id, txt);
+                this.getUsers(id, 'region', 'ok');
+                this.exportId = id;
+                this.exportPage = 'region';
+            },
             selectRegion(id, txt) {
 		    	this.region_id = id;
 				this.region = txt;
 		    	this.getAllDataWithId('province', id);
 		    },
+            selectProvinceFilter(id, txt) {
+                this.selectProvince(id, txt);
+                this.getUsers(id, 'province', 'ok');
+                this.exportId = id;
+                this.exportPage = 'province';
+            },
             selectProvince(id, txt) {
 				this.province_id = id;
 				this.province = txt;
 				this.getAllDataWithId('city', id);
 		    },	
-
+            selectCityFilter(id, txt) {
+                this.selectCity(id, txt);
+                this.getUsers(id, 'city', 'ok');
+                this.exportId = id;
+                this.exportPage = 'city';
+            },
 		    selectCity(id, txt) {
 				this.city_id = id;
 				this.city = txt;
 				this.getAllDataWithId('district', id);
 		    },
-
+            selectDistrictFilter(id, txt) {
+                this.selectDistrict(id, txt);
+                this.getUsers(id, 'district', 'ok');
+                this.exportId = id;
+                this.exportPage = 'district';
+            },
 			selectDistrict(id, txt) {
 		    	this.district_id = id;
 				this.district = txt;
 				this.getAllDataWithId('barangay', id);
 		    },
+            selectBarangayFilter(id, txt) {
+                this.selectBarangay(id, txt);
+                this.getUsers(id, 'barangay', 'ok');
+                this.exportId = id;
+                this.exportPage = 'barangay';
+            },
 			selectBarangay(id, txt) {
 		    	this.barangay_id = id;
 				this.barangay = txt;
@@ -515,7 +595,7 @@
                     this.benrelationship2 = bf.benrelationship2;
                     this.benrelationship3 = bf.benrelationship3;
                     this.benrelationship4 = bf.benrelationship4;
-                    console.log(bf);
+                    
                     if(res.data.region_id) {
                         this.getAllDataWithId('province', bf.region_id);
                         this.getAllDataWithId('city', bf.province_id);
@@ -866,27 +946,6 @@
                 let payment = await response.json();
                 this.owner =  `${payment.data.firstname} ${payment.data.lastname}`;
             },
-            async searchData() {
-                if(this.searchWord == '') {
-                    this.init();
-                } else {
-                    try {
-                        let response = await fetch('http://localhost/sdsg/api/admin/readMembers.php', {
-                            method: 'POST',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({ 
-                                user_id: 1,
-                                page: 'some',
-                                searchWord: this.searchWord
-                            })
-                        });
-                        let data = await response.json();
-                        this.beneficiaries = data.users;                            
-                    } catch (error) {
-                        console.error('Error fetching data:', error);
-                    } 
-                }
-            },
             getTotal(arr) {
                 let total = 0;
                 arr.forEach((element, index, array) => {
@@ -1152,6 +1211,7 @@
                 this.beneficiaryPage = document.getElementById('beneficiaryPage');
                 this.uploadExcelModal = document.getElementById('uploadExcelModal');
                 this.uploadingModal = document.getElementById('uploadingModal');
+                this.exportingModal = document.getElementById('exportingModal');
                 this.deleteBeneficiaryModal = document.getElementById('deleteBeneficiaryModal');
                 this.deleteSuccessful = document.getElementById('deleteSuccessful');
             },
@@ -1163,27 +1223,68 @@
                 if(!str) return "";
                 return str.charAt(0).toUpperCase() + str.slice(1);
             },
+            async exportUsers() {      
+                this.exportingModal.classList.remove('hidden');          
+                try {
+                    const response = await fetch('http://localhost/sdsg/api/admin/export.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ 
+                            pid: this.exportId,
+                            page: this.exportPage
+                        })
+                    });
+
+                    if (!response.ok) throw new Error('Network response was not ok');
+
+                    // Convert response into a Blob
+                    const blob = await response.blob();
+                    
+                    // Create a link and trigger the download
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'Beneficiaries.csv');
+                    document.body.appendChild(link);
+                    link.click();
+                    
+                    // Cleanup
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(url);
+                } catch (error) {
+                    console.error('Export failed:', error);
+                } finally {
+                    this.exportingModal.classList.add('hidden');
+                }
+            },
+            async getUsers(uid, page, search) {
+                this.totalUsers = 0;
+                let response = await fetch('http://localhost/sdsg/api/admin/readMembers.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ 
+                        user_id: uid,
+                        page: page,
+                        searchWord: search
+                    })
+                });
+                this.user = await response.json();
+                this.beneficiaries = this.user.users;        
+                this.totalUsers = this.beneficiaries.length;       
+                this.showRow = false;                 
+                if(this.beneficiaries.length > 0) { 
+                    this.showRow = true;
+                }
+            },
             async init() { 
                 this.checkAuth();
                 this.getAllData('region');
                 this.initModals();   
                 this.created_at = this.initDateInput(''); 
                 let user_id = sessionStorage.getItem('user_id');                
-                let response = await fetch('http://localhost/sdsg/api/admin/readMembers.php', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ 
-                        user_id: user_id,
-                        page: 'all',
-                        searchWord: 'sample'
-                    })
-                });
-                this.user = await response.json();
-                this.beneficiaries = this.user.users;               
-                this.showRow = false;                 
-                if(this.beneficiaries.length > 0) { 
-                    this.showRow = true;
-                }
+                this.getUsers(user_id, 'all', 'sample');
+                this.exportId = user_id;
+                this.exportPage = 'all';
             },
             get totalPages() {
                 return Math.ceil(this.filteredItems.length / this.pageSize);

@@ -38,6 +38,12 @@
 			return $user->fetchAll(PDO::FETCH_ASSOC);
 		}
 
+		public static function findUsersByConditionWithDetails($cond) {
+			$pdo = Database::connect();
+			$user = $pdo->query("SELECT usr.id AS id, usr.firstname AS firstname, usr.lastname AS lastname, usr.middlename AS middlename, usr.status AS status, utype.classification AS classification, bar.name AS barangay FROM users AS usr INNER JOIN user_types AS utype ON usr.id = utype.user_id LEFT JOIN personal_information AS per ON usr.id = per.user_id LEFT JOIN barangays AS bar ON per.barangay_id = bar.id WHERE $cond ORDER BY usr.lastname");
+			return $user->fetchAll(PDO::FETCH_ASSOC);
+		}
+
 		public static function getAllUserWithDetails() {
 			$pdo = Database::connect();
 			$user = $pdo->query("SELECT usr.id AS id, usr.firstname AS firstname, usr.lastname AS lastname, usr.middlename AS middlename, usr.status AS status, utype.classification AS classification, bar.name AS barangay FROM users AS usr INNER JOIN user_types AS utype ON usr.id = utype.user_id LEFT JOIN personal_information AS per ON usr.id = per.user_id LEFT JOIN barangays AS bar ON per.barangay_id = bar.id ORDER BY usr.lastname");

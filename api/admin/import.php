@@ -15,9 +15,9 @@
 			$errors = [];
 
 			for ($i = 1; $i < count($rows); $i++) {
-				$lastname = $rows[$i][0]; // First column
-				$firstname = $rows[$i][1]; // Second column
-				$middlename = $rows[$i][2]; // Third column
+				$lastname = $rows[$i][0];
+				$firstname = $rows[$i][1];
+				$middlename = $rows[$i][2];
 				$barangay = $rows[$i][3];
 				$idPay = $rows[$i][4];
 				$janPay = $rows[$i][6];				

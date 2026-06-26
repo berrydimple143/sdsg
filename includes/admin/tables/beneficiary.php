@@ -186,56 +186,60 @@
         <tr>                
             <td colspan="7">
             
-                <!-- Pagination Container -->
-                <div class="flex items-center space-x-1 p-2 bg-green-500">                    
-                        <!-- Summary Information Indicator -->
-                        <span class="text-lg text-white mr-2">
-                            Page <span class="font-semibold" x-text="currentPage"></span> of <span class="font-semibold" x-text="totalPages"></span>
-                        </span>
-                        
-                        <!-- First & Previous Buttons -->
-                        <button 
-                            class="px-3 py-1 bg-blue-600 text-lg text-white font-bold" 
-                            @click="currentPage = 1" 
-                            :disabled="currentPage === 1"
-                            :class="currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'">
-                            «
-                        </button>
-                        <button 
-                            class="px-3 py-1 bg-blue-600 text-lg text-white font-bold"
-                            @click="currentPage--" 
-                            :disabled="currentPage === 1"
-                            :class="currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'">
-                            ‹
-                        </button>
-
-                        <!-- Truncated Page Numbers -->
-                        <template x-for="page in visiblePages" :key="page">
+                <div class="flex items-center justify-between">
+                    <!-- Pagination Container -->
+                    <div class="flex items-center space-x-1 p-2 bg-green-500">                    
+                            <!-- Summary Information Indicator -->
+                            <span class="text-lg text-white mr-2">
+                                Page <span class="font-semibold" x-text="currentPage"></span> of <span class="font-semibold" x-text="totalPages"></span>
+                            </span>
+                            
+                            <!-- First & Previous Buttons -->
                             <button 
-                                class="px-4 py-2 font-bold"
-                                @click="currentPage = page" 
-                                x-text="page"
-                                :class="currentPage === page ? 'bg-blue-600 text-white font-bold' : 'bg-gray-200 cursor-pointer'">
+                                class="px-3 py-1 bg-blue-600 text-lg text-white font-bold" 
+                                @click="currentPage = 1" 
+                                :disabled="currentPage === 1"
+                                :class="currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'">
+                                «
                             </button>
-                        </template>
+                            <button 
+                                class="px-3 py-1 bg-blue-600 text-lg text-white font-bold"
+                                @click="currentPage--" 
+                                :disabled="currentPage === 1"
+                                :class="currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'">
+                                ‹
+                            </button>
 
-                        <!-- Next & Last Buttons -->
-                        <button 
-                            class="px-3 py-1 bg-blue-600 text-lg text-white font-bold"
-                            @click="currentPage++" 
-                            :disabled="currentPage === totalPages"
-                            :class="currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'">
-                            ›
-                        </button>
-                        <button 
-                            class="px-3 py-1 bg-blue-600 text-lg text-white font-bold"
-                            @click="currentPage = totalPages" 
-                            :disabled="currentPage === totalPages"
-                            :class="currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'">
-                            »
-                        </button>                    
+                            <!-- Truncated Page Numbers -->
+                            <template x-for="page in visiblePages" :key="page">
+                                <button 
+                                    class="px-4 py-2 font-bold"
+                                    @click="currentPage = page" 
+                                    x-text="page"
+                                    :class="currentPage === page ? 'bg-blue-600 text-white font-bold' : 'bg-gray-200 cursor-pointer'">
+                                </button>
+                            </template>
+
+                            <!-- Next & Last Buttons -->
+                            <button 
+                                class="px-3 py-1 bg-blue-600 text-lg text-white font-bold"
+                                @click="currentPage++" 
+                                :disabled="currentPage === totalPages"
+                                :class="currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'">
+                                ›
+                            </button>
+                            <button 
+                                class="px-3 py-1 bg-blue-600 text-lg text-white font-bold"
+                                @click="currentPage = totalPages" 
+                                :disabled="currentPage === totalPages"
+                                :class="currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'">
+                                »
+                            </button>                    
+                    </div>
+                    <div class="p-2 bg-green-800 text-white mr-2 border-1 border-gray-300">
+                        Total Beneficiaries: <span x-text="totalUsers"></span>
+                    </div>
                 </div>
-
             </td>
         </tr>
     </tfoot>    

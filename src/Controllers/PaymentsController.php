@@ -2,7 +2,7 @@
     namespace App\Controllers;
     use App\Models\Payment;
     use App\Models\User;
-    //use DateTime;
+    use DateTime;
 
     class PaymentsController {
         public function store($data) {
@@ -36,6 +36,10 @@
 
         public function deleteData($id) {
 			return Payment::deleteData($id);					
+		}
+
+        public function getSumWithCondition($condition) {            
+			return Payment::getSumWithCondition($condition);					
 		}
 
         public function getData($id) {

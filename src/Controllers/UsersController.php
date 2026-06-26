@@ -1,7 +1,5 @@
-<?php
-	
+<?php	
 	namespace App\Controllers;
-
 
 	use App\Models\User;
 	use App\Models\Barangay;
@@ -28,16 +26,37 @@
 			return User::getAllUserWithDetails();					
 		}
 
+		public function findUsersByConditionWithDetails($id, $page) {
+			$cond = 'usr.id=$id';
+			if($page == 'region') {
+				$cond = "per.region_id = $id";
+			} else if($page == 'province') {
+				$cond = "per.province_id = $id";
+			} else if($page == 'city') {
+				$cond = "per.city_id = $id";
+			} else if($page == 'district') {
+				$cond = "per.district_id = $id";
+			} else if($page == 'barangay') {
+				$cond = "per.barangay_id = $id";
+			}			
+			return User::findUsersByConditionWithDetails($cond);					
+		}
+
 		public function getAllUserWithSearch($search) {
 			return User::getAllUserWithSearch($search);				
 		}
 
-		public function getBeneficiaryPerMonth($month, $mtype) {
+		public function lastDay($month) {
 			$yr = (string)date('Y');
 			$fd = $yr.'-'.$month.'-'.(string)date('d');
 			$sd = new DateTime($fd);			
 			$sd->modify('last day of this month');
-			$lastDay = $sd->format('d');
+			return $sd->format('d');
+		}
+
+		public function getBeneficiaryPerMonth($month, $mtype) {
+			$yr = (string)date('Y');		
+			$lastDay = $this->lastDay($month);
 			$before = $yr.'-'.$month.'-01';
 			$after = $yr.'-'.$month.'-'.$lastDay;
 			return User::getBeneficiaryPerMonth($before, $after, $mtype);

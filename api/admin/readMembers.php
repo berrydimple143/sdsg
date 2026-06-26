@@ -7,10 +7,12 @@
 	if($_SERVER['REQUEST_METHOD'] === "POST") {
         $input = json_decode(file_get_contents("php://input"));
         $search = $input->searchWord;
+		$pid = $input->user_id;
+		$page = $input->page;
         $data = [
-			'user_id' => $input->user_id,
+			'user_id' => $pid,
 			'searchWord' => $search,
-			'page' => $input->page			
+			'page' => $page			
 		];
         foreach($data as $key => $value) {
 			if(empty($value)) {
@@ -23,11 +25,13 @@
 			}
 		}
         $authUser = new UsersController();
-        if($input->page == "all") {
+        if($page == "all") {
             $users = $authUser->getAllUserWithDetails();    
-        } elseif($input->page == "some") {
+        } elseif($page == "some") {
             $users = $authUser->getAllUserWithSearch($search);
-        }
+		} elseif($page == "region" || $page == "province" || $page == "city" || $page == "district" || $page == "barangay") {
+            $users = $authUser->findUsersByConditionWithDetails($pid, $page);
+		}
 
         if(!empty($users)) {
             echo json_encode([

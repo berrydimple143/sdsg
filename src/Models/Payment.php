@@ -9,6 +9,12 @@
 			$pdo = Database::connect();
 			$payments = $pdo->query("SELECT * FROM payments WHERE $field = '$value' ORDER BY $order");
 			return $payments->fetchAll(PDO::FETCH_ASSOC);
+		}		
+
+		public static function getSumWithCondition($condition) {
+			$pdo = Database::connect();
+			$payment = $pdo->query("SELECT SUM(amount) AS amount FROM payments WHERE $condition");
+			return $payment->fetch(PDO::FETCH_OBJ);
 		}
 
         public static function deleteData($id) {
