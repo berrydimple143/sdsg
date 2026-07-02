@@ -26,6 +26,15 @@
     <?php include('../includes/admin/modals/upload-excel.php'); ?>	
     <?php include('../includes/admin/modals/uploading.php'); ?>
     <?php include('../includes/admin/modals/exporting.php'); ?>
+    <canvas x-ref="printCanvas" class="hidden"></canvas>
+    <!-- <div class="canvas-container hidden">
+        <template x-for="(page, index) in pages" :key="index">
+            <div class="print-page">
+                <canvas class="" width="1255" height="768" :id="'canvas-' + index" x-init="drawPage(index, beneficiaries)"></canvas>
+            </div>
+        </template>
+    </div> -->
+
     <canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="top-0 left-0 hidden"></canvas>
     <div id="beneficiaryPage" class="flex h-screen bg-transparent">
         <input type="checkbox" id="menu-toggle" class="hidden peer">
@@ -90,10 +99,16 @@
                             </template>
                         </select>
                     </div>
-                    <button type="button" @click.prevent="exportUsers" class="inline-flex items-center text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
+                    <div class="flex space-x-1">
+                        <button type="button" @click.prevent="printNow" class="inline-flex items-center text-white bg-gradient-to-r from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
+                        <?php include('../includes/admin/icons/print.php'); ?>
+                            Print
+                        </button>
+                        <button type="button" @click.prevent="exportUsers" class="inline-flex items-center text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
                         <?php include('../includes/admin/icons/export.php'); ?>
                             Export to Excel
                         </button>
+                    </div>
                 </div>       
 
                 <div class="relative overflow-x-auto bg-green-400 shadow-xs rounded-base border border-default">                                
@@ -1276,10 +1291,169 @@
                     this.showRow = true;
                 }
             },
+            // pages: [
+            //     { title: "Page 1: Overview", color: "#FF5733" },
+            //     { title: "Page 2: Details", color: "#33FF57" }
+            // ],
+            
+            // drawPage(index, bnf) {
+            //     console.log(bnf);
+            //     // Get specific canvas and draw some content
+            //     let canvas = document.getElementById('canvas-' + index);
+            //     let ctx = canvas.getContext('2d');
+            
+            //     const xm = 520;
+            //     ctx.font = '18px sans-serif';
+            //     ctx.fillStyle = '#000';                
+            //     ctx.fillText('LIST OF BENEFICIARIES', 560, 15);      
+            //     ctx.font = '12px sans-serif';                       
+            //     ctx.fillText('SURNAME', 10, 45);
+            //     ctx.fillText('FIRST NAME', 100, 45);
+            //     ctx.fillText('MIDDLE NAME', 210, 45);
+            //     ctx.fillText('BARANGAY', 320, 45);
+            //     ctx.fillText('PAID ID TOTAL', 430, 45);
+            //     ctx.fillText('JAN', xm, 45);
+            //     ctx.fillText('FEB', xm+50, 45);
+            //     ctx.fillText('MAR', xm+100, 45);
+            //     ctx.fillText('APR', xm+150, 45);
+            //     ctx.fillText('MAY', xm+200, 45);
+            //     ctx.fillText('JUN', xm+250, 45);
+            //     ctx.fillText('JUL', xm+300, 45);
+            //     ctx.fillText('AUG', xm+350, 45);
+            //     ctx.fillText('SEP', xm+400, 45);
+            //     ctx.fillText('OCT', xm+450, 45);
+            //     ctx.fillText('NOV', xm+500, 45);
+            //     ctx.fillText('DEC', xm+550, 45);
+            //     ctx.fillText("TOTAL(B)", xm+600, 45);
+            //     ctx.fillText("TOTAL(A+B)", 1190, 45);
+            //     ctx.strokeRect(5, 27, 1250, 25);         
+            //     ctx.font = '10px sans-serif';                  
+            //     let hy = 52; 
+            //     let thy = 70;
+            //     ctx.strokeRect(5, hy, 1250, 25);   
+            //     ctx.fillText(this.bnf[0].lastname, 10, thy);
+            //     this.bnf.forEach((bn, index) => {                    
+            //         ctx.strokeRect(5, hy, 1250, 25);    
+            //         ctx.fillText(bn.lastname, 10, thy);
+            //         hy = hy + 25;
+            //         thy = thy + 25;    
+            //     });
+            // },
+
+            // printNow() {
+            //     // 1. Create a new window for printing
+            //     let win = window.open('', '_blank');
+            //     win.document.write('<html><head><title>Print Beneficiaries</title>');
+                
+            //     // 2. Apply print-specific CSS for page breaks
+            //     win.document.write(`
+            //         <style>
+            //             body { margin: 0; padding: 0; }
+            //             @media print {
+            //                 .page-break { page-break-after: always; }
+            //                 .print-image { width: 100%; height: auto; }
+            //             }
+            //         </style>
+            //     `);
+                
+            //     win.document.write('</head><body>');
+
+            //     // 3. Convert all canvases to images and append to new window
+            //     this.pages.forEach((_, index) => {
+            //         let canvas = document.getElementById('canvas-' + index);
+            //         let dataUrl = canvas.toDataURL('image/png');
+                    
+            //         win.document.write(`
+            //             <div class="page-break">
+            //                 <img class="print-image" src="${dataUrl}" />
+            //             </div>
+            //         `);
+            //     });
+
+            //     win.document.write('</body></html>');
+            //     win.document.close();
+
+            //     // 4. Trigger print once images are loaded in the new window
+            //     win.onload = function() {
+            //         win.focus();
+            //         win.print();
+            //         win.close();
+            //     };
+            // },
+            printNow() {
+                this.drawData();
+                    let canvas = this.$refs.printCanvas;
+                    let dataUrl = canvas.toDataURL('image/png');
+                    let win = window.open('', '_blank');
+                    win.document.write(`
+                        <html>
+                        <head>
+                            <title>Print Beneficiaries</title>
+                            <style>
+                                body { text-align: left; margin: 0; padding: 1px; }
+                                img { max-width: 100%; height: auto; }
+                                @media print {
+                                    button { display: none; }
+                                    .page-break { page-break-after: always; }
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <img src="${dataUrl}" class="print-image" onload="window.print(); window.close();" />
+                        </body>
+                        </html>
+                    `);
+                    win.document.close();
+            },
+            drawData() {
+                let canvas = this.$refs.printCanvas;
+                let ctx = canvas.getContext('2d');    
+                let initHeight = 2000;
+                canvas.width = 1255;
+                canvas.height = 6000;               
+                //canvas.style.width = '1255px';
+                //canvas.style.height = 'auto'; 
+
+                const xm = 520;
+                //ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.font = '18px sans-serif';
+                ctx.fillStyle = '#000';                
+                ctx.fillText('LIST OF BENEFICIARIES', 560, 15);      
+                ctx.font = '12px sans-serif';                       
+                ctx.fillText('SURNAME', 10, 45);
+                ctx.fillText('FIRST NAME', 100, 45);
+                ctx.fillText('MIDDLE NAME', 210, 45);
+                ctx.fillText('BARANGAY', 320, 45);
+                ctx.fillText('PAID ID TOTAL', 430, 45);
+                ctx.fillText('JAN', xm, 45);
+                ctx.fillText('FEB', xm+50, 45);
+                ctx.fillText('MAR', xm+100, 45);
+                ctx.fillText('APR', xm+150, 45);
+                ctx.fillText('MAY', xm+200, 45);
+                ctx.fillText('JUN', xm+250, 45);
+                ctx.fillText('JUL', xm+300, 45);
+                ctx.fillText('AUG', xm+350, 45);
+                ctx.fillText('SEP', xm+400, 45);
+                ctx.fillText('OCT', xm+450, 45);
+                ctx.fillText('NOV', xm+500, 45);
+                ctx.fillText('DEC', xm+550, 45);
+                ctx.fillText("TOTAL(B)", xm+600, 45);
+                ctx.fillText("TOTAL(A+B)", 1190, 45);
+                ctx.strokeRect(5, 27, 1250, 25);         
+                ctx.font = '10px sans-serif';                  
+                let hy = 52; 
+                let thy = 70;                
+                this.beneficiaries.forEach((bn, index) => {
+                    ctx.strokeRect(5, hy, 1250, 25);    
+                    ctx.fillText(bn.lastname, 10, thy);
+                    hy = hy + 25;
+                    thy = thy + 25;           
+                });
+            },
             async init() { 
                 this.checkAuth();
                 this.getAllData('region');
-                this.initModals();   
+                this.initModals();                
                 this.created_at = this.initDateInput(''); 
                 let user_id = sessionStorage.getItem('user_id');                
                 this.getUsers(user_id, 'all', 'sample');

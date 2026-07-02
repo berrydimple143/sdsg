@@ -73,6 +73,34 @@
                 </div>
             </div>
 
+            <!-- Setttings -->
+            <div class="mb-2 relative group">
+                <input type="checkbox" id="settings-toggle" class="hidden peer">
+            
+                <label for="settings-toggle"
+                    class="flex items-center px-12 py-2 mt-2 text-gray-100 hover:bg-green-700 cursor-pointer w-full">
+                    Settings
+                </label>
+
+                <?php include('../includes/admin/icons/settings.php'); ?>
+                <?php include('../includes/admin/icons/gear.php'); ?>
+
+                <!-- </div> -->
+            
+                <!-- Arrow Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 ml-auto transition-transform transform peer-checked:rotate-180 absolute right-4 top-3 transform #dis--translate-y-1/2 text-white"
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            
+                <div class="hidden peer-checked:flex flex-col bg-white text-gray-800 mt-1 transition-all duration-300">
+                    <a href="#" @click.prevent="region" class="block px-4 py-2 hover:bg-gray-200">Officials</a>
+                    <a href="#" @click.prevent="region" class="block px-4 py-2 hover:bg-gray-200">Designations</a>
+                    <a href="#" @click.prevent="region" class="block px-4 py-2 hover:bg-gray-200">Companies</a>
+                </div>
+            </div>
+
         </nav>
 
     </div>
