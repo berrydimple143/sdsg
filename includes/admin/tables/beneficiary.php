@@ -178,7 +178,9 @@
         </template>         
         <template x-if="filteredItems.length === 0">
             <tr>
-                <td colspan="7" class="text-center">No results found.</td>
+                <td colspan="7" class="text-center">
+                    No data ...
+                </td>
             </tr>
         </template>    
     </tbody>

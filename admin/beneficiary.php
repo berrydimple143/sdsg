@@ -28,14 +28,9 @@
     <?php include('../includes/admin/modals/upload-excel.php'); ?>	
     <?php include('../includes/admin/modals/uploading.php'); ?>
     <?php include('../includes/admin/modals/exporting.php'); ?>
-    <canvas x-ref="printCanvas" class="hidden"></canvas>
-    <!-- <div class="canvas-container hidden">
-        <template x-for="(page, index) in pages" :key="index">
-            <div class="print-page">
-                <canvas class="" width="1255" height="768" :id="'canvas-' + index" x-init="drawPage(index, beneficiaries)"></canvas>
-            </div>
-        </template>
-    </div> -->
+    <?php include('../includes/admin/modals/loading-users.php'); ?>
+    <?php include('../includes/admin/modals/printing.php'); ?>
+    <canvas x-ref="receiptCanvas" class="hidden"></canvas>
 
     <canvas id="formCanvas" x-ref="printableForm" width="1699" height="2360" class="top-0 left-0 hidden"></canvas>
     <div id="beneficiaryPage" class="flex h-screen bg-transparent">
@@ -103,6 +98,11 @@
                     </div>
                     <div class="flex space-x-1">
                         <button type="button" 
+                        @click.prevent="printReceipt" class="inline-flex items-center text-white bg-gradient-to-r from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
+                        <?php include('../includes/admin/icons/print.php'); ?>
+                            Print Receipt
+                        </button>
+                        <button type="button" 
                         @click.prevent="printNow" class="inline-flex items-center text-white bg-gradient-to-r from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
                         <?php include('../includes/admin/icons/print.php'); ?>
                             Print
@@ -124,7 +124,23 @@
         function pageLoad() {
 		  return {
 		    user: {}, 
-            userJSONData: [],
+            pageType: 'some',
+            pageId: 1,
+            idPayments: [],
+            jans: [],
+            febs: [],
+            mars: [],
+            aprs: [],
+            mays: [],
+            juns: [],
+            juls: [],
+            augs: [],
+            seps: [],
+            octs: [],
+            novs: [],
+            decs: [],
+            totalA: [],
+            totalAB: [],
             exportId: null,
             exportPage: '',
             totalUsers: 0,
@@ -150,8 +166,10 @@
             uploadExcelModal: null,
             uploadingModal: null,
             exportingModal: null,
+            loadingModal: null,
+            printingModal: null,
             excelUploadMessage: '',
-            excelUploadLoading: false,
+            excelUploadLoading: false,            
             saveMode: '',
             totalPay: 0.00,
             amount: '',
@@ -323,6 +341,8 @@
 		    },
             selectRegionFilter(id, txt) {                
                 this.selectRegion(id, txt);
+                this.pageId = id;
+                this.pageType = 'region';
                 this.getUsers(id, 'region', 'ok');
                 this.exportId = id;
                 this.exportPage = 'region';
@@ -334,6 +354,8 @@
 		    },
             selectProvinceFilter(id, txt) {
                 this.selectProvince(id, txt);
+                this.pageId = id;
+                this.pageType = 'province';
                 this.getUsers(id, 'province', 'ok');
                 this.exportId = id;
                 this.exportPage = 'province';
@@ -345,6 +367,8 @@
 		    },	
             selectCityFilter(id, txt) {
                 this.selectCity(id, txt);
+                this.pageId = id;
+                this.pageType = 'city';
                 this.getUsers(id, 'city', 'ok');
                 this.exportId = id;
                 this.exportPage = 'city';
@@ -356,6 +380,8 @@
 		    },
             selectDistrictFilter(id, txt) {
                 this.selectDistrict(id, txt);
+                this.pageId = id;
+                this.pageType = 'district';
                 this.getUsers(id, 'district', 'ok');
                 this.exportId = id;
                 this.exportPage = 'district';
@@ -367,6 +393,8 @@
 		    },
             selectBarangayFilter(id, txt) {
                 this.selectBarangay(id, txt);
+                this.pageId = id;
+                this.pageType = 'barangay';
                 this.getUsers(id, 'barangay', 'ok');
                 this.exportId = id;
                 this.exportPage = 'barangay';
@@ -1230,9 +1258,11 @@
                 this.beneficiaryPage = document.getElementById('beneficiaryPage');
                 this.uploadExcelModal = document.getElementById('uploadExcelModal');
                 this.uploadingModal = document.getElementById('uploadingModal');
+                this.loadingModal = document.getElementById('loadingModal');
+                this.printingModal = document.getElementById('printingModal');
                 this.exportingModal = document.getElementById('exportingModal');
                 this.deleteBeneficiaryModal = document.getElementById('deleteBeneficiaryModal');
-                this.deleteSuccessful = document.getElementById('deleteSuccessful');
+                this.deleteSuccessful = document.getElementById('deleteSuccessful');                
             },
             deleteBeneficiaryConfirm(id) {
                 this.deleteBeneficiaryId = id;
@@ -1277,120 +1307,197 @@
                 }
             },
             async getUsers(uid, page, search) {
-                this.totalUsers = 0;
-                let response = await fetch('http://localhost/sdsg/api/admin/readMembers.php', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ 
-                        user_id: uid,
-                        page: page,
-                        searchWord: search
-                    })
-                });
-                this.user = await response.json();
-                this.beneficiaries = this.user.users;        
-                this.totalUsers = this.beneficiaries.length;       
-                this.showRow = false;                 
-                if(this.beneficiaries.length > 0) { 
-                    this.showRow = true;
-                }
+                this.loadingModal.classList.remove('hidden');
+                try {
+                    this.totalUsers = 0;
+                    let response = await fetch('http://localhost/sdsg/api/admin/readMembers.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ 
+                            user_id: uid,
+                            page: page,
+                            action: this.pageType,
+                            searchWord: search
+                        })
+                    });
+                    this.user = await response.json();
+                    const bfc = this.user;
+                    this.beneficiaries = bfc.users;
+                    
+                    this.totalUsers = this.beneficiaries.length;       
+                    this.showRow = false;                 
+                    if(this.beneficiaries.length > 0) { 
+                        this.showRow = true;
+                    }
+                } catch(e) {
+                    console.log(e);
+                } finally {
+                    this.loadingModal.classList.add('hidden');
+                }                
             },            
-            // printNow() {
-            //     this.drawData();
-            //         let canvas = this.$refs.printCanvas;
-            //         let dataUrl = canvas.toDataURL('image/png');
-            //         let win = window.open('', '_blank');
-            //         win.document.write(`
-            //             <html>
-            //             <head>
-            //                 <title>Print Beneficiaries</title>
-            //                 <style>
-            //                     body { text-align: left; margin: 0; padding: 1px; }
-            //                     img { max-width: 100%; height: auto; }
-            //                     @media print {
-            //                         button { display: none; }
-            //                         .page-break { page-break-after: always; }
-            //                     }
-            //                 </style>
-            //             </head>
-            //             <body>
-            //                 <img src="${dataUrl}" class="print-image" onload="window.print(); window.close();" />
-            //             </body>
-            //             </html>
-            //         `);
-            //         win.document.close();
-            // },
-            // drawData() {
-            //     let canvas = this.$refs.printCanvas;
-            //     let ctx = canvas.getContext('2d');    
-            //     let initHeight = 2000;
-            //     canvas.width = 1255;
-            //     canvas.height = 6000;               
-            //     //canvas.style.width = '1255px';
-            //     //canvas.style.height = 'auto'; 
+            printReceipt() {
+                this.drawData();
+                    let canvas = this.$refs.receiptCanvas;
+                    let dataUrl = canvas.toDataURL('image/png');
+                    let win = window.open('', '_blank');
+                    win.document.write(`
+                        <html>
+                        <head>
+                            <title>Print Beneficiaries</title>
+                            <style>
+                                body { text-align: left; margin: 0; padding: 1px; }
+                                img { max-width: 100%; height: auto; }
+                                @media print {
+                                    button { display: none; }
+                                    .page-break { page-break-after: always; }
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <img src="${dataUrl}" class="print-image" onload="window.print(); window.close();" />
+                        </body>
+                        </html>
+                    `);
+                    win.document.close();
+            },
+            drawData() {
+                let canvas = this.$refs.receiptCanvas;
+                let ctx = canvas.getContext('2d');
+                canvas.width = 800;
+                canvas.height = 500;
 
-            //     const xm = 520;
-            //     //ctx.clearRect(0, 0, canvas.width, canvas.height);
-            //     ctx.font = '18px sans-serif';
-            //     ctx.fillStyle = '#000';                
-            //     ctx.fillText('LIST OF BENEFICIARIES', 560, 15);      
-            //     ctx.font = '12px sans-serif';                       
-            //     ctx.fillText('SURNAME', 10, 45);
-            //     ctx.fillText('FIRST NAME', 100, 45);
-            //     ctx.fillText('MIDDLE NAME', 210, 45);
-            //     ctx.fillText('BARANGAY', 320, 45);
-            //     ctx.fillText('PAID ID TOTAL', 430, 45);
-            //     ctx.fillText('JAN', xm, 45);
-            //     ctx.fillText('FEB', xm+50, 45);
-            //     ctx.fillText('MAR', xm+100, 45);
-            //     ctx.fillText('APR', xm+150, 45);
-            //     ctx.fillText('MAY', xm+200, 45);
-            //     ctx.fillText('JUN', xm+250, 45);
-            //     ctx.fillText('JUL', xm+300, 45);
-            //     ctx.fillText('AUG', xm+350, 45);
-            //     ctx.fillText('SEP', xm+400, 45);
-            //     ctx.fillText('OCT', xm+450, 45);
-            //     ctx.fillText('NOV', xm+500, 45);
-            //     ctx.fillText('DEC', xm+550, 45);
-            //     ctx.fillText("TOTAL(B)", xm+600, 45);
-            //     ctx.fillText("TOTAL(A+B)", 1190, 45);
-            //     ctx.strokeRect(5, 27, 1250, 25);         
-            //     ctx.font = '10px sans-serif';                  
-            //     let hy = 52; 
-            //     let thy = 70;                
-            //     this.beneficiaries.forEach((bn, index) => {
-            //         ctx.strokeRect(5, hy, 1250, 25);    
-            //         ctx.fillText(bn.lastname, 10, thy);
-            //         hy = hy + 25;
-            //         thy = thy + 25;           
-            //     });
-            // },
-            printNow() {
-                let info = [];
-                this.beneficiaries.forEach((bn, index) => {
-                    info.push({
-                        number: index + 1,
-                        lastname: bn.lastname,
-                        firstname: bn.firstname,
-                        middlename: bn.middlename,
-                        barangay: bn.barangay
-                    });                             
-                });
-                printJS({
-                    printable: info,
-                    properties: ['number', 'lastname', 'firstname', 'middlename', 'barangay'],
-                    type: 'json',
-                    header: 'List of Beneficiaries',
-                    gridHeaderStyle: 'color: green;  border: 2px solid #3971A5;',
-                    gridStyle: 'border: 1px solid #3971A5;'
-                });
+                const xm = 520;
+                //ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.font = '16px sans-serif';
+                ctx.fillStyle = '#000';                
+                ctx.fillText('SDSG INITIATIVE INC.', 290, 20);
+                ctx.font = '9px sans-serif';  
+                ctx.fillText('MJM-28 OPC Bldg., Bago Gallera', 303, 30);
+                ctx.fillText('Bago Gallera Rd., Davao City', 310, 40);   
+                ctx.fillText('09174895944 / 09066677680', 310, 50);   
+                ctx.font = '19px sans-serif';
+                ctx.fillText('ACKNOWLEDGEMENT RECEIPT', 220, 85);
+                ctx.font = '12px sans-serif';                       
+                ctx.fillText('No.:', 600, 130);
+                ctx.beginPath();
+                ctx.moveTo(620, 130);
+                ctx.lineTo(730,130);
+                ctx.stroke();                   
+                ctx.fillText('NAME          :', 15, 170);
+                ctx.beginPath();
+                ctx.moveTo(90, 172);
+                ctx.lineTo(620,172);
+                ctx.stroke();
+                ctx.fillText('ADDRESS       :', 15, 195);
+                ctx.beginPath();
+                ctx.moveTo(90, 197);
+                ctx.lineTo(620,197);
+                ctx.stroke();
+                ctx.strokeRect(15, 215, 720, 25);     
+                ctx.strokeRect(15, 240, 720, 60);    
+                ctx.strokeRect(15, 215, 490, 85);
+                ctx.strokeRect(495, 215, 120, 85);
+                //ctx.font = '10px sans-serif';               
+            },
+            async printNow() {        
+                this.printingModal.classList.remove('hidden');        
+                try {
+                    let response = await fetch('http://localhost/sdsg/api/admin/readMembers.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ 
+                            user_id: this.pageId,
+                            page: this.pageType,
+                            action: 'print',
+                            searchWord: 'virgil'
+                        })
+                    });                    
+                    this.user = await response.json();
+                    const bfc = this.user;
+                    this.beneficiaries = bfc.users;
+                    this.idPayments =  bfc.idPayments;
+                    this.jans =  bfc.jans;
+                    this.febs =  bfc.febs;
+                    this.mars =  bfc.mars;
+                    this.aprs =  bfc.aprs;
+                    this.mays =  bfc.mays;
+                    this.juns =  bfc.juns;
+                    this.juls =  bfc.juls;
+                    this.augs =  bfc.augs;
+                    this.seps =  bfc.seps;
+                    this.octs =  bfc.octs;
+                    this.novs =  bfc.novs;
+                    this.decs =  bfc.decs;
+                    this.totalA =  bfc.totalA;
+                    this.totalAB =  bfc.totalAB;
+                } catch(e) {
+                    console.log(e);
+                } finally {
+                    this.printingModal.classList.add('hidden');                    
+                    let info = [];
+                    this.beneficiaries.forEach((bn, index) => {
+                        info.push({
+                            "#": index + 1,
+                            lastname: bn.lastname,
+                            firstname: bn.firstname,
+                            middlename: bn.middlename,
+                            barangay: bn.barangay,
+                            "ID Payment": this.idPayments[index],
+                            Jan: this.jans[index],
+                            Feb: this.febs[index],
+                            Mar: this.mars[index],
+                            Apr: this.aprs[index],
+                            May: this.mays[index],
+                            Jun: this.juns[index],
+                            Jul: this.juls[index],
+                            Aug: this.augs[index],
+                            Sept: this.seps[index],
+                            Oct: this.octs[index],
+                            Nov: this.novs[index],
+                            Dec: this.decs[index],
+                            "Total(A)": this.totalA[index],
+                            "Total(A+B)": this.totalAB[index]
+                        });
+                    });
+                    printJS({
+                        printable: info,
+                        properties: [
+                                '#', 
+                                'lastname', 
+                                'firstname', 
+                                'middlename', 
+                                'barangay', 
+                                'ID Payment',
+                                'Jan', 
+                                'Feb', 
+                                'Mar', 
+                                'Apr', 
+                                'May', 
+                                'Jun',
+                                'Jul', 
+                                'Aug', 
+                                'Sept', 
+                                'Oct', 
+                                'Nov', 
+                                'Dec',
+                                'Total(A)', 
+                                'Total(A+B)'
+                        ],
+                        type: 'json',
+                        header: 'List of Beneficiaries',
+                        gridHeaderStyle: 'color: green;  border: 2px solid #3971A5;',
+                        gridStyle: 'border: 1px solid #3971A5;'
+                    });                   
+                }               
             },
             async init() { 
                 this.checkAuth();
                 this.getAllData('region');
                 this.initModals();                
                 this.created_at = this.initDateInput(''); 
-                let user_id = sessionStorage.getItem('user_id');                
+                let user_id = sessionStorage.getItem('user_id');  
+                this.pageId = user_id;
+                this.pageType = 'all';         
                 this.getUsers(user_id, 'all', 'sample');
                 this.exportId = user_id;
                 this.exportPage = 'all';                                               

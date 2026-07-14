@@ -107,11 +107,11 @@
 								window.location = "./admin/index.php";
 							}, 2000);
 					      }
-		      } catch (error) {		      	  
-		      		console.error('Error fetching data:', error);
-          } finally {
-              this.loading = false;
-          }		      
+					} catch (error) {		      	  
+							console.error('Error fetching data:', error);
+				} finally {
+					this.loading = false;
+				}		      
 		    }
 		  }
 		}
