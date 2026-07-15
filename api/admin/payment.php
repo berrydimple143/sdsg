@@ -10,7 +10,7 @@
         $data = [
 			'user_id' => $input->user_id,
 			'amount' => $input->amount,
-			'type' => $input->type,
+			'type' => $input->type,			
 			'created_at' => $input->created_at,
             'mode' => $mode
 		];
@@ -24,6 +24,7 @@
 				exit();
 			}
 		}
+		$data['receiver'] = $input->receiver;
 		$controller = new PaymentsController();
         if($mode == 'add') {
             $info = $controller->store($data);

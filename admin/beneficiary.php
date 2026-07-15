@@ -96,12 +96,7 @@
                             </template>
                         </select>
                     </div>
-                    <div class="flex space-x-1">
-                        <button type="button" 
-                        @click.prevent="printReceipt" class="inline-flex items-center text-white bg-gradient-to-r from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
-                        <?php include('../includes/admin/icons/print.php'); ?>
-                            Print Receipt
-                        </button>
+                    <div class="flex space-x-1">                        
                         <button type="button" 
                         @click.prevent="printNow" class="inline-flex items-center text-white bg-gradient-to-r from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 box-border border border-transparent shadow-lg font-medium leading-5 rounded-full text-sm px-3 py-1.5 focus:outline-none cursor-pointer">
                         <?php include('../includes/admin/icons/print.php'); ?>
@@ -173,6 +168,7 @@
             saveMode: '',
             totalPay: 0.00,
             amount: '',
+            receiver: null,
             type: '',
             searchWord: '',
             owner: '',            
@@ -249,6 +245,7 @@
 			barangay_id: '',
 		    purok: '',
 			purok_id: '',
+            address: '',
 			bday: '',
 			benday1: '',
 			benday2: '',
@@ -497,7 +494,7 @@
                             civilstatus: this.civilstatus, gender: this.gender,
                             nationality: this.nationality, country: this.country,
                             religion: this.religion, bloodtype: this.bloodtype,
-                            height: this.height, weight: this.weight,
+                            height: this.height, weight: this.weight, address: this.address,                            
                             father: this.father, mother: this.mother,
                             spouse: this.spouse, education: this.education,
                             position: this.position, skill: this.skill,
@@ -591,7 +588,7 @@
                     this.suffix = bf.suffix;
                     this.nickname = bf.nickname;
                     this.zipcode = bf.zipcode;
-                    this.birthplace = bf.birthplace;
+                    this.birthplace = bf.birthplace;                    
                     this.age = bf.age;
                     this.civilstatus = bf.civilstatus;
                     this.gender = bf.gender;
@@ -601,6 +598,7 @@
                     this.bloodtype = bf.bloodtype;
                     this.height = bf.height;
                     this.weight = bf.weight;
+                    this.address = bf.address;
                     this.sss = bf.sss;
                     this.philhealth = bf.philhealth;
                     this.voter = bf.voter;
@@ -985,6 +983,7 @@
                     body: JSON.stringify({ 
                         user_id: id,                        
                         amount: 10,
+                        receiver: 'someone',
                         type: 'ID',
                         created_at: '2026-02-21',
                         mode: "single"
@@ -1155,14 +1154,15 @@
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({ 
-                            user_id: this.userId,
+                            user_id: id,
                             amount: 10,
-                            type: 'ID',
-                            created_at: '2026-02-21',
+                            type: "ID",
+                            receiver: "someone",
+                            created_at: "2026-02-21",
                             mode: "search"
                         })
                     });
-                    let payment = await response.json();                    
+                    let payment = await response.json();
                     this.payments = payment.data;
                 } catch (error) {
 		      		console.error('Error fetching data:', error);
@@ -1178,12 +1178,14 @@
                         body: JSON.stringify({ 
                             user_id: this.userId,
                             amount: this.amount,
+                            receiver: this.receiver,
                             type: this.type,
                             created_at: this.created_at,
                             mode: "add"
                         })
                     });
                     this.user = await response.json();
+                    this.printReceipt(this.user.data);                    
                 } catch (error) {
 		      		console.error('Error fetching data:', error);
                 } finally {
@@ -1193,8 +1195,7 @@
             },            
             payNow(id) {
                 this.userId = id;
-                this.amount = '';
-                this.paymentModal = document.getElementById('paymentModal');	
+                this.amount = '';                	
                 this.paymentModal.classList.remove('hidden');
             },
             cancelPayment() {                
@@ -1209,6 +1210,7 @@
                         body: JSON.stringify({ 
                             user_id: id,
                             amount: 10,
+                            receiver: 'someone',
                             created_at: '2026-02-21',
                             mode: "download"
                         })
@@ -1216,7 +1218,6 @@
                     let user = await response.json();                    
                     let usr = user.data;
                     this.user = usr;
-                    //console.log(JSON.stringify(this.users));
                     this.drawForm(usr.firstname, usr.lastname, usr.middlename, usr.suffix,
                         usr.nickname, usr.region, usr.province, usr.city, usr.district,
                         usr.barangay, usr.purok, usr.zipcode, this.convertDate(usr.bday), usr.birthplace,
@@ -1262,7 +1263,8 @@
                 this.printingModal = document.getElementById('printingModal');
                 this.exportingModal = document.getElementById('exportingModal');
                 this.deleteBeneficiaryModal = document.getElementById('deleteBeneficiaryModal');
-                this.deleteSuccessful = document.getElementById('deleteSuccessful');                
+                this.deleteSuccessful = document.getElementById('deleteSuccessful');        
+                this.paymentModal = document.getElementById('paymentModal');        
             },
             deleteBeneficiaryConfirm(id) {
                 this.deleteBeneficiaryId = id;
@@ -1335,8 +1337,8 @@
                     this.loadingModal.classList.add('hidden');
                 }                
             },            
-            printReceipt() {
-                this.drawData();
+            printReceipt(bn) {
+                this.drawData(bn);
                     let canvas = this.$refs.receiptCanvas;
                     let dataUrl = canvas.toDataURL('image/png');
                     let win = window.open('', '_blank');
@@ -1360,13 +1362,11 @@
                     `);
                     win.document.close();
             },
-            drawData() {
+            drawData(bn) {                
                 let canvas = this.$refs.receiptCanvas;
                 let ctx = canvas.getContext('2d');
                 canvas.width = 800;
                 canvas.height = 500;
-
-                const xm = 520;
                 //ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.font = '16px sans-serif';
                 ctx.fillStyle = '#000';                
@@ -1378,26 +1378,67 @@
                 ctx.font = '19px sans-serif';
                 ctx.fillText('ACKNOWLEDGEMENT RECEIPT', 220, 85);
                 ctx.font = '12px sans-serif';                       
-                ctx.fillText('No.:', 600, 130);
+                ctx.fillText('No.:', 595, 130);
+                ctx.fillStyle = '#900';
+                ctx.font = '18px sans-serif';
+                ctx.fillText(bn.number, 625, 127);
+                ctx.font = '12px sans-serif';
+                ctx.fillStyle = '#000';  
                 ctx.beginPath();
                 ctx.moveTo(620, 130);
                 ctx.lineTo(730,130);
                 ctx.stroke();                   
-                ctx.fillText('NAME          :', 15, 170);
+                const fname = bn.firstname + ' ' + bn.lastname;
+                ctx.fillText(fname, 100, 160);
+                ctx.fillText('NAME          :', 15, 163);               
                 ctx.beginPath();
-                ctx.moveTo(90, 172);
-                ctx.lineTo(620,172);
+                ctx.moveTo(90, 165);
+                ctx.lineTo(620, 165);
                 ctx.stroke();
-                ctx.fillText('ADDRESS       :', 15, 195);
+                let addr = bn.address;
+                if (!addr) {
+                    addr = bn.barangay + ', ' + bn.city + ' City';
+                }
+                ctx.fillText('ADDRESS   :', 15, 195);
+                ctx.fillText(addr, 100, 192);
                 ctx.beginPath();
                 ctx.moveTo(90, 197);
                 ctx.lineTo(620,197);
                 ctx.stroke();
                 ctx.strokeRect(15, 215, 720, 25);     
-                ctx.strokeRect(15, 240, 720, 60);    
-                ctx.strokeRect(15, 215, 490, 85);
-                ctx.strokeRect(495, 215, 120, 85);
-                //ctx.font = '10px sans-serif';               
+                ctx.strokeRect(15, 240, 720, 40);    
+                ctx.strokeRect(15, 215, 470, 65);
+                ctx.strokeRect(485, 215, 85, 65);
+                ctx.font = '14px sans-serif';     
+                ctx.fillText('DESCRIPTION', 235, 232);  
+                ctx.font = '16px sans-serif';     
+                ctx.fillText(bn.description, 95, 265);
+                ctx.fillText('1 pc', 510, 265);
+                ctx.fillText('Php ' + bn.amount.toFixed(2), 600, 265);
+                ctx.font = '14px sans-serif';       
+                ctx.fillText('QUANTITY', 495, 232);      
+                ctx.fillText('AMOUNT', 625, 232);  
+                ctx.fillText('RECEIVED BY     :', 15, 320);  
+                ctx.fillText(bn.receiver.toUpperCase(), 150, 317);              
+                ctx.beginPath();
+                ctx.moveTo(140, 325);
+                ctx.lineTo(450, 325);
+                ctx.stroke();
+                ctx.fillText('DATE:', 485, 320);
+                ctx.fillText(bn.created_at, 530, 317);
+                ctx.beginPath();
+                ctx.moveTo(525, 325);
+                ctx.lineTo(680, 325);
+                ctx.stroke();
+                ctx.fillText('ISSUED BY          :', 15, 370);
+                ctx.fillText('CATHERINE DE GUZMAN', 150, 367);
+                ctx.beginPath();
+                ctx.moveTo(140, 375);
+                ctx.lineTo(450, 375);
+                ctx.stroke();
+                ctx.font = '10px sans-serif';   
+                ctx.fillText('(Signature Over Printed Name)', 200, 335);
+                ctx.fillText('(Representative)', 200, 385);
             },
             async printNow() {        
                 this.printingModal.classList.remove('hidden');        

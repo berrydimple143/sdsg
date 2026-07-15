@@ -48,6 +48,11 @@
                                         <?php include('../includes/admin/icons/trash.php'); ?>
                                         Delete
                                         </button>
+                                        <button type="button" 
+                                        @click.prevent="printReceipt" class="inline-flex items-center  text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1 cursor-pointer">
+                                        <?php include('../includes/admin/icons/print.php'); ?>
+                                            Print Receipt
+                                        </button>
                                     </th>
                                 </tr>
                             </template>    

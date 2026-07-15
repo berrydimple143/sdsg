@@ -9,13 +9,14 @@
             //$date = new DateTime(trim(htmlspecialchars($data['created_at'])));
             //$created_at = $date->format('Y-m-d H:i:s');
 			$user_id = trim(htmlspecialchars($data['user_id']));
-            $amount = trim(htmlspecialchars($data['amount']));        
-            $type = trim(htmlspecialchars($data['type']));     
+            $amount = trim(htmlspecialchars($data['amount']));
+            $receiver = trim(htmlspecialchars($data['receiver']));
+            $type = trim(htmlspecialchars($data['type']));
             $created_at = date('Y-m-d H:i:s', strtotime(trim(htmlspecialchars($data['created_at']))));
             if($user_id AND $amount AND $created_at) {
-                $inserted = Payment::create($user_id, $amount, $type, $created_at);
+                $inserted = Payment::create($user_id, $amount, $type, $created_at, $receiver);
                 if($inserted) {
-                    return true;
+                    return $inserted;
                 } else {
                     return false;
                 }

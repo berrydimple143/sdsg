@@ -182,6 +182,12 @@
                     <span x-show="errors.weight" class="text-red-500" x-text="errors.weight"></span>
                 </div>
 
+                <div>
+                    <label for="address" class="text-white text-shadow-lg block mb-2 text-sm font-medium text-gray-900 dark:text-white">Full Address</label>
+                    <input type="text"  placeholder="Type your full address here ..." x-model="address" class="bg-white mt-1 block w-full h-2/3 outline-1 outline-gray-700 p-2 rounded-none border-gray-300 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    <span x-show="errors.address" class="text-red-500" x-text="errors.address"></span>
+                </div>
+
                 </div>  
 
                 <div class="pb-3">

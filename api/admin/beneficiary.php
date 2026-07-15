@@ -47,6 +47,7 @@
 		$data['country'] = $user->country;
         $data['height'] = $user->height;
 		$data['weight'] = $user->weight;
+		$data['address'] = $user->address;
 		$data['father'] = $user->father;
         $data['mother'] = $user->mother;
 		$data['spouse'] = $user->spouse;
