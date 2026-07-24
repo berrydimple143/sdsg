@@ -53,12 +53,14 @@
                                         <?php include('../includes/admin/icons/trash.php'); ?>
                                         Delete
                                         </button>
+                                        
                                         <button type="button" 
                                         @click.prevent="printReceiptCopy(pay.id, pay.user_id, pay.rid, pay)" class="inline-flex items-center  text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-2 py-1 cursor-pointer">
                                         <?php include('../includes/admin/icons/print.php'); ?>
-                                            Print Receipt
+                                            <span x-show="hasReceipt(pay.number)">Print Receipt</span>
+                                            <span x-show="!hasReceipt(pay.number)">Add &amp; Print Receipt</span>
                                         </button>
-                                    </th>
+                                        </th>
                                 </tr>
                             </template>    
                             <tr colspan="4" class="bg-brand border-b border-brand-light hover:bg-green-500">

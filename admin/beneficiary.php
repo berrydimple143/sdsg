@@ -122,7 +122,6 @@
             pageType: 'some',
             pageId: 1,
             idPayments: [],
-            hasReceipt: false,
             jans: [],
             febs: [],
             mars: [],
@@ -1338,6 +1337,13 @@
                     this.loadingModal.classList.add('hidden');
                 }                
             },
+            hasReceipt(rc) {
+                if(!rc) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
             async printReceiptCopy(id, uid, rid, bn) {
                 if(rid) {
                     this.printReceipt(bn);
@@ -1345,20 +1351,20 @@
                     let receiver = prompt("Please enter a receiver: ", "");             
                     this.paymentsTableModal.classList.add('hidden');       
                     try {
-                        let response = await fetch('http://localhost/sdsg/api/admin/payment.php', {
+                        let response = await fetch('http://localhost/sdsg/api/admin/receipt.php', {
                             method: 'POST',
                             headers: {'Content-Type': 'application/json'},
                             body: JSON.stringify({
-                                user_id: uid,
-                                amount: bn.amount,
+                                id: id,
+                                uid: uid,
                                 receiver: receiver,
-                                type: bn.type,
-                                created_at: bn.paid_at,
                                 mode: "add"
                             })
                         });
                         let user = await response.json();
+                        this.printingModal.classList.remove('hidden');
                         setTimeout(() => {
+                            this.printingModal.classList.add('hidden');
                             this.printReceipt(user.data);
                         }, 1000);
                     } catch(error) {

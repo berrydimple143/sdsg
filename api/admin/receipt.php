@@ -22,12 +22,15 @@
 				exit();
 			}
 		}
+		$data['receiver'] = $input->receiver;
 		$controller = new ReceiptsController();
         if($mode == 'single') {
             $info = $controller->getReceipt($data);
 		} elseif($mode == 'check') {
 			$info = $controller->checkReceipt($input->id);
-		} 
+		} elseif($mode == 'add') {
+			$info = $controller->addReceipt($data);
+		}
         if($info) {
 			http_response_code(200);
 			echo json_encode([
