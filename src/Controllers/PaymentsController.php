@@ -67,7 +67,7 @@
 
         public function getAllDataByField($data) {
             $user_id = trim(htmlspecialchars($data['user_id']));
-            return Payment::getAllDataByField('user_id', $user_id, 'created_at DESC');
+            return Payment::getAllDataByField('pay.user_id', $user_id, 'pay.created_at DESC');
         }
     }
 ?>

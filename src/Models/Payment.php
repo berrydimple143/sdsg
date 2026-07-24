@@ -7,9 +7,9 @@
         
         public static function getAllDataByField($field, $value, $order) {
 			$pdo = Database::connect();
-			$payments = $pdo->query("SELECT * FROM payments WHERE $field = '$value' ORDER BY $order");
+			$payments = $pdo->query("SELECT pay.id AS id, pay.user_id AS user_id, rc.id AS rid, rc.receiver AS receiver, rc.issuer AS issuer, rc.number AS number, DATE_FORMAT(rc.created_at, '%M %d, %Y') AS created_at, pay.created_at AS paid_at, pay.amount AS amount, pay.type AS type, COALESCE(CONCAT(UPPER(SUBSTRING(usr.firstname, 1, 1)), LOWER(SUBSTRING(usr.firstname, 2))), '') AS firstname, COALESCE(CONCAT(UPPER(SUBSTRING(usr.lastname, 1, 1)), LOWER(SUBSTRING(usr.lastname, 2))), '') AS lastname, per.address AS address, COALESCE(CONCAT(UPPER(SUBSTRING(bar.name, 1, 1)), LOWER(SUBSTRING(bar.name, 2))), '') AS barangay, COALESCE(CONCAT(UPPER(SUBSTRING(ct.name, 1, 1)), LOWER(SUBSTRING(ct.name, 2))), '') AS city FROM payments pay LEFT JOIN users usr ON pay.user_id = usr.id LEFT JOIN receipts rc ON pay.id = rc.payment_id LEFT JOIN personal_information per ON usr.id = per.user_id LEFT JOIN barangays bar ON per.barangay_id = bar.id LEFT JOIN cities ct ON per.city_id = ct.id WHERE $field = '$value' ORDER BY $order");			
 			return $payments->fetchAll(PDO::FETCH_ASSOC);
-		}		
+		}
 
 		public static function getSumWithCondition($condition) {
 			$pdo = Database::connect();
@@ -100,10 +100,11 @@
 						]);
 						if($rInserted) {
 							$rid = $pdo->lastInsertId();
-							$rc = $pdo->query("SELECT rc.id AS id, rc.receiver AS receiver, rc.issuer AS issuer, rc.number AS number, DATE_FORMAT(rc.created_at, '%M %d, %Y') AS created_at, pay.amount AS amount, pay.type AS description, COALESCE(CONCAT(UPPER(SUBSTRING(usr.firstname, 1, 1)), LOWER(SUBSTRING(usr.firstname, 2))), '') AS firstname, COALESCE(CONCAT(UPPER(SUBSTRING(usr.lastname, 1, 1)), LOWER(SUBSTRING(usr.lastname, 2))), '') AS lastname, per.address AS address, COALESCE(CONCAT(UPPER(SUBSTRING(bar.name, 1, 1)), LOWER(SUBSTRING(bar.name, 2))), '') AS barangay, COALESCE(CONCAT(UPPER(SUBSTRING(ct.name, 1, 1)), LOWER(SUBSTRING(ct.name, 2))), '') AS city FROM receipts rc LEFT JOIN payments pay ON rc.payment_id = pay.id LEFT JOIN users usr ON pay.user_id = usr.id LEFT JOIN personal_information per ON usr.id = per.user_id LEFT JOIN barangays bar ON per.barangay_id = bar.id LEFT JOIN cities ct ON per.city_id = ct.id WHERE rc.id='$rid'");
+							$rc = $pdo->query("SELECT rc.id AS id, rc.receiver AS receiver, rc.issuer AS issuer, rc.number AS number, DATE_FORMAT(rc.created_at, '%M %d, %Y') AS created_at, pay.amount AS amount, pay.type AS type, COALESCE(CONCAT(UPPER(SUBSTRING(usr.firstname, 1, 1)), LOWER(SUBSTRING(usr.firstname, 2))), '') AS firstname, COALESCE(CONCAT(UPPER(SUBSTRING(usr.lastname, 1, 1)), LOWER(SUBSTRING(usr.lastname, 2))), '') AS lastname, per.address AS address, COALESCE(CONCAT(UPPER(SUBSTRING(bar.name, 1, 1)), LOWER(SUBSTRING(bar.name, 2))), '') AS barangay, COALESCE(CONCAT(UPPER(SUBSTRING(ct.name, 1, 1)), LOWER(SUBSTRING(ct.name, 2))), '') AS city FROM receipts rc LEFT JOIN payments pay ON rc.payment_id = pay.id LEFT JOIN users usr ON pay.user_id = usr.id LEFT JOIN personal_information per ON usr.id = per.user_id LEFT JOIN barangays bar ON per.barangay_id = bar.id LEFT JOIN cities ct ON per.city_id = ct.id WHERE rc.id='$rid'");
 			    			return $rc->fetch(PDO::FETCH_OBJ);
+						} else {
+							return false;
 						}
-						return ;
 					} else {
 						return false;
 					}

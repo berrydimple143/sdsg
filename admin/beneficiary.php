@@ -122,6 +122,7 @@
             pageType: 'some',
             pageId: 1,
             idPayments: [],
+            hasReceipt: false,
             jans: [],
             febs: [],
             mars: [],
@@ -1192,7 +1193,7 @@
                     this.init();
                     this.displayModal('add', 2000);                    
                 }
-            },            
+            },
             payNow(id) {
                 this.userId = id;
                 this.amount = '';                	
@@ -1336,7 +1337,35 @@
                 } finally {
                     this.loadingModal.classList.add('hidden');
                 }                
-            },            
+            },
+            async printReceiptCopy(id, uid, rid, bn) {
+                if(rid) {
+                    this.printReceipt(bn);
+                } else {
+                    let receiver = prompt("Please enter a receiver: ", "");             
+                    this.paymentsTableModal.classList.add('hidden');       
+                    try {
+                        let response = await fetch('http://localhost/sdsg/api/admin/payment.php', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({
+                                user_id: uid,
+                                amount: bn.amount,
+                                receiver: receiver,
+                                type: bn.type,
+                                created_at: bn.paid_at,
+                                mode: "add"
+                            })
+                        });
+                        let user = await response.json();
+                        setTimeout(() => {
+                            this.printReceipt(user.data);
+                        }, 1000);
+                    } catch(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                }                    
+            },
             printReceipt(bn) {
                 this.drawData(bn);
                     let canvas = this.$refs.receiptCanvas;
@@ -1364,7 +1393,7 @@
             },
             drawData(bn) {                
                 let canvas = this.$refs.receiptCanvas;
-                let ctx = canvas.getContext('2d');
+                let ctx = canvas.getContext('2d');                
                 canvas.width = 800;
                 canvas.height = 500;
                 //ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1412,7 +1441,7 @@
                 ctx.font = '14px sans-serif';     
                 ctx.fillText('DESCRIPTION', 235, 232);  
                 ctx.font = '16px sans-serif';     
-                ctx.fillText(bn.description, 95, 265);
+                ctx.fillText(bn.type, 95, 265);
                 ctx.fillText('1 pc', 510, 265);
                 ctx.fillText('Php ' + bn.amount.toFixed(2), 600, 265);
                 ctx.font = '14px sans-serif';       
@@ -1437,8 +1466,8 @@
                 ctx.lineTo(450, 375);
                 ctx.stroke();
                 ctx.font = '10px sans-serif';   
-                ctx.fillText('(Signature Over Printed Name)', 200, 335);
-                ctx.fillText('(Representative)', 200, 385);
+                ctx.fillText('(Signature Over Printed Name)', 150, 335);
+                ctx.fillText('(Representative)', 150, 385);
             },
             async printNow() {        
                 this.printingModal.classList.remove('hidden');        
